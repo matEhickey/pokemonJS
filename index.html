@@ -1,0 +1,132 @@
+<head>
+	<title>PokemonJS</title>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body>
+	<div class="container encadreGeneral">
+
+
+		    <style type="text/css">
+		        canvas{
+		            border: 2px solid black;
+		            background-color: grey;
+		            width: 75%;
+	  		    		height: auto;
+		        }
+		        img{
+		        	display:none;
+		        }
+		        form{
+		        	display:none;
+		        }
+		    </style>
+
+
+		<div id="clickable">
+
+
+			 <img src="pokemon/image/sacha.png" id="sacha"/>
+			 <img src="pokemon/image/dresseurs.png" id="dresseurs"/>
+			 <img src="pokemon/image/BackSpritesHero.png" id="hero"/>
+			 <img src="pokemon/image/dresseurVert.png" id="dresseurVert"/>
+			 <img src="pokemon/image/dresseurVertBlond.png" id="dresseurVertBlond"/>
+			 <img src="pokemon/image/dresseurRougeBlond.png" id="dresseurRougeBlond"/>
+			 <img src="pokemon/image/dresseurRougeBrun.png" id="dresseurRougeBrun"/>
+			 <img src="pokemon/image/dresseurRougeChatain.png" id="dresseurRougeChatain"/>
+			 <img src="pokemon/image/teamRocketBasic.png" id="teamRocketBasic"/>
+			 <img src="pokemon/image/terrrainTest2.png" id="terrain"/>
+			 <img src="pokemon/image/centrePokemon.png" id="centreP"/>
+			 <img src="pokemon/image/ville2.png" id="ville2"/>
+			 <img src="pokemon/image/all-pokemon.png" id="all_pokemons"/>
+			 <img src="pokemon/image/back_sprites.png" id="backSprites"/>
+			 <img src="pokemon/image/pokeworldmap.png" id="carte"/>
+			 <img src="pokemon/image/centrePinterieur.png" id="cpInterieur"/>
+			 <img src="pokemon/image/pokeshopInside.png" id="pokeshop"/>
+			 <img src="pokemon/image/argenta.png" id="argenta"/>
+			 <img src="pokemon/image/areneArgenta.png" id="areneArgenta"/>
+
+
+
+						<h2>My Pocket Monster Fan Art</h2>
+
+					 	<canvas id="ecran" width="900" height="680" ></canvas>
+
+					 <div>
+					 	<h3>Commandes</h3>
+					 	<hr>
+					 	<ul>
+					 		<li>Flèches directionnelles = se déplacer</li>
+					 		<li>a = Action (parler, lire, valider, ..)</li>
+					 		<li>b = Retour</li>
+					 		<li>p = Pause/Menu </li>
+					 		<li><button onclick="stopMusique()" id="buttonMusique">Musique ON</button></li>
+					 	</ul>
+					 	<hr>
+					 	<strong>Position</strong>
+						<p id="posX"></p>
+						<p id="posY"></p>
+					 </div>
+				 </div>
+
+				 <div class="row">
+				 	<p id="ajoutCollision"><p>
+				 </div>
+
+
+			</div>
+			<p style="text-align:center;">**Seul le code est de moi, les images sont certes modifiées, leurs droits ne me reviennent pas**</p>
+
+</body>
+
+	<script>
+		var audio = new Audio('musiqueLoop.wav');
+		audio.loop = true;
+		//audio.play();
+
+		function stopMusique(){
+			if(audio.paused){
+				audio.play();
+				document.getElementById("buttonMusique").innerHTML = "Musique OFF";
+			}
+			else{
+				audio.pause();
+				document.getElementById("buttonMusique").innerHTML = "Musique ON";
+			}
+		}
+	</script>
+
+	<script type="text/javascript" src="pokemon/carte.js"></script>
+	<script type="text/javascript" src="pokemon/dresseur.js"></script>
+	<script type="text/javascript" src="pokemon/controller.js"></script>
+	<script type="text/javascript" src="pokemon/pokemon.js"></script>
+	<script type="text/javascript" src="pokemon/objet.js"></script>
+	<script type="text/javascript" src="pokemon/grille.js"></script>
+	<script type="text/javascript" src="pokemon/chargeObjetsDansGrille.js"></script>
+	<script type="text/javascript" src="pokemon/Main.js"></script>
+	<script type="text/javascript" src="pokemon/menu.js"></script>
+	<script type="text/javascript" src="pokemon/combat.js"></script>
+	<script type="text/javascript" src="pokemon/batiment.js"></script>
+	<script type="text/javascript" src="pokemon/pnj.js"></script>
+	<script type="text/javascript" src="pokemon/porte.js"></script>
+	<script type="text/javascript" src="pokemon/herbes.js"></script>
+	<script type="text/javascript" src="pokemon/pokedex.js"></script>
+	<script type="text/javascript" src="pokemon/sauvage.js"></script>
+	<script type="text/javascript" src="pokemon/attaques.js"></script>
+
+	<script>
+		window.addEventListener("keydown", function(e) {
+		    // space and arrow keys
+		    if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {	//pour les touches directionnelles
+		        e.preventDefault();		//enlever comportement par default
+		    }
+		    keyPress(e);
+		}, false);
+
+		window.addEventListener("keyup", function(e) {
+		   releaseKey(e);
+		}, false);
+
+
+	</script>
