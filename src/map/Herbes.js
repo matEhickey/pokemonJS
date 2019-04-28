@@ -1,3 +1,5 @@
+import {monDresseur} from '../utils/globals';
+
 function Herbe(posX,posY,tailleX,tailleY,puissance){
 	this.posX=posX;
 	this.tailleX=tailleX;
@@ -20,3 +22,5 @@ Herbe.prototype.walkOn = function(){
 Herbe.prototype.getPuissance= function(){
 	return(this.puissance);
 }
+
+export default Herbe;

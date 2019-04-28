@@ -1,3 +1,15 @@
+import {chargeObjetsDansGrille0, chargeObjetsDansGrille1, chargeObjetsDansGrille2, chargeObjetsDansGrille3, chargeObjetsDansGrille4, chargeObjetsDansGrille5, chargeObjetsDansGrille6} from '../gamecontent/Loader';
+import Grille from '../map/Grille';
+import applyHUD_event from '../UI/hud_events';
+
+import terrain from '../../assets/imgs/terrrainTest2.png';
+import ville2 from '../../assets/imgs/ville2.png';
+import centrePinterieur from '../../assets/imgs/centrePinterieur.png';
+import argenta from '../../assets/imgs/argenta.png';
+import pokeshopInside from '../../assets/imgs/pokeshopInside.png';
+import areneArgenta from '../../assets/imgs/areneArgenta.png';
+import dresseurs from '../../assets/imgs/dresseurs.png';
+
 var PlayerController = function(dresseur,grille){
 
 	this.dresseur = dresseur;
@@ -14,21 +26,46 @@ var PlayerController = function(dresseur,grille){
 	this.couleurPrefere = "#bbbbbb";
 	this.pokemonCapture = false;
 	this.adversaire;
-	this.charSprites= document.getElementById("dresseurs");
+
+	var dresseurs_img = document.createElement("img");
+	dresseurs_img.src = dresseurs;
+	this.charSprites = dresseurs_img;
 
 	this.walkable = true
 
 	this.menu = null;
+	this.combat = null;
 
 	this.grille;
 	this.grilles=[];
-	this.grilles.push(new Grille(document.getElementById('terrain')));
-	this.grilles.push(new Grille(document.getElementById('ville2')));
-	this.grilles.push(new Grille(document.getElementById('cpInterieur')));
-	this.grilles.push(new Grille(document.getElementById('cpInterieur')));
-	this.grilles.push(new Grille(document.getElementById('argenta')));
-	this.grilles.push(new Grille(document.getElementById('pokeshop')));
-	this.grilles.push(new Grille(document.getElementById('areneArgenta')));
+
+
+	var terrain_img = document.createElement("img");
+	terrain_img.src = terrain;
+
+	var ville2_img = document.createElement("img");
+	ville2_img.src = ville2;
+
+	var centrePinterieur_img = document.createElement("img");
+	centrePinterieur_img.src = centrePinterieur;
+
+	var argenta_img = document.createElement("img");
+	argenta_img.src = argenta;
+
+	var pokeshopInside_img = document.createElement("img");
+	pokeshopInside_img.src = pokeshopInside;
+
+	var areneArgenta_img = document.createElement("img");
+	areneArgenta_img.src = areneArgenta;
+
+
+	this.grilles.push(new Grille(terrain_img));
+	this.grilles.push(new Grille(ville2_img));
+	this.grilles.push(new Grille(centrePinterieur_img));
+	this.grilles.push(new Grille(centrePinterieur_img));
+	this.grilles.push(new Grille(argenta));
+	this.grilles.push(new Grille(pokeshopInside));
+	this.grilles.push(new Grille(areneArgenta));
 
 	chargeObjetsDansGrille0(this.grilles[0]);//collisions, dresseur, pnj porte etc
 	chargeObjetsDansGrille1(this.grilles[1]);
@@ -37,12 +74,6 @@ var PlayerController = function(dresseur,grille){
 	chargeObjetsDansGrille4(this.grilles[4]);
 	chargeObjetsDansGrille5(this.grilles[5]);
 	chargeObjetsDansGrille6(this.grilles[6]);
-
-	// if(!parseInt(document.getElementById("isConnecte").innerHTML)){
-	// 	this.mode = 1;
-	// 	this.hudMode = 10;
-	// 	this.info = "Vous ne pourrez pas sauvegarder votre partie, il faut jouer depuis un compte.";
-	// }
 
 }
 
@@ -228,7 +259,7 @@ PlayerController.prototype.actions = function(touche){
 				   	case(40)://down
 				   		this.setOrientation(1);
 				   		if(this.dresseur.position >= 5){this.dresseur.position = 0;}
-				   		this.grille.checkWalkOnHerbes();monDresseur
+				   		this.grille.checkWalkOnHerbes();
 				   	break;
 				   	case(38)://up
 				   		this.setOrientation(4);
@@ -322,7 +353,7 @@ PlayerController.prototype.actions = function(touche){
 				  break;//fin mode hud
 
 				case(2)://mode combat
-					  combat.gestionEvenement(touche);
+					  monDresseur.combat.gestionEvenement(touche);
 				 		break;//fin combat mode
 
 		}
@@ -521,3 +552,5 @@ function loadPokemons(){
 // 	//  monDresseur.hudMode = 10;
 // 	//  monDresseur.info = "Il y a eu un probleme avec le chargement, vous pourriez reesayez, au cas ou..";
 // }
+
+export default PlayerController;

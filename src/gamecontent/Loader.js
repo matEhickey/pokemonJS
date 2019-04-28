@@ -1,11 +1,20 @@
-function LoadDataContent(){
-	loadData_dresseurs();
-}
+import { GenereUnPokemon } from '../combat/Pokemon';
+import Dresseur from "../map/Dresseur";
+import Herbe from "../map/Herbes";
+import Batiment from "../map/Batiment";
+import Objet from "../map/Objet";
+import Porte from "../map/Porte";
+import PNJ from "../map/PNJ";
+
+import centrePokemon from '../../assets/imgs/centrePokemon.png'
+import dresseurRougeChatain from '../../assets/imgs/dresseurRougeChatain.png';
 
 function loadData_dresseurs(grille){
 
 	const dresseur1 = new Dresseur("Mathias",-7,-60,0,0,0);
-	dresseur1.setTexture(document.getElementById('dresseurRougeChatain'));
+	var dresseurRougeChatain_img = document.createElement("img");
+	dresseurRougeChatain_img.src = dresseurRougeChatain;
+	dresseur1.setTexture(dresseurRougeChatain_img);
 	dresseur1.setTexte("Bienvenu dans ce jeu Pokemon. Des pokemons ont étrangement disparus. Tu m'as l'air plutot louche!");
 	dresseur1.setTexteLooser("J'ai du me tromper, fais moi signe si tu en apprend plus de ton coté.");
 	dresseur1.setGTX(3);
@@ -15,7 +24,8 @@ function loadData_dresseurs(grille){
 		dresseur1.addPokemon(GenereUnPokemon(5));
 
 	const dresseur2 = new Dresseur("Quentin",225,-22,1,0);
-	dresseur2.setTexture(document.getElementById('dresseurRougeBrun'));
+	dresseur2.setTexture(dresseurRougeChatain_img);
+	// dresseur2.setTexture(document.getElementById('dresseurRougeBrun'));
 	dresseur2.setTexte("C'est forcement un coup de la Team Rocket!");
 	dresseur2.setTexteLooser("Il faut vraiment s'entrainer pour esperer vaincre la Team Rocket!");
 	dresseur2.setGTX(3);
@@ -24,7 +34,8 @@ function loadData_dresseurs(grille){
 		dresseur2.addPokemon(GenereUnPokemon(7));
 
 	const dresseur3 = new Dresseur("Billy",196,172,2,0);
-	dresseur3.setTexture(document.getElementById('dresseurRougeChatain'));
+	dresseur3.setTexture(dresseurRougeChatain_img);
+	// dresseur3.setTexture(document.getElementById('dresseurRougeChatain'));
 	dresseur3.setTexte("Si tu ne peux pas me battre, tu vas te faire massacrer par la Team Rocket");
 	dresseur3.setTexteLooser("Bon, toi tu as peut etre tes chances");
 	dresseur3.setGTX(3);
@@ -34,7 +45,7 @@ function loadData_dresseurs(grille){
 		dresseur3.addPokemon(GenereUnPokemon(9));
 
 	const dresseur4 = new Dresseur("Theo",350,18,0,0);
-	dresseur4.setTexture(document.getElementById('dresseurRougeBrun'));
+	// dresseur4.setTexture(document.getElementById('dresseurRougeBrun'));
 	dresseur4.setTexte("J'avais un pokemon vraiment très fort mais il s'est fait  capturer par la Team Rocket..");
 	dresseur4.setTexteLooser("Je ne serai pas fait voler, je t'aurai battu très largement..");
 	dresseur4.setGTX(0);
@@ -42,7 +53,7 @@ function loadData_dresseurs(grille){
 		dresseur4.addPokemon(GenereUnPokemon(13));
 
 	const dresseur5 = new Dresseur("Leo",650,194,0,0);
-	dresseur5.setTexture(document.getElementById('dresseurRougeBlond'));
+	// dresseur5.setTexture(document.getElementById('dresseurRougeBlond'));
 	dresseur5.setTexte("Attention!, la Team Rocket est toute proche!");
 	dresseur5.setTexteLooser("Tu m'as l'air bien préparé, bon courage!");
 	dresseur5.setGTX(0);
@@ -50,7 +61,7 @@ function loadData_dresseurs(grille){
 		dresseur5.addPokemon(GenereUnPokemon(13));
 
 	const dresseur6 = new Dresseur("Spyros",-34,110,2,0);
-	dresseur6.setTexture(document.getElementById('dresseurRougeChatain'));
+	// dresseur6.setTexture(document.getElementById('dresseurRougeChatain'));
 	dresseur6.setTexte("La Team Rocket a apparement encore sévit.. Un combat?");
 	dresseur6.setTexteLooser("Bien joué, la prochaine fois je t'aurais !");
 	dresseur6.setGTX(2);
@@ -69,7 +80,7 @@ function loadData_dresseurs(grille){
 
 function loadData_teamrocket(grille){
 	const teamR1 = new Dresseur("Bad Guy1",686,34,0,0);
-	teamR1.setTexture(document.getElementById('teamRocketBasic'));
+	// teamR1.setTexture(document.getElementById('teamRocketBasic'));
 	teamR1.setTexte("Tiens toi! Donnes moi tes pokémons!");
 	teamR1.setTexteLooser("La Team Rocket va t'anneantir!");
 		teamR1.addPokemon(GenereUnPokemon(7));
@@ -77,7 +88,7 @@ function loadData_teamrocket(grille){
 		teamR1.addPokemon(GenereUnPokemon(10));
 
 	const teamR2 = new Dresseur("Bad Guy2",740,20,3,0);
-	teamR2.setTexture(document.getElementById('teamRocketBasic'));
+	// teamR2.setTexture(document.getElementById('teamRocketBasic'));
 	teamR2.setTexte("Hey toi, tu vas voir!");
 	teamR2.setTexteLooser("Tu m'as battu, mais attend toi au pire!");
 		teamR2.addPokemon(GenereUnPokemon(11));
@@ -85,7 +96,7 @@ function loadData_teamrocket(grille){
 
 
 	const teamR3 = new Dresseur("Bad Guy3",844,76,2,0);
-	teamR3.setTexture(document.getElementById('teamRocketBasic'));
+	// teamR3.setTexture(document.getElementById('teamRocketBasic'));
 	teamR3.setTexte("Pas si vite, mes plutot ces pokemons dans mon sac!");
 	teamR3.setTexteLooser("Ouais c'est facile aussi comme ca, tricheur..");
 		teamR3.addPokemon(GenereUnPokemon(17));
@@ -93,7 +104,7 @@ function loadData_teamrocket(grille){
 
 
 	const teamR4 = new Dresseur("Bad Guy4",1008,54,3,0);
-	teamR4.setTexture(document.getElementById('teamRocketBasic'));
+	// teamR4.setTexture(document.getElementById('teamRocketBasic'));
 	teamR4.setTexte("Tu ne pourras meme pas approcher notre chef!");
 	teamR4.setTexteLooser("Notre chef va me venger!");
 		teamR4.addPokemon(GenereUnPokemon(9));
@@ -102,7 +113,7 @@ function loadData_teamrocket(grille){
 
 
 	const teamR5 = new Dresseur("Capitaine Rocket",1076,24,1,0);
-	teamR5.setTexture(document.getElementById('teamRocketBasic'));
+	// teamR5.setTexture(document.getElementById('teamRocketBasic'));
 	teamR5.setTexte("Et oui c'est moi qui retiens tout les pokemons! Mouhahaha");
 	teamR5.setTexteLooser("Bravo, je vais redonner les pokemons a leurs proprietaires!");
 	teamR5.setGTX(9);
@@ -333,8 +344,8 @@ var chargeObjetsDansGrille0 = function(grille){
 	loadData_herbe(grille);
 	loadData_colisisons_scene_1(grille);
 
-	var batiment1 = new Batiment("Centre Pokemon",document.getElementById("centreP"), -102,-40,120,100);
-	grille.ajoutePorte(new Porte(-74,0,44,112,"centreP1"));
+	var batiment1 = new Batiment("Centre Pokemon",centrePokemon, -102,-40,120,100);
+	// grille.ajoutePorte(new Porte(-74,0,44,112,"centreP1"));
 	grille.ajouteBatiment(batiment1);
 
 }
@@ -363,7 +374,7 @@ var chargeObjetsDansGrille1 = function(grille){//-------------------------------
 var chargeObjetsDansGrille2 = function(grille){//------------------------------------------------------------------------- premier centre pokemon
 
 
-	grille.ajoutePorte(new Porte(40,123,-72,12,"foret1"));
+	// grille.ajoutePorte(new Porte(40,123,-72,12,"foret1"));
 
 	//infirmiere
 
@@ -391,7 +402,7 @@ var chargeObjetsDansGrille2 = function(grille){//-------------------------------
 var chargeObjetsDansGrille3 = function(grille){//------------------------------------------------------------------------- centre pokemon argenta
 
 
-	grille.ajoutePorte(new Porte(40,123,18,198,"argenta"));
+	// grille.ajoutePorte(new Porte(40,123,18,198,"argenta"));
 
 	//infirmiere
 
@@ -419,9 +430,9 @@ var chargeObjetsDansGrille3 = function(grille){//-------------------------------
 var chargeObjetsDansGrille4 = function(grille){		//argenta		----------------------------------------------------------------------------
 
 
-grille.ajoutePorte(new Porte(12,168,44,112,"centreP2").setLargeur(10));
-grille.ajoutePorte(new Porte(190,52,10,42,"pokeshopArgenta").setLargeur(10));
-grille.ajoutePorte(new Porte(-18,20,-60,42,"areneArgenta").setLargeur(8));
+// grille.ajoutePorte(new Porte(12,168,44,112,"centreP2").setLargeur(10));
+// grille.ajoutePorte(new Porte(190,52,10,42,"pokeshopArgenta").setLargeur(10));
+// grille.ajoutePorte(new Porte(-18,20,-60,42,"areneArgenta").setLargeur(8));
 
 grille.ajouteObjet(new Objet("CentreP",-26,102,86,62));
 grille.ajouteObjet(new Objet("CentreP",22,162,38,12));
@@ -481,7 +492,7 @@ grille.ajouteObjet(new Objet("Collision",78,24,14,66));
 
 var chargeObjetsDansGrille5 = function(grille){	//pokeshop argenta
 
-grille.ajoutePorte(new Porte(0,54,190,65,"argenta").setLargeur(10));
+// grille.ajoutePorte(new Porte(0,54,190,65,"argenta").setLargeur(10));
 
 
 grille.ajouteObjet(new Objet("Collision",-52,20,40,24));
@@ -505,7 +516,7 @@ grille.ajouteObjet(new Objet("Collision",-70,-2,10,56));
 
 var chargeObjetsDansGrille6 = function(grille){	//arene argenta
 
-	grille.ajoutePorte(new Porte(-68,52,-16,40,"argenta").setLargeur(12));
+	// grille.ajoutePorte(new Porte(-68,52,-16,40,"argenta").setLargeur(12));
 
 
 grille.ajouteObjet(new Objet("Collision",-110,-22,34,30));
@@ -532,3 +543,6 @@ grille.ajouteObjet(new Objet("Collision",-126,-178,10,86));
 grille.ajouteObjet(new Objet("Collision",-132,54,64,4));
 grille.ajouteObjet(new Objet("Collision",-56,54,62,6));
 }
+
+
+export {chargeObjetsDansGrille0, chargeObjetsDansGrille1, chargeObjetsDansGrille2, chargeObjetsDansGrille3, chargeObjetsDansGrille4, chargeObjetsDansGrille5, chargeObjetsDansGrille6};

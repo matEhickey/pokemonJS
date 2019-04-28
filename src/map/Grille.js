@@ -1,3 +1,6 @@
+import {getContext, getCanvas} from '../utils/render_utils';
+import {monDresseur} from '../utils/globals';
+
 var nbG = 0;
 function Grille(terrain){
 	this.terrain = terrain;
@@ -139,93 +142,99 @@ Grille.prototype.drawDresseur = function(posX,posY){
 }
 
 Grille.prototype.drawTerrain = function(){
-	try{
-		context.drawImage(this.terrain,monDresseur.getPosX()+250, monDresseur.getPosY()+250, canvas.width/3, canvas.height/3, 0,0, canvas.width, canvas.height);
-	 } catch(e) {
-            console.error(e.message);
-        }
+		var context = getContext();
+		var canvas = getCanvas();
+
+		context.drawImage(this.terrain, monDresseur.getPosX()+250, monDresseur.getPosY()+250, canvas.width/3, canvas.height/3, 0,0, canvas.width, canvas.height);
 }
 
 Grille.prototype.drawMonDresseur= function(){
-
+	var context = getContext();
 
 	switch(monDresseur.getOrientation()){
 							case(1):
-									// if(monDresseur.dresseur.position != 5 && (monDresseur.mode == 0) && walkable){
-									//
-									// 	monDresseur.setPosY(monDresseur.getPosY()+2);
-									// }
 
 
 									switch(monDresseur.dresseur.position){
-									case(0):context.drawImage(monDresseur.dresseur.texture,0,0,32,48   ,320,240,32,48);
+									case(0):
+										context.drawImage(monDresseur.dresseur.texture,0,0,32,48   ,320,240,32,48);
 										break;
-									case(1):context.drawImage(monDresseur.dresseur.texture,32,0,32,48  ,320,240,32,48);
+									case(1):
+										context.drawImage(monDresseur.dresseur.texture,32,0,32,48  ,320,240,32,48);
 										break;
-									case(2):context.drawImage(monDresseur.dresseur.texture,64,0,32,48  ,320,240,32,48);
+									case(2):
+										context.drawImage(monDresseur.dresseur.texture,64,0,32,48  ,320,240,32,48);
 										break;
-									case(3):context.drawImage(monDresseur.dresseur.texture,96,0,32,48  ,320,240,32,48);
+									case(3):
+										context.drawImage(monDresseur.dresseur.texture,96,0,32,48  ,320,240,32,48);
 										break;
-									case(5):context.drawImage(monDresseur.dresseur.texture,0,0,32,48   ,320,240,32,48);
+									case(5):
+										context.drawImage(monDresseur.dresseur.texture,0,0,32,48   ,320,240,32,48);
 										break;
 								}
 
 							break;
 
 							case(2):
-									// if(monDresseur.dresseur.position != 5 && (monDresseur.mode == 0) && walkable){
-									// 	monDresseur.setPosX(monDresseur.getPosX()-2);
-									// }
 
 									switch(monDresseur.dresseur.position){
-									case(0):context.drawImage(monDresseur.dresseur.texture,0,48,32,48   ,320,240,32,48);
+									case(0):
+										context.drawImage(monDresseur.dresseur.texture,0,48,32,48   ,320,240,32,48);
 										break;
-									case(1):context.drawImage(monDresseur.dresseur.texture,32,48,32,48  ,320,240,32,48);
+									case(1):
+										context.drawImage(monDresseur.dresseur.texture,32,48,32,48  ,320,240,32,48);
 										break;
-									case(2):context.drawImage(monDresseur.dresseur.texture,64,48,32,48  ,320,240,32,48);
+									case(2):
+										context.drawImage(monDresseur.dresseur.texture,64,48,32,48  ,320,240,32,48);
 										break;
-									case(3):context.drawImage(monDresseur.dresseur.texture,96,48,32,48  ,320,240,32,48);
+									case(3):
+										context.drawImage(monDresseur.dresseur.texture,96,48,32,48  ,320,240,32,48);
 										break;
-									case(5):context.drawImage(monDresseur.dresseur.texture,0,48,32,48   ,320,240,32,48);
+									case(5):
+										context.drawImage(monDresseur.dresseur.texture,0,48,32,48   ,320,240,32,48);
 										break;
 								}
 							break;
 
 							case(3):
-									// if(monDresseur.dresseur.position != 5 && (monDresseur.mode == 0) && walkable){
-									// 	monDresseur.setPosX(monDresseur.getPosX()+2);
-									// }
 
 									switch(monDresseur.dresseur.position){
-									case(0):context.drawImage(monDresseur.dresseur.texture,0,96,32,48   ,320,240,32,48);
+									case(0):
+										context.drawImage(monDresseur.dresseur.texture,0,96,32,48   ,320,240,32,48);
 										break;
-									case(1):context.drawImage(monDresseur.dresseur.texture,32,96,32,48  ,320,240,32,48);
+									case(1):
+										context.drawImage(monDresseur.dresseur.texture,32,96,32,48  ,320,240,32,48);
 										break;
-									case(2):context.drawImage(monDresseur.dresseur.texture,64,96,32,48  ,320,240,32,48);
+									case(2):
+										context.drawImage(monDresseur.dresseur.texture,64,96,32,48  ,320,240,32,48);
 										break;
-									case(3):context.drawImage(monDresseur.dresseur.texture,96,96,32,48  ,320,240,32,48);
+									case(3):
+										context.drawImage(monDresseur.dresseur.texture,96,96,32,48  ,320,240,32,48);
 										break;
-									case(5):context.drawImage(monDresseur.dresseur.texture,0,96,32,48   ,320,240,32,48);
+									case(5):
+										context.drawImage(monDresseur.dresseur.texture,0,96,32,48   ,320,240,32,48);
 										break;
 								}
 							break;
 
 							case(4):
-									// if(monDresseur.dresseur.position != 5 && (monDresseur.mode == 0) && walkable){
-									// 	monDresseur.setPosY(monDresseur.getPosY()-2);
-									// }
 
 									switch(monDresseur.dresseur.position){
-									case(0):context.drawImage(monDresseur.dresseur.texture,0,144,32,48   ,320,240,32,48);
+									case(0):
+										context.drawImage(monDresseur.dresseur.texture,0,144,32,48   ,320,240,32,48);
 										break;
-									case(1):context.drawImage(monDresseur.dresseur.texture,32,144,32,48  ,320,240,32,48);
+									case(1):
+										context.drawImage(monDresseur.dresseur.texture,32,144,32,48  ,320,240,32,48);
 										break;
-									case(2):context.drawImage(monDresseur.dresseur.texture,64,144,32,48  ,320,240,32,48);
+									case(2):
+										context.drawImage(monDresseur.dresseur.texture,64,144,32,48  ,320,240,32,48);
 										break;
-									case(3):context.drawImage(monDresseur.dresseur.texture,96,144,32,48  ,320,240,32,48);
+									case(3):
+										context.drawImage(monDresseur.dresseur.texture,96,144,32,48  ,320,240,32,48);
 												//{x,y,taileX,tailleY} Portion , {x,y,tailleX,tailleY} Canvas
 										break;
-									case(5):context.drawImage(monDresseur.dresseur.texture,0,144,32,48   ,320,240,32,48);
+									case(5):
+										context.drawImage(monDresseur.dresseur.texture,0,144,32,48   ,320,240,32,48);
 										break;
 								}
 							break;
@@ -278,3 +287,5 @@ Grille.prototype.getDresseurByNum= function(num){
 	}
 	return(false);
 }
+
+export default Grille;

@@ -1,4 +1,8 @@
-function applyHUD_event(touche){
+import {monDresseur, combat, pokedex} from '../utils/globals';
+import BUTTON from '../utils/touches';
+import Combat from '../combat/Combat';
+
+export default function applyHUD_event(touche){
   switch(monDresseur.hudMode){
     case(0):// menu pause
       handleMainMenuEvent(touche);
@@ -14,7 +18,7 @@ function applyHUD_event(touche){
               monDresseur.mode = 2;
               monDresseur.adversaire = monDresseur.grille.getDresseur(nextCaseX,nextCaseY);
 
-              combat = new Combat();
+              monDresseur.combat = new Combat();
             }
             else{
               monDresseur.mode = 0;
@@ -26,7 +30,7 @@ function applyHUD_event(touche){
               }
               else{
                 monDresseur.mode = 2;
-                combat = new Combat();
+                monDresseur.combat = new Combat();
               }
           }
       }
@@ -135,13 +139,13 @@ function handlePokedexEvent(touche){
 function handleCarteEvent(touche){
   switch(touche){
     case(BUTTON.UP):
-      carte.selectM();
+      monDresseur.carte.selectM();
     break;
     case(BUTTON.DOWN):
-      carte.selectP();
+      monDresseur.carte.selectP();
     break;
     case(BUTTON.CONFIRM)://valider
-      carte.voyage();
+      monDresseur.carte.voyage();
     break;
     case(BUTTON.BACK)://retour
       monDresseur.hudMode = 0;

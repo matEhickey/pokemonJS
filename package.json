@@ -4,6 +4,12 @@
   "scripts": {
     "start": "echo START",
     "test": "echo TEST",
-    "build": "echo build"
+    "build": "npx webpack --devtool source-map --mode development"
+  },
+  "main": "src/gameloop/main.js",
+  "devDependencies": {
+    "file-loader": "^3.0.1",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.1"
   }
 }

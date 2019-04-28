@@ -1,3 +1,6 @@
+import {monDresseur} from '../utils/globals';
+import BUTTON from '../utils/touches';
+
 function keyPress(event) {
 		    var touche = event.keyCode;
 		    monDresseur.actions(touche);
@@ -20,3 +23,6 @@ function init_inputs(){
 	   releaseKey(e);
 	}, false);
 }
+
+
+export default init_inputs;

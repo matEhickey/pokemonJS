@@ -1,3 +1,7 @@
+import BUTTON from '../utils/touches';
+import {getContext} from '../utils/render_utils';
+import {monDresseur} from '../utils/globals';
+
 function MenuCombat(combat){
 	this.combat = combat;
 	this.mode = 0 ;//-> menu normal, 1->  menu attaques 2 -> menu objets
@@ -8,6 +12,7 @@ function MenuCombat(combat){
 }
 
 MenuCombat.prototype.afficheToi=function(){
+	var context = getContext();
 	switch(this.mode){
 		case(0):	//menu normal
 			context.fillStyle="#444444";
@@ -515,3 +520,6 @@ MenuCombat.prototype.valide=function(){
 	break;
 	}
 }
+
+
+export default MenuCombat;

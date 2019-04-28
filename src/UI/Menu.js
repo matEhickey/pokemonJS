@@ -1,3 +1,8 @@
+import {monDresseur} from '../utils/globals.js';
+import {getContext} from '../utils/render_utils.js';
+import { pokedex } from '../utils/globals';
+
+
 function Menu(){
 	this.boutons = [];
 	this.boutons[0] = new SousMenu("Pokedex");
@@ -11,6 +16,7 @@ function Menu(){
 }
 
 Menu.prototype.afficheMenu = function(){
+	var context = getContext();
 	context.fillStyle=monDresseur.couleurPrefere;
 	context.fillRect(630,25,250,270);
 	context.fillStyle="#000000";
@@ -23,6 +29,7 @@ Menu.prototype.afficheMenu = function(){
 
 
 Menu.prototype.afficheCurseur= function(){
+	var context = getContext();
 	context.fillRect(645,72+this.selection*30,5,5);
 }
 
@@ -81,6 +88,7 @@ Menu.prototype.valider = function(){
 }
 
 Menu.prototype.showConversation = function(pokemons ){
+	var context = getContext();
 	context.font="20px Georgia";
 	context.fillStyle = monDresseur.couleurPrefere;
 	context.fillRect(50,480,800,150);
@@ -89,7 +97,7 @@ Menu.prototype.showConversation = function(pokemons ){
 }
 
 Menu.prototype.displayPokemons = function(pokemons ){
-
+	var context = getContext();
 	context.fillStyle=monDresseur.couleurPrefere;
 	context.fillRect(50,50,800,550);
 	context.font="20px Georgia";
@@ -112,11 +120,12 @@ Menu.prototype.displayPokemons = function(pokemons ){
 
 Menu.prototype.displayCarte = function(){
 
-	carte.displayCarte();
+	monDresseur.carte.displayCarte();
 
 }
 
 Menu.prototype.displayOptions = function(){
+	var context = getContext();
 	context.fillStyle=monDresseur.couleurPrefere;
 	context.fillRect(50,50,800,550);
 	context.fillStyle="#000000";
@@ -126,6 +135,7 @@ Menu.prototype.displayOptions = function(){
 }
 
 Menu.prototype.displayPokedex = function(){
+	var context = getContext();
 	context.fillStyle=monDresseur.couleurPrefere;
 	context.fillRect(50,50,800,550);
 
@@ -135,6 +145,7 @@ Menu.prototype.displayPokedex = function(){
 }
 
 Menu.prototype.displayInfosJoueur = function(){
+	var context = getContext();
 	context.fillStyle=monDresseur.couleurPrefere;
 	context.fillRect(50,50,800,550);
 	context.fillStyle="#000000";
@@ -144,16 +155,11 @@ Menu.prototype.displayInfosJoueur = function(){
 	context.fillText("Badges : "+monDresseur.dresseur.badges,65,330);
 	context.fillText("Objets : "+monDresseur.dresseur.inventaire.length,65,360);
 	context.fillText("Pokemon capturés : "+(monDresseur.dresseur.pokemons.length+monDresseur.dresseur.pcDeLeo.length),65,390);
-	//try{
-		//console.log(monDresseur.getGTX());
-		context.drawImage(monDresseur.charSprites,0+(80*monDresseur.getGTX()),0+(80*monDresseur.getGTY()), 80, 80, 400,200,250,250);
-	// } catch(e) {
-           // console.error(e.message);
-        //}
-	//pokedex.length quand il sera implementé
+	context.drawImage(monDresseur.charSprites,0+(80*monDresseur.getGTX()),0+(80*monDresseur.getGTY()), 80, 80, 400,200,250,250);
 }
 
 Menu.prototype.displaySauv = function(){
+	var context = getContext();
 	context.fillStyle=monDresseur.couleurPrefere;
 	context.fillRect(50,50,800,550);
 	context.fillStyle="#000000";
@@ -168,6 +174,7 @@ Menu.prototype.displaySauv = function(){
 }
 
 Menu.prototype.displayInventaire = function(){
+	var context = getContext();
 	context.fillStyle=monDresseur.couleurPrefere;
 	context.fillRect(50,50,800,550);
 	context.fillStyle="#000000";
@@ -176,6 +183,7 @@ Menu.prototype.displayInventaire = function(){
 }
 
 Menu.prototype.displayFail = function(){
+	var context = getContext();
 	context.fillStyle="#000000";
 	context.fillRect(0, 0, canvas.width, canvas.height);
 	context.fillStyle=monDresseur.couleurPrefere;
@@ -191,6 +199,7 @@ Menu.prototype.displayFail = function(){
 }
 
 Menu.prototype.displayInfo = function(){
+	var context = getContext();
 	context.fillStyle=monDresseur.couleurPrefere;
 	context.fillRect(50,350,800,250);
 	context.fillStyle="#000000";
@@ -200,7 +209,7 @@ Menu.prototype.displayInfo = function(){
 
 
 Menu.prototype.displayWinCapture = function(){
-
+	var context = getContext();
 	context.fillStyle=monDresseur.couleurPrefere;
 	context.fillRect(50,350,800,250);
 	context.fillStyle="#000000";
@@ -233,3 +242,6 @@ SousMenu.prototype.getSelect= function(){
 SousMenu.prototype.setSelect= function(select){
 	this.selection = select;
 }
+
+
+export default Menu;

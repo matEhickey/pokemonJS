@@ -1,4 +1,4 @@
-function Objet(nom,x,y,tX,tY){		//Pour collision quelquonque dans mode de deplacement 
+function Objet(nom,x,y,tX,tY){		//Pour collision quelquonque dans mode de deplacement
 	this.nom=nom;
 	this.coordX = x;
 	this.coordY = y;
@@ -14,7 +14,7 @@ Objet.prototype.displayName = function(){
 
 Objet.prototype.isWalkable = function(posX,posY){
 	var retour = true;
-	
+
 	if(posX>this.coordX && posX< this.coordX+this.tailleX){
 		if(posY>this.coordY && posY<this.coordY+this.tailleY){
 			retour = false;
@@ -25,3 +25,5 @@ Objet.prototype.isWalkable = function(posX,posY){
 	}
 	return(retour);
 }
+
+export default Objet;

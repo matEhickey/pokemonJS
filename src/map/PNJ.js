@@ -27,3 +27,6 @@ PNJ.prototype.isOnPosition = function(posX,posY){
 		}
 		return(false);
 }
+
+
+export default PNJ;

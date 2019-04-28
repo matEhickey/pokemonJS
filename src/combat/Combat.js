@@ -1,3 +1,8 @@
+import {monDresseur} from '../utils/globals';
+import {getContext} from '../utils/render_utils';
+import BUTTON from '../utils/touches';
+import MenuCombat from '../combat/MenuCombat';
+
 var Combat = function(){
 	this.joueurs = [monDresseur.dresseur,monDresseur.getAdv()];
 	this.tour = this.joueurs[0].getPokemon(0).agi-this.joueurs[1].getPokemon(0).agi > 0? 0:1;
@@ -25,15 +30,7 @@ var Combat = function(){
 
 Combat.prototype.runTour = function(){
 	if(this.mode == 5){
-
-
-
-
 				//recuperer l attaque, et surtout son type
-
-
-
-
 
 				if(!(this.joueurs[this.tour] === monDresseur.dresseur)){
 					var rand = Math.round(Math.random()*4);
@@ -140,14 +137,14 @@ Combat.prototype.drawCombat=function(){
 	//console.log("affichage combat");
 
 					//alert("Fight");
+					var context = getContext();
 					context.fillStyle=monDresseur.couleurPrefere;
 					context.fillRect(50,50,800,550);
 					context.fillStyle="#000000";
 
 
 
-					if(combat.mode == 1){
-
+					if(this.mode == 1){
 						if(monDresseur.getAdv().isSauvage()){
 							monDresseur.getAdv().getPokemon(0).afficheToiCombat();
 						}
@@ -166,7 +163,7 @@ Combat.prototype.drawCombat=function(){
 
 
 
-					if(combat.mode == 2){
+					if(this.mode == 2){
 
 						context.font="20px Georgia";
 						context.fillText(monDresseur.getAdv().getPokemon(0).getName(),65,140);
@@ -182,7 +179,7 @@ Combat.prototype.drawCombat=function(){
 						monDresseur.dresseur.getPokemon(0).getBackSprite();
 					}
 
-					if(combat.mode == 3){
+					if(this.mode == 3){
 
 						context.font="20px Georgia";
 						context.fillText(monDresseur.getAdv().getPokemon(0).getName(),65,140);
@@ -209,7 +206,7 @@ Combat.prototype.drawCombat=function(){
 
 					}
 
-					if(combat.mode == 4){
+					if(this.mode == 4){
 						context.font="20px Georgia";
 						context.fillText(monDresseur.getAdv().getPokemon(0).getName(),65,140);
 						context.fillText("Niveau :"+monDresseur.getAdv().getPokemon(0).lvl,90,170);
@@ -227,7 +224,7 @@ Combat.prototype.drawCombat=function(){
 						this.menu.afficheToi();
 					}
 
-					if(combat.mode == 6){	//copie du 3 mais pour la fin
+					if(this.mode == 6){	//copie du 3 mais pour la fin
 
 						context.font="20px Georgia";
 						context.fillText(monDresseur.getAdv().getPokemon(0).getName(),65,140);
@@ -281,3 +278,6 @@ Combat.prototype.gestionEvenement = function(touche){
 		}
 	}
 }
+
+
+export default Combat;

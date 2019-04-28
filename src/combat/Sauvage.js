@@ -1,3 +1,6 @@
+import {monDresseur} from '../utils/globals';
+import Combat from './Combat';
+
 var PokemonSauvage = function(pokemon){
 	this.pokemon = pokemon;
 	this.asPerdu;//inutile, mais l objet pokemonSauvage doit correspondre a un dresseur (pendant un combat)
@@ -40,5 +43,7 @@ function CombatContreSauvage(zone){
 	var sauvage = new PokemonSauvage(poke);
 	monDresseur.setAdv(sauvage);
 	monDresseur.mode = 2;
-	combat = new Combat();
+	monDresseur.combat = new Combat();
 }
+
+export default PokemonSauvage;

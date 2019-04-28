@@ -1,3 +1,6 @@
+import { pokedex } from '../utils/globals';
+
+
 var Pokemon = function(num,lvl,exp,pdv,att,def,agi){
 	this.num = num;
 	this.lvl = lvl;
@@ -105,14 +108,14 @@ Pokemon.prototype.attaque= function(oth,combat){   //oth est un pokemon
 	if(this.pdv>0){
 		rand = Math.random();
 		//console.log("Atq :"+this.att+" Def Adverse:"+oth.def+" Rand:"+rand);
-		
-		
-		
+
+
+
 		total = Math.round(  ((this.att*this.getSelectAttaque().puissance/10)) - ((oth.def)+rand*(oth.def)));
-		
-		
-	
-		
+
+
+
+
 		if(total<0){total = 0;}
 
 		combat.infos.push(this.getName()+" attaque : "+this.getSelectAttaque().getName() + "  et inflige "+total+" dommages");
@@ -122,73 +125,73 @@ Pokemon.prototype.attaque= function(oth,combat){   //oth est un pokemon
 
 Pokemon.prototype.addExperience= function(expe){
 	this.exp += expe;
-	
+
 	if(this.exp >= this.expMax){
 		this.monteNiveau();
 	}
-	
+
 }
 
 
 Pokemon.prototype.addExperience= function(expe,combat){
 	this.exp += expe;
-	
+
 	if(this.exp >= this.expMax){
 		this.monteNiveauCombat(combat);
 	}
-	
+
 }
 
 Pokemon.prototype.monteNiveauCombat= function(combat){   //pour afficher les infos
-	
-	this.lvl++;	
-	combat.infos.push(pokedex.pokemons[this.num].getName()+" passe au niveau  "+this.lvl);	
+
+	this.lvl++;
+	combat.infos.push(pokedex.pokemons[this.num].getName()+" passe au niveau  "+this.lvl);
 	this.expMax += this.lvl*this.lvl*this.lvl*10;
 
 	if(this.lvl >= pokedex.pokemons[this.num].niveauEvolution && pokedex.pokemons[this.num].niveauEvolution>0 ){
-		
+
 		var name = this.getName();
 		this.num = pokedex.pokemons[this.num].evolution;
 		combat.infos.push(name+" vient d'evoluer en "+this.getName());
-	}	
-		
+	}
+
 	// ameliore les stats
 	this.pdvMax = Math.round(this.pdvMax * 1.2);
 	this.att = Math.round(this.att * 1.2);
 	this.def = Math.round(this.def * 1.2);
 	this.agi = Math.round(this.agi * 1.1);
 	this.getAttaques();
-	
+
 }
 
 
 Pokemon.prototype.monteNiveau= function(){   //pour afficher les infos
-	
-	this.lvl++;	
-	
+
+	this.lvl++;
+
 	this.expMax += this.lvl*this.lvl*this.lvl*10;
 
 	if(this.lvl >= pokedex.pokemons[this.num].niveauEvolution && pokedex.pokemons[this.num].niveauEvolution>0 ){
-		
+
 		var name = this.getName();
 		this.num = pokedex.pokemons[this.num].evolution;
-		
-	}	
-		
+
+	}
+
 	// ameliore les stats
 	this.pdvMax = Math.round(this.pdvMax * 1.2);
 	this.att = Math.round(this.att * 1.2);
 	this.def = Math.round(this.def * 1.2);
 	this.agi = Math.round(this.agi * 1.1);
 	this.getAttaques();
-	
+
 }
 
 
 Pokemon.prototype.save=function(dresseur_num){
 	SauvegardePokemon(dresseur_num,this.num,this.lvl,this.pdv,this.pdvMax,this.exp,this.expMax,this.att,this.def,this.agi);
 	//get pokemon id via ajax
-	
+
 	var pokemon_id = 0;
 	for(var i=0;i<this.attaques.length;i++){
 		this.attaques[i].save(pokemon_id);
@@ -208,3 +211,7 @@ function GenereUnPokemon(niveau){
 	pokemon.soigneToi();	//evolution n augmente pas les pdv
 	return(pokemon);
 }
+
+
+export default Pokemon;
+export {GenereUnPokemon};

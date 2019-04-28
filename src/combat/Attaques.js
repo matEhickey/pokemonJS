@@ -26,5 +26,8 @@ Attaque.prototype.equals=function(oth){
 }
 
 Attaque.prototype.save=function(pokemon_id){
-	SauvegardeAttaque(pokemon_id,this.num);
+	// SauvegardeAttaque(pokemon_id,this.num);
 }
+
+
+export default Attaque;

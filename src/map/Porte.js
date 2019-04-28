@@ -1,3 +1,5 @@
+import {monDresseur} from '../utils/globals';
+
 function Porte(posX,posY,joueurX,joueurY,destination){
 
 	this.posX=posX;
@@ -68,3 +70,5 @@ Porte.prototype.rejoindreDestination = function(){
 	monDresseur.setPosX(this.joueurX);
 	monDresseur.setPosY(this.joueurY);
 }
+
+export default Porte;

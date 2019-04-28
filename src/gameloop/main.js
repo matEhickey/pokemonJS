@@ -1,5 +1,10 @@
+import {getCanvas, getContext} from '../utils/render_utils';
+import {monDresseur, combat} from '../utils/globals.js';
 
-function render(){	//Moteur d affichage (boucle)
+export default function render(){	//Moteur d affichage
+
+	var canvas = getCanvas();
+	var context = getContext();
 
 	context.save();
 	context.clearRect(0, 0, canvas.width, canvas.height);
@@ -83,8 +88,8 @@ function render(){	//Moteur d affichage (boucle)
 			break;//mode hud
 
 			case(2)://combat
-				combat.drawCombat();
-				combat.runTour();
+				monDresseur.combat.drawCombat();
+				monDresseur.combat.runTour();
 			break;
 	}
 

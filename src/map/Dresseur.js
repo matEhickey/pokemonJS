@@ -1,3 +1,8 @@
+import {getContext} from '../utils/render_utils';
+import {monDresseur} from '../utils/globals';
+import dresseurVert from '../../assets/imgs/dresseurVert.png';
+
+
 var nbDresseur = 0;
 var Dresseur = function(nom, posX,posY,orientation,grille){
 	this.nom = nom;
@@ -19,8 +24,10 @@ var Dresseur = function(nom, posX,posY,orientation,grille){
 	this.num = nbDresseur;
 	nbDresseur++;
 
+	var dresseurVert_img = document.createElement("img");
+	dresseurVert_img.src = dresseurVert;
+	this.texture = dresseurVert_img;
 
-	this.texture = document.getElementById('dresseurVert');
 	this.grandeTextureX=7;//pour les combats
 	this.grandeTextureY=4;//par default simple team rocket, car plus nombreux
 	//anim
@@ -172,7 +179,7 @@ Dresseur.prototype.addPokemon= function(poke){
 }
 
 Dresseur.prototype.afficheToi = function(posiX,posiY){
-
+	var context = getContext();
 	context.drawImage(this.texture,0,this.orientation*48,32,48   ,this.posX*3 -(posiX*3)+340,this.posY*3-(posiY*3)+280,this.tailleX,this.tailleY);
 }
 
@@ -487,3 +494,6 @@ Dresseur.prototype.loadPokemons = function(){ // no more suported for now
   //       xmlhttp.open("GET","pokemon/getPokemon.php?dresseur="+this.num,true);
 	// xmlhttp.send();
 }
+
+
+export default Dresseur;
