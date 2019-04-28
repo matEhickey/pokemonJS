@@ -7,7 +7,7 @@ function Porte(posX,posY,joueurX,joueurY,destination){
 	this.joueurX=joueurX;//nouvelles position a la fin du voyage
 	this.joueurY=joueurY;
 	this.destination=destination;
-	
+
 }
 
 Porte.prototype.walkOn = function(){
@@ -31,18 +31,18 @@ Porte.prototype.setLargeur = function(value){
 
 
 Porte.prototype.rejoindreDestination = function(){
-	console.log("voyage");
+	// console.log("voyage");
 	switch(this.destination){
 		case("foret1"):
 			monDresseur.setGrille(0);
 			monDresseur.dresseur.grille = 0;
-			
-			
+
+
 		break;
 		case("ville2"):
 			monDresseur.setGrille(1);
 			monDresseur.dresseur.grille = 1;
-			
+
 		break;
 		case("centreP1"):	//foret1
 			monDresseur.setGrille(2);

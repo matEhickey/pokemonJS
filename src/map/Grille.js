@@ -11,40 +11,26 @@ function Grille(terrain){
 	nbG++;
 }
 
-
-
-
-
 Grille.prototype.saveDresseurs= function(){
-	console.log("Sauvegardes dresseurs grille "+this.num);
-	var chaine = "";
-	for(var i=0;i<this.dresseurs.length;i++){
-		chaine+=getDresseurInfo(this.dresseurs[i])+"&";
-		
-	}//-> false pour isController
-	console.log(chaine);
-	return(chaine);
-	
+	// console.log("Sauvegardes dresseurs grille "+this.num);
+	// var chaine = "";
+	// for(var i=0;i<this.dresseurs.length;i++){
+	// 	chaine+=getDresseurInfo(this.dresseurs[i])+"&";
+	// }//-> false pour isController
+	// console.log(chaine);
+	// return(chaine);
 }
 
-
-
 Grille.prototype.ajouteObjet = function(objet) {
-
 	this.objets.push(objet);
-
 };
 
 Grille.prototype.ajoutePNJ = function(objet) {
-
 	this.pnjs.push(objet);
-
 };
 
 Grille.prototype.ajoutePorte = function(porte) {
-
 	this.portes.push(porte);
-
 };
 
 Grille.prototype.ajouteHerbe = function(herbe) {
@@ -54,19 +40,16 @@ Grille.prototype.ajouteHerbe = function(herbe) {
 };
 
 Grille.prototype.ajouteDresseur = function(objet) {
-
 	this.dresseurs.push(objet);
 	this.objets.push(objet);
 };
 
 Grille.prototype.ajouteBatiment = function(bati) {
-
 	this.batiments.push(bati);
 	this.objets.push(bati);
 };
 
 Grille.prototype.afficheBatiments = function(posiX,posiY) {
-	//console.log(this.batiments.length + "batiments");
 	for(var i = 0;i<this.batiments.length;i++){
 		this.batiments[i].afficheToi(posiX,posiY);
 	}
@@ -94,41 +77,37 @@ Grille.prototype.isWalkable = function(posX,posY){
 		    retour = false;
 		}
 	}
-	
+
 	return retour;
 }
 
 Grille.prototype.checkWalkOnPorte = function(){
-	//console.log(this.portes.length+" element dans le tableau");
 	for(var i = 0;i<this.portes.length;i++){
 		if(this.portes[i].walkOn()){
-			this.portes[i].rejoindreDestination();	
-		}	
+			this.portes[i].rejoindreDestination();
+		}
 	}
 }
 
 Grille.prototype.checkWalkOnHerbes = function(){
-	//console.log(this.herbes.length+" element dans le tableau");
 	for(var i = 0;i<this.herbes.length;i++){
 		if(this.herbes[i].walkOn()){
 			//console.log("marche sur de l'herbe de puissance :"+this.herbes[i].getPuissance());
 			var rand = Math.random();
-			console.log(rand);
+			// console.log(rand);
 			if(rand > 0.95){
 				CombatContreSauvage(this.herbes[i].getPuissance());
 			}
-		}	
+		}
 	}
 }
 
 Grille.prototype.getDresseur = function(posX,posY) {
 	var retour = false;
 	for(var i = 0;i<this.dresseurs.length;i++){
-		
 		if(this.dresseurs[i].isOnPosition(posX,posY)){
 			retour = this.dresseurs[i];
 		}
-		
 	}
 	return(retour);
 };
@@ -136,11 +115,9 @@ Grille.prototype.getDresseur = function(posX,posY) {
 Grille.prototype.getPNJ = function(posX,posY) {
 	var retour = false;
 	for(var i = 0;i<this.pnjs.length;i++){
-		
 		if(this.pnjs[i].isOnPosition(posX,posY)){
 			retour = this.pnjs[i];
 		}
-		
 	}
 	return(retour);
 };
@@ -148,11 +125,9 @@ Grille.prototype.getPNJ = function(posX,posY) {
 Grille.prototype.getBatiment = function(posX,posY) {
 	var retour = false;
 	for(var i = 0;i<this.batiments.length;i++){
-		
 		if(this.batiments[i].isOnPosition(posX,posY)){
 			retour = this.batiments[i];
 		}
-		
 	}
 	return(retour);
 };
@@ -171,17 +146,17 @@ Grille.prototype.drawTerrain = function(){
         }
 }
 
+Grille.prototype.drawMonDresseur= function(){
 
-Grille.prototype.drawMonDresseur= function(controller){
+
 	switch(monDresseur.getOrientation()){
 							case(1):
-			
-									//++terrain	
-									if(monDresseur.dresseur.position != 5 && (monDresseur.mode == 0) && walkable){
-										
-										monDresseur.setPosY(monDresseur.getPosY()+2);
-									}
-								
+									// if(monDresseur.dresseur.position != 5 && (monDresseur.mode == 0) && walkable){
+									//
+									// 	monDresseur.setPosY(monDresseur.getPosY()+2);
+									// }
+
+
 									switch(monDresseur.dresseur.position){
 									case(0):context.drawImage(monDresseur.dresseur.texture,0,0,32,48   ,320,240,32,48);
 										break;
@@ -190,22 +165,18 @@ Grille.prototype.drawMonDresseur= function(controller){
 									case(2):context.drawImage(monDresseur.dresseur.texture,64,0,32,48  ,320,240,32,48);
 										break;
 									case(3):context.drawImage(monDresseur.dresseur.texture,96,0,32,48  ,320,240,32,48);
-												//{x,y,taileX,tailleY} Portion , {x,y,tailleX,tailleY} Canvas
 										break;
 									case(5):context.drawImage(monDresseur.dresseur.texture,0,0,32,48   ,320,240,32,48);
-										//idle
 										break;
 								}
-								
+
 							break;
-							
+
 							case(2):
-								//++terrain
-									
-									if(monDresseur.dresseur.position != 5 && (monDresseur.mode == 0) && walkable){
-										monDresseur.setPosX(monDresseur.getPosX()-2);
-									}
-									
+									// if(monDresseur.dresseur.position != 5 && (monDresseur.mode == 0) && walkable){
+									// 	monDresseur.setPosX(monDresseur.getPosX()-2);
+									// }
+
 									switch(monDresseur.dresseur.position){
 									case(0):context.drawImage(monDresseur.dresseur.texture,0,48,32,48   ,320,240,32,48);
 										break;
@@ -214,20 +185,17 @@ Grille.prototype.drawMonDresseur= function(controller){
 									case(2):context.drawImage(monDresseur.dresseur.texture,64,48,32,48  ,320,240,32,48);
 										break;
 									case(3):context.drawImage(monDresseur.dresseur.texture,96,48,32,48  ,320,240,32,48);
-												//{x,y,taileX,tailleY} Portion , {x,y,tailleX,tailleY} Canvas
 										break;
 									case(5):context.drawImage(monDresseur.dresseur.texture,0,48,32,48   ,320,240,32,48);
 										break;
 								}
 							break;
-							
+
 							case(3):
-								//++terrain
-									
-									if(monDresseur.dresseur.position != 5 && (monDresseur.mode == 0) && walkable){
-										monDresseur.setPosX(monDresseur.getPosX()+2);
-									}
-									
+									// if(monDresseur.dresseur.position != 5 && (monDresseur.mode == 0) && walkable){
+									// 	monDresseur.setPosX(monDresseur.getPosX()+2);
+									// }
+
 									switch(monDresseur.dresseur.position){
 									case(0):context.drawImage(monDresseur.dresseur.texture,0,96,32,48   ,320,240,32,48);
 										break;
@@ -236,21 +204,17 @@ Grille.prototype.drawMonDresseur= function(controller){
 									case(2):context.drawImage(monDresseur.dresseur.texture,64,96,32,48  ,320,240,32,48);
 										break;
 									case(3):context.drawImage(monDresseur.dresseur.texture,96,96,32,48  ,320,240,32,48);
-												//{x,y,taileX,tailleY} Portion , {x,y,tailleX,tailleY} Canvas
 										break;
 									case(5):context.drawImage(monDresseur.dresseur.texture,0,96,32,48   ,320,240,32,48);
 										break;
 								}
 							break;
-							
+
 							case(4):
-								//++terrain
-									
-									if(monDresseur.dresseur.position != 5 && (monDresseur.mode == 0) && walkable){
-										monDresseur.setPosY(monDresseur.getPosY()-2);
-									}
-									
-									
+									// if(monDresseur.dresseur.position != 5 && (monDresseur.mode == 0) && walkable){
+									// 	monDresseur.setPosY(monDresseur.getPosY()-2);
+									// }
+
 									switch(monDresseur.dresseur.position){
 									case(0):context.drawImage(monDresseur.dresseur.texture,0,144,32,48   ,320,240,32,48);
 										break;
@@ -264,17 +228,8 @@ Grille.prototype.drawMonDresseur= function(controller){
 									case(5):context.drawImage(monDresseur.dresseur.texture,0,144,32,48   ,320,240,32,48);
 										break;
 								}
-							break;	
-			}//fin switch orientation
-			
-			
-				if(monDresseur.dresseur.position < 4 && (monDresseur.mode == 0)){
-					monDresseur.dresseur.position ++;
-				}
-				if(monDresseur.dresseur.position == 4){monDresseur.dresseur.position = 0;}
-				
-				document.getElementById('posX').innerHTML = "X:"+monDresseur.getPosX();
-				document.getElementById('posY').innerHTML = "Y:"+monDresseur.getPosY();
+							break;
+			}
 }
 
 
@@ -282,7 +237,7 @@ Grille.prototype.drawMonDresseur= function(controller){
 Grille.prototype.checkZonesDresseurs = function(){
 
 	for(var i = 0;i<this.dresseurs.length;i++){
-		
+
 		if(this.dresseurs[i].walkOnZone()){
 			if(!this.dresseurs[i].aPerdu){
 				monDresseur.setAdv(this.dresseurs[i]);
@@ -297,14 +252,14 @@ Grille.prototype.checkZonesDresseurs = function(){
 
 
 Grille.prototype.load= function(){
-	
+
 	for(var i = 0;i<this.dresseurs.length;i++){
 		this.dresseurs[i].load();
 	}
 }
 
 Grille.prototype.getDresseurByName= function(name){
-	
+
 	for(var i = 0;i<this.dresseurs.length;i++){
 		if(this.dresseurs[i].getName() == name){
 			return(this.dresseurs[i]);
@@ -314,9 +269,9 @@ Grille.prototype.getDresseurByName= function(name){
 }
 
 Grille.prototype.getDresseurByNum= function(num){
-	
+
 	for(var i = 0;i<this.dresseurs.length;i++){
-		
+
 		if(this.dresseurs[i].getNum() == num){
 			return(this.dresseurs[i]);
 		}

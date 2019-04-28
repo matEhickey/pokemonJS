@@ -55,7 +55,7 @@ Menu.prototype.valider = function(){
 		case(2):
 			monDresseur.hudMode = 4;
 			console.log("affiche inventaire");
-			
+
 		break;
 		case(3):
 			monDresseur.hudMode = 5;
@@ -64,8 +64,8 @@ Menu.prototype.valider = function(){
 		case(4):
 			console.log("affiche carte");
 			monDresseur.hudMode = 6;
-			
-								
+
+
 		break;
 		case(5):
 			console.log("sauvegarde");
@@ -75,17 +75,25 @@ Menu.prototype.valider = function(){
 			console.log("affiche options");
 			monDresseur.hudMode = 8;
 		break;
-	
+
 	}
 
 }
 
+Menu.prototype.showConversation = function(pokemons ){
+	context.font="20px Georgia";
+	context.fillStyle = monDresseur.couleurPrefere;
+	context.fillRect(50,480,800,150);
+	context.fillStyle="#ffffff";
+	context.fillText(monDresseur.discussion,60,510,780);
+}
+
 Menu.prototype.displayPokemons = function(pokemons ){
-	
+
 	context.fillStyle=monDresseur.couleurPrefere;
 	context.fillRect(50,50,800,550);
 	context.font="20px Georgia";
-	
+
 	for(var i = 0;i<pokemons.length;i++){
 		context.fillStyle="#eeeeee";
 		context.fillRect(55,(i*80)+95,780,35);
@@ -94,19 +102,18 @@ Menu.prototype.displayPokemons = function(pokemons ){
 		context.fillText("Nom: "+pokemons[i].getName(),65,120+(i*80));
 		context.fillText("Niveau: "+pokemons[i].lvl,230,120+(i*80));
 		context.fillText("Pdv: "+pokemons[i].pdv+"/"+pokemons[i].pdvMax,370,120+(i*80));
-		
+
 		context.font="18px Georgia";
 		context.fillText("XP: "+pokemons[i].exp,100,160+(i*80));
 		context.fillText("Prochain Niveau : "+pokemons[i].expMax,350,160+(i*80));
-		
+
 	}
-	
 }
 
 Menu.prototype.displayCarte = function(){
-	
-	carte.displayCarte();							
-								
+
+	carte.displayCarte();
+
 }
 
 Menu.prototype.displayOptions = function(){
@@ -121,10 +128,10 @@ Menu.prototype.displayOptions = function(){
 Menu.prototype.displayPokedex = function(){
 	context.fillStyle=monDresseur.couleurPrefere;
 	context.fillRect(50,50,800,550);
-	
+
 	pokedex.affichePokemon();
 
-								
+
 }
 
 Menu.prototype.displayInfosJoueur = function(){
@@ -154,9 +161,9 @@ Menu.prototype.displaySauv = function(){
 	context.fillText("Voulez vous sauvegarder votre partie ?",65,240);
 	context.fillText("'A' : Oui",65,270);
 	context.fillText("'B' :Retour",65,300);
-	
+
 	context.fillText("(Aussi, il faut un compte pour pouvoir sauvegarder)",65,360);
-	
+
 	context.fillText("Vous trouverez le bouton \"Charge Partie\" pour reprendre la ou vous en etiez",65,390);
 }
 
@@ -180,7 +187,7 @@ Menu.prototype.displayFail = function(){
 	context.fillText("Vous avez perdu",65,300);
 	context.font="15px Georgia";
 	context.fillText("(Appuyer sur une touche)",65,350);
-	
+
 }
 
 Menu.prototype.displayInfo = function(){
@@ -193,7 +200,7 @@ Menu.prototype.displayInfo = function(){
 
 
 Menu.prototype.displayWinCapture = function(){
-	
+
 	context.fillStyle=monDresseur.couleurPrefere;
 	context.fillRect(50,350,800,250);
 	context.fillStyle="#000000";
