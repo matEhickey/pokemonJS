@@ -2,14 +2,15 @@
   "name": "PokemonJS",
   "version": "1.0.0",
   "scripts": {
-    "start": "echo START",
+    "start": "node_modules/.bin/webpack-dev-server",
     "test": "echo TEST",
-    "build": "npx webpack --devtool source-map --mode development"
+    "build": "npx webpack --devtool source-map --mode development  && cp src/index.html dist/index.html"
   },
   "main": "src/gameloop/main.js",
   "devDependencies": {
     "file-loader": "^3.0.1",
     "webpack": "^4.30.0",
-    "webpack-cli": "^3.3.1"
+    "webpack-cli": "^3.3.1",
+    "webpack-dev-server": "^3.3.1"
   }
 }
