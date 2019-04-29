@@ -10,7 +10,7 @@ var PNJ = function(nom,posX,posY,tailleX,tailleY,isInfirmiere){
 	this.discussion = ["Je ne suis qu'un pnj"];
 	this.isInfirmiere = isInfirmiere;
 	if(isInfirmiere){
-		this.discussion = ["Bienvenue au centre pokémon, nous avons soigné vos pokemons"];
+		this.discussion = ["Bienvenue au centre pokémon", "Veuillez nous confiez vos pokémons pour que nous puissions les soigner", "1", "1 .. ", "1 .. 2", "1 .. 2 ..", "1 .. 2 .. 3", "1 .. 2 .. 3   TADAM !", "Nous avons soigné vos pokemons"];
 	}
 }
 
