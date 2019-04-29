@@ -2,7 +2,7 @@
 
 A fan-art game made using vanilla Javascript (no libs only HTML5-Canvas) when I was student (2015).  
 
-** Demo [here](https://matehickey.github.io/pokemonJS/)**
+** Demo [here](https://matehickey.github.io/pokemonJS/docs/index.html)**
 
 ~~~
 I only produce the source code, I picked images online, they are not my property

@@ -4,7 +4,8 @@
   "scripts": {
     "start": "node_modules/.bin/webpack-dev-server & (sleep 2 && firefox http://localhost:3000)",
     "test": "echo TEST",
-    "build": "npx webpack --devtool source-map --mode development  && cp src/index.html dist/index.html"
+    "build": "npx webpack --devtool source-map --mode development  && cp src/index.html dist/index.html",
+    "buildProd": "npx webpack --mode production  && cp src/index.html dist/index.html && rm -r docs && cp -r dist docs"
   },
   "main": "src/gameloop/main.js",
   "devDependencies": {
