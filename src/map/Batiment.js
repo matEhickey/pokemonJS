@@ -14,7 +14,7 @@ var Batiment = function(nom,texture,posX,posY,tailleX,tailleY){
 
 Batiment.prototype.afficheToi = function(posiX,posiY){
 	var context = getContext();
-	// context.drawImage(this.texture,this.posX*3 -(posiX*3)+340,this.posY*3-(posiY*3)+280,this.tailleX,this.tailleY);
+	context.drawImage(this.texture,this.posX*3 -(posiX*3)+340,this.posY*3-(posiY*3)+280,this.tailleX,this.tailleY);
 	//console.log(posiX+"/"+posiY);
 }
 

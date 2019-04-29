@@ -1,7 +1,6 @@
 import {monDresseur} from '../utils/globals';
 
-function Porte(posX,posY,joueurX,joueurY,destination){
-
+var Porte = function(posX,posY,joueurX,joueurY,destination, monDresseur){
 	this.posX=posX;
 	this.posY=posY;
 	this.tailleX=5;
@@ -9,7 +8,6 @@ function Porte(posX,posY,joueurX,joueurY,destination){
 	this.joueurX=joueurX;//nouvelles position a la fin du voyage
 	this.joueurY=joueurY;
 	this.destination=destination;
-
 }
 
 Porte.prototype.walkOn = function(){

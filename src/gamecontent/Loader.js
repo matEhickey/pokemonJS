@@ -5,6 +5,8 @@ import Batiment from "../map/Batiment";
 import Objet from "../map/Objet";
 import Porte from "../map/Porte";
 import PNJ from "../map/PNJ";
+// import {monDresseur} from '../utils/globals';
+
 
 import centrePokemon from '../../assets/imgs/centrePokemon.png'
 import dresseurRougeChatain from '../../assets/imgs/dresseurRougeChatain.png';
@@ -337,21 +339,24 @@ function loadData_colisisons_scene_1(grille){
 	grille.ajouteObjet(new Objet("Collision",224,-96,50,28));
 }
 
-var chargeObjetsDansGrille0 = function(grille){
+var chargeObjetsDansGrille0 = function(grille, monDresseur){
 
 	loadData_dresseurs(grille);
 	loadData_teamrocket(grille);
 	loadData_herbe(grille);
 	loadData_colisisons_scene_1(grille);
 
-	var batiment1 = new Batiment("Centre Pokemon",centrePokemon, -102,-40,120,100);
-	// grille.ajoutePorte(new Porte(-74,0,44,112,"centreP1"));
+	var centrePokemon_img = document.createElement("img");
+	centrePokemon_img.src = centrePokemon;
+	var batiment1 = new Batiment("Centre Pokemon",centrePokemon_img, -102,-40,120,100);
+
+	grille.ajoutePorte(new Porte(-74,0,44,112,"centreP1", monDresseur));
 	grille.ajouteBatiment(batiment1);
 
 }
 
-var chargeObjetsDansGrille1 = function(grille){//-------------------------------------------------------------------------------------------
-
+var chargeObjetsDansGrille1 = function(grille, monDresseur){//-------------------------------------------------------------------------------------------
+	// console.log(monDresseur)
 		//maisons
 		grille.ajouteObjet(new Objet("Collision",800,688,68,68));
 		grille.ajouteObjet(new Objet("Collision",640,746,118,110));
@@ -371,38 +376,10 @@ var chargeObjetsDansGrille1 = function(grille){//-------------------------------
 		grille.ajouteObjet(new Objet("Collision",248,842,118,110));
 }
 
-var chargeObjetsDansGrille2 = function(grille){//------------------------------------------------------------------------- premier centre pokemon
+var chargeObjetsDansGrille2 = function(grille, monDresseur){//------------------------------------------------------------------------- premier centre pokemon
 
 
-	// grille.ajoutePorte(new Porte(40,123,-72,12,"foret1"));
-
-	//infirmiere
-
-	grille.ajoutePNJ(new PNJ("Infirmiere Joelle",36,48,54,54,true));
-
-
-	grille.ajouteObjet(new Objet("Collision",100,80,36,34));
-	grille.ajouteObjet(new Objet("Collision",-62,128,198,8));
-	grille.ajouteObjet(new Objet("Collision",-14,12,104,40));
-	grille.ajouteObjet(new Objet("Collision",82,4,22,24));
-	grille.ajouteObjet(new Objet("Collision",-62,12,60,12));
-	grille.ajouteObjet(new Objet("Collision",-82,12,24,20));
-	grille.ajouteObjet(new Objet("Collision",-82,22,16,112));
-	grille.ajouteObjet(new Objet("Collision",-72,124,16,12));
-	grille.ajouteObjet(new Objet("Collision",-67,70,26,38));
-	grille.ajouteObjet(new Objet("Collision",98,4,46,14));
-	grille.ajouteObjet(new Objet("Collision",138,14,18,20));
-	grille.ajouteObjet(new Objet("Collision",146,24,8,104));
-	grille.ajouteObjet(new Objet("Collision",128,128,32,8));
-	grille.ajouteObjet(new Objet("Collision",138,114,18,28));
-
-
-}
-
-var chargeObjetsDansGrille3 = function(grille){//------------------------------------------------------------------------- centre pokemon argenta
-
-
-	// grille.ajoutePorte(new Porte(40,123,18,198,"argenta"));
+	grille.ajoutePorte(new Porte(40,123,-72,12,"foret1", monDresseur));
 
 	//infirmiere
 
@@ -427,12 +404,40 @@ var chargeObjetsDansGrille3 = function(grille){//-------------------------------
 
 }
 
-var chargeObjetsDansGrille4 = function(grille){		//argenta		----------------------------------------------------------------------------
+var chargeObjetsDansGrille3 = function(grille, monDresseur){//------------------------------------------------------------------------- centre pokemon argenta
 
 
-// grille.ajoutePorte(new Porte(12,168,44,112,"centreP2").setLargeur(10));
-// grille.ajoutePorte(new Porte(190,52,10,42,"pokeshopArgenta").setLargeur(10));
-// grille.ajoutePorte(new Porte(-18,20,-60,42,"areneArgenta").setLargeur(8));
+	grille.ajoutePorte(new Porte(40,123,18,198,"argenta", monDresseur));
+
+	//infirmiere
+
+	grille.ajoutePNJ(new PNJ("Infirmiere Joelle",36,48,54,54,true));
+
+
+	grille.ajouteObjet(new Objet("Collision",100,80,36,34));
+	grille.ajouteObjet(new Objet("Collision",-62,128,198,8));
+	grille.ajouteObjet(new Objet("Collision",-14,12,104,40));
+	grille.ajouteObjet(new Objet("Collision",82,4,22,24));
+	grille.ajouteObjet(new Objet("Collision",-62,12,60,12));
+	grille.ajouteObjet(new Objet("Collision",-82,12,24,20));
+	grille.ajouteObjet(new Objet("Collision",-82,22,16,112));
+	grille.ajouteObjet(new Objet("Collision",-72,124,16,12));
+	grille.ajouteObjet(new Objet("Collision",-67,70,26,38));
+	grille.ajouteObjet(new Objet("Collision",98,4,46,14));
+	grille.ajouteObjet(new Objet("Collision",138,14,18,20));
+	grille.ajouteObjet(new Objet("Collision",146,24,8,104));
+	grille.ajouteObjet(new Objet("Collision",128,128,32,8));
+	grille.ajouteObjet(new Objet("Collision",138,114,18,28));
+
+
+}
+
+var chargeObjetsDansGrille4 = function(grille, monDresseur){		//argenta		----------------------------------------------------------------------------
+
+
+grille.ajoutePorte(new Porte(12,168,44,112,"centreP2").setLargeur(10), monDresseur);
+grille.ajoutePorte(new Porte(190,52,10,42,"pokeshopArgenta").setLargeur(10), monDresseur);
+grille.ajoutePorte(new Porte(-18,20,-60,42,"areneArgenta").setLargeur(8), monDresseur);
 
 grille.ajouteObjet(new Objet("CentreP",-26,102,86,62));
 grille.ajouteObjet(new Objet("CentreP",22,162,38,12));
@@ -490,9 +495,9 @@ grille.ajouteObjet(new Objet("Collision",78,24,14,66));
 
 }
 
-var chargeObjetsDansGrille5 = function(grille){	//pokeshop argenta
+var chargeObjetsDansGrille5 = function(grille, monDresseur){	//pokeshop argenta
 
-// grille.ajoutePorte(new Porte(0,54,190,65,"argenta").setLargeur(10));
+grille.ajoutePorte(new Porte(0,54,190,65,"argenta").setLargeur(10), monDresseur);
 
 
 grille.ajouteObjet(new Objet("Collision",-52,20,40,24));
@@ -514,34 +519,33 @@ grille.ajouteObjet(new Objet("Collision",-70,-2,10,56));
 
 }
 
-var chargeObjetsDansGrille6 = function(grille){	//arene argenta
+var chargeObjetsDansGrille6 = function(grille, monDresseur){	//arene argenta
 
-	// grille.ajoutePorte(new Porte(-68,52,-16,40,"argenta").setLargeur(12));
+	grille.ajoutePorte(new Porte(-68,52,-16,40,"argenta").setLargeur(12), monDresseur);
 
+	grille.ajouteObjet(new Objet("Collision",-110,-22,34,30));
+	grille.ajouteObjet(new Objet("Collision",-110,-74,34,28));
+	grille.ajouteObjet(new Objet("Collision",-48,-68,36,24));
+	grille.ajouteObjet(new Objet("Collision",-48,-38,72,60));
+	grille.ajouteObjet(new Objet("Collision",-4,-98,34,84));
+	grille.ajouteObjet(new Objet("Collision",-58,-126,62,46));
+	grille.ajouteObjet(new Objet("Collision",-128,-126,62,34));
 
-grille.ajouteObjet(new Objet("Collision",-110,-22,34,30));
-grille.ajouteObjet(new Objet("Collision",-110,-74,34,28));
-grille.ajouteObjet(new Objet("Collision",-48,-68,36,24));
-grille.ajouteObjet(new Objet("Collision",-48,-38,72,60));
-grille.ajouteObjet(new Objet("Collision",-4,-98,34,84));
-grille.ajouteObjet(new Objet("Collision",-58,-126,62,46));
-grille.ajouteObjet(new Objet("Collision",-128,-126,62,34));
-
-grille.ajouteObjet(new Objet("Collision",-6,20,14,38));
-grille.ajouteObjet(new Objet("Collision",-124,-90,48,62));
-grille.ajouteObjet(new Objet("Collision",-136,-42,18,62));
-grille.ajouteObjet(new Objet("Collision",-122,12,48,10));
-grille.ajouteObjet(new Objet("Collision",-38,20,18,20));
-grille.ajouteObjet(new Objet("Collision",-102,20,16,20));
-grille.ajouteObjet(new Objet("Collision",-120,-94,4,6));
-grille.ajouteObjet(new Objet("Collision",-120,-92,4,2));
-grille.ajouteObjet(new Objet("Collision",-128,-172,130,14));
-grille.ajouteObjet(new Objet("Collision",-112,-166,36,34));
-grille.ajouteObjet(new Objet("Collision",-48,-164,38,34));
-grille.ajouteObjet(new Objet("Collision",-6,-162,14,52));
-grille.ajouteObjet(new Objet("Collision",-126,-178,10,86));
-grille.ajouteObjet(new Objet("Collision",-132,54,64,4));
-grille.ajouteObjet(new Objet("Collision",-56,54,62,6));
+	grille.ajouteObjet(new Objet("Collision",-6,20,14,38));
+	grille.ajouteObjet(new Objet("Collision",-124,-90,48,62));
+	grille.ajouteObjet(new Objet("Collision",-136,-42,18,62));
+	grille.ajouteObjet(new Objet("Collision",-122,12,48,10));
+	grille.ajouteObjet(new Objet("Collision",-38,20,18,20));
+	grille.ajouteObjet(new Objet("Collision",-102,20,16,20));
+	grille.ajouteObjet(new Objet("Collision",-120,-94,4,6));
+	grille.ajouteObjet(new Objet("Collision",-120,-92,4,2));
+	grille.ajouteObjet(new Objet("Collision",-128,-172,130,14));
+	grille.ajouteObjet(new Objet("Collision",-112,-166,36,34));
+	grille.ajouteObjet(new Objet("Collision",-48,-164,38,34));
+	grille.ajouteObjet(new Objet("Collision",-6,-162,14,52));
+	grille.ajouteObjet(new Objet("Collision",-126,-178,10,86));
+	grille.ajouteObjet(new Objet("Collision",-132,54,64,4));
+	grille.ajouteObjet(new Objet("Collision",-56,54,62,6));
 }
 
 

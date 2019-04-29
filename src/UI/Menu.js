@@ -1,5 +1,5 @@
 import {monDresseur} from '../utils/globals.js';
-import {getContext} from '../utils/render_utils.js';
+import {getContext, getCanvas} from '../utils/render_utils.js';
 import { pokedex } from '../utils/globals';
 
 
@@ -184,6 +184,7 @@ Menu.prototype.displayInventaire = function(){
 
 Menu.prototype.displayFail = function(){
 	var context = getContext();
+	var canvas = getCanvas();
 	context.fillStyle="#000000";
 	context.fillRect(0, 0, canvas.width, canvas.height);
 	context.fillStyle=monDresseur.couleurPrefere;

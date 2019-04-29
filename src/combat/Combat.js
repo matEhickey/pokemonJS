@@ -2,6 +2,7 @@ import {monDresseur} from '../utils/globals';
 import {getContext} from '../utils/render_utils';
 import BUTTON from '../utils/touches';
 import MenuCombat from '../combat/MenuCombat';
+import hero from '../../assets/imgs/BackSpritesHero.png'
 
 var Combat = function(){
 	this.joueurs = [monDresseur.dresseur,monDresseur.getAdv()];
@@ -153,7 +154,9 @@ Combat.prototype.drawCombat=function(){
 						}
 						context.font="25px Georgia";
 						context.fillText("Adversaire :"+monDresseur.getAdv().getName(),65,100);
-						context.drawImage(document.getElementById("hero"),0,0, 70, 75, 50,250,400,400);
+						var hero_img = document.createElement("img");
+						hero_img.src = hero;
+						context.drawImage(hero_img,0,0, 70, 75, 50,250,400,400);
 						context.font="30px Georgia";
 						context.fillText("Combat!!",365,300);
 					}

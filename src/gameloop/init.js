@@ -1,6 +1,6 @@
+import {monDresseur} from '../utils/globals';
 import Carte, {ChargeCarte} from '../UI/Carte';
 import {animate, getContext} from '../utils/render_utils';
-import {monDresseur} from '../utils/globals';
 import Pokemon from '../combat/Pokemon';
 import Menu from '../UI/Menu';
 
@@ -18,7 +18,6 @@ export default function init(){
 	context.fillText("Chargement",250,250);
 	context.restore();
 
-
 	var sacha_img = document.createElement("img");
 	sacha_img.src = sacha;
 	monDresseur.setTexture(sacha_img);
@@ -32,10 +31,8 @@ export default function init(){
 	monDresseur.carte = new Carte();
 	ChargeCarte(monDresseur.carte);
 
-	posX=0;
-	posY=0;
-
 	monDresseur.menu = new Menu()
+	monDresseur.loadObjects();
 
 	init_inputs();
 	animate();

@@ -1,5 +1,6 @@
 import {getContext, getCanvas} from '../utils/render_utils';
 import {monDresseur} from '../utils/globals';
+import {CombatContreSauvage} from '../combat/Sauvage';
 
 var nbG = 0;
 function Grille(terrain){

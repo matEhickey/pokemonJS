@@ -1,4 +1,7 @@
-var audio = new Audio('assets/musiqueLoop.wav');
+import soundtrack from '../../assets/musiqueLoop.wav';
+
+var audio = new Audio();
+audio.src = soundtrack;
 audio.loop = true;
 //audio.play();
 
@@ -12,3 +15,5 @@ function stopMusique(){
     document.getElementById("buttonMusique").innerHTML = "Musique ON";
   }
 }
+
+window.stopMusique = stopMusique;

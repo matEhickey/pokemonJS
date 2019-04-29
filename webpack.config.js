@@ -9,16 +9,21 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(png|svg|jpg|gif)$/,
+        test: /\.(png|svg|jpg|gif|wav)$/,
         use: [
           'file-loader'
         ]
+      },
+      {
+        test:/\.css$/,
+        use:['style-loader','css-loader']
       }
     ]
   },
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
-    port: 9000
+    port: 3000,
+    disableHostCheck: true
   }
 };

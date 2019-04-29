@@ -1,6 +1,9 @@
 import Attaque from '../combat/Attaques';
 import {getContext} from '../utils/render_utils';
 
+import allPokemon from "../../assets/imgs/all-pokemon.png";
+import backSprites from "../../assets/imgs/back_sprites.png";
+
 function Pokedex(){
 	this.pokemons = ["empty"];//pour retrouver les poke simplement grace a leur num, il faut commencer par un vide
 	this.index = 1; //pour la visualisation
@@ -381,25 +384,32 @@ PokedexPokemon.prototype.afficheToi = function(){
 	context.fillText("Type : "+this.type,65,300);
 	context.fillText("Descr : "+this.description,65,330,750);
 
-
-	context.drawImage(document.getElementById("all_pokemons"),80*this.getGTX(),80*this.getGTY(),80, 80, 500,100,150,150);
+	var allPokemon_img = document.createElement("img");
+	allPokemon_img.src = allPokemon
+	context.drawImage(allPokemon_img,80*this.getGTX(),80*this.getGTY(),80, 80, 500,100,150,150);
 
 }
 
 PokedexPokemon.prototype.afficheToiCombat = function(){
 	var context = getContext();
-	context.drawImage(document.getElementById("all_pokemons"),80*this.getGTX(),80*this.getGTY(), 80, 80, 600,100,200,200);
+	var allPokemon_img = document.createElement("img");
+	allPokemon_img.src = allPokemon
+	context.drawImage(allPokemon_img,80*this.getGTX(),80*this.getGTY(), 80, 80, 600,100,200,200);
 
 }
 PokedexPokemon.prototype.afficheToiAt = function(x,y){
 	var context = getContext();
-	context.drawImage(document.getElementById("all_pokemons"),80*this.getGTX(),80*this.getGTY(), 80, 80, x,y,150,150);
+	var allPokemon_img = document.createElement("img");
+	allPokemon_img.src = allPokemon
+	context.drawImage(allPokemon_img,80*this.getGTX(),80*this.getGTY(), 80, 80, x,y,150,150);
 }
 
 
 PokedexPokemon.prototype.getBackSprite= function(){
 	var context = getContext();
-	context.drawImage(document.getElementById("backSprites"),80*this.getGTX(),80*this.getGTY(), 80, 80, 100,300,200,200);
+	var backSprites_img = document.createElement("img");
+	backSprites_img.src = backSprites
+	context.drawImage(backSprites_img,80*this.getGTX(),80*this.getGTY(), 80, 80, 100,300,200,200);
 }
 
 PokedexPokemon.prototype.getGTX = function(){

@@ -1,5 +1,7 @@
 import {monDresseur} from '../utils/globals';
 import Combat from './Combat';
+import { GenereUnPokemon } from '../combat/Pokemon';
+
 
 var PokemonSauvage = function(pokemon){
 	this.pokemon = pokemon;
@@ -47,3 +49,4 @@ function CombatContreSauvage(zone){
 }
 
 export default PokemonSauvage;
+export {CombatContreSauvage};

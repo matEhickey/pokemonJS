@@ -74,10 +74,10 @@ EndroitCarte.prototype.displayOnCarte = function(){
 }
 
 function ChargeCarte(carte){
-	carte.addEndroit(new EndroitCarte("Foret",240,220,new Porte(0,0,0,0,"foret1")));
-	carte.addEndroit(new EndroitCarte("Ville",320,295,new Porte(-102,30,712,692,"ville2")));
-	carte.addEndroit(new EndroitCarte("Argenta",310,395,new Porte(-102,30,18,198,"argenta")));
-	carte.addEndroit(new EndroitCarte("Arene Argenta (debug)",310,395,new Porte(-102,30,-60,42,"areneArgenta")));
+	carte.addEndroit(new EndroitCarte("Foret",240,220,new Porte(0,0,0,0,"foret1", monDresseur)));
+	carte.addEndroit(new EndroitCarte("Ville",320,295,new Porte(-102,30,712,692,"ville2", monDresseur)));
+	carte.addEndroit(new EndroitCarte("Argenta",310,395,new Porte(-102,30,18,198,"argenta", monDresseur)));
+	carte.addEndroit(new EndroitCarte("Arene Argenta (debug)",310,395,new Porte(-102,30,-60,42,"areneArgenta", monDresseur)));
 	return(carte);
 }
 

@@ -63,20 +63,21 @@ var PlayerController = function(dresseur,grille){
 	this.grilles.push(new Grille(ville2_img));
 	this.grilles.push(new Grille(centrePinterieur_img));
 	this.grilles.push(new Grille(centrePinterieur_img));
-	this.grilles.push(new Grille(argenta));
-	this.grilles.push(new Grille(pokeshopInside));
-	this.grilles.push(new Grille(areneArgenta));
-
-	chargeObjetsDansGrille0(this.grilles[0]);//collisions, dresseur, pnj porte etc
-	chargeObjetsDansGrille1(this.grilles[1]);
-	chargeObjetsDansGrille2(this.grilles[2]);
-	chargeObjetsDansGrille3(this.grilles[3]);
-	chargeObjetsDansGrille4(this.grilles[4]);
-	chargeObjetsDansGrille5(this.grilles[5]);
-	chargeObjetsDansGrille6(this.grilles[6]);
+	this.grilles.push(new Grille(argenta_img));
+	this.grilles.push(new Grille(pokeshopInside_img));
+	this.grilles.push(new Grille(areneArgenta_img));
 
 }
 
+PlayerController.prototype.loadObjects = function(num){
+	chargeObjetsDansGrille0(this.grilles[0], this);//collisions, dresseur, pnj porte etc
+	chargeObjetsDansGrille1(this.grilles[1], this);
+	chargeObjetsDansGrille2(this.grilles[2], this);
+	chargeObjetsDansGrille3(this.grilles[3], this);
+	chargeObjetsDansGrille4(this.grilles[4], this);
+	chargeObjetsDansGrille5(this.grilles[5], this);
+	chargeObjetsDansGrille6(this.grilles[6], this);
+}
 PlayerController.prototype.setGrille= function(num){
 	this.grille = this.grilles[num];
 }
@@ -282,29 +283,27 @@ PlayerController.prototype.actions = function(touche){
 				   		this.hudMode = 0;
 				   		break;
 				   	case(65)://touche action = a
-				   		monDresseur.calculNextCase();
-						nextCaseX = monDresseur.nextCaseX;
-						nextCaseY = monDresseur.nextCaseY;
-				   		var dress = this.grille.getDresseur(nextCaseX,nextCaseY);
+				   		this.calculNextCase();
+				   		var dress = this.grille.getDresseur(this.nextCaseX,this.nextCaseY);
 				   		//boolean si autre que dresseurs
 
 				   		if(typeof(dress)=="object"){
 				   			if(dress.isInfirmiere() == false){
-					   			monDresseur.setAdv(dress);
-						   		monDresseur.discussion = monDresseur.getAdv().parler();
+					   			this.setAdv(dress);
+						   		this.discussion = this.getAdv().parler();
 						   		this.mode = 1;
 						   		this.hudMode = 1;
 						   	}
 
 				   		}
 				   		else{
-				   			var pnj = this.grille.getPNJ(nextCaseX,nextCaseY);
+				   			var pnj = this.grille.getPNJ(this.nextCaseX,this.nextCaseY);
 				   			if(typeof(pnj)=="object"){
 				   				//console.log(pnj);
 					   			if(true){	//a remplacer par pnj.isInfirmiere(), mais ne marche pas ce soir.. vas savoir
-								   	monDresseur.soignePokemons();
+								   	this.soignePokemons();
 							   	}
-							   	monDresseur.info= pnj.getDiscuss();
+							   	this.info= pnj.getDiscuss();
 								this.mode = 1;
 								this.hudMode = 10;
 							 }
@@ -353,7 +352,7 @@ PlayerController.prototype.actions = function(touche){
 				  break;//fin mode hud
 
 				case(2)://mode combat
-					  monDresseur.combat.gestionEvenement(touche);
+					  this.combat.gestionEvenement(touche);
 				 		break;//fin combat mode
 
 		}
@@ -373,9 +372,9 @@ PlayerController.prototype.getDresseurByNum=function(num){
 
 PlayerController.prototype.save = function(){		//old way
 	alert("Cette fonctionnalité à étédésactivé pour  le moment")
-	// monDresseur.mode = 1;
-	// monDresseur.hudMode = 12; //mode attente
-	// monDresseur.info = "Sauvegarde en cours";
+	// this.mode = 1;
+	// this.hudMode = 12; //mode attente
+	// this.info = "Sauvegarde en cours";
 	// new SauvegardeController(this.getPosX(),this.getPosY(),this.couleurPrefere,this.dresseur.badges,this.dresseur.argent,this.grille.num);
 	// //gere toute les sauvegardes a la suite, et pas en meme temps
 
@@ -398,9 +397,9 @@ PlayerController.prototype.savePokemons = function(){
 
 PlayerController.prototype.load = function(){
 	alert("Cette fonctionnalité à étédésactivé pour  le moment")
-	// monDresseur.mode=1;
-  //       monDresseur.hudMode = 12;//attente
-  //       monDresseur.info="Loading Game";
+	// this.mode=1;
+  //       this.hudMode = 12;//attente
+  //       this.info="Loading Game";
 	//
 	// if (window.XMLHttpRequest) {
   //           // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -419,10 +418,10 @@ PlayerController.prototype.load = function(){
   //               	erreurLoad();
   //               }
   //               else{
-	//                 monDresseur.setPosX(parseInt(document.getElementById("x").innerHTML));
-	//                 monDresseur.setPosY(parseInt(document.getElementById("y").innerHTML));
-	//                 monDresseur.setGrille(parseInt(document.getElementById("grille").innerHTML));
-	//                 monDresseur.couleurPrefere="#"+document.getElementById("couleur").innerHTML;
+	//                 this.setPosX(parseInt(document.getElementById("x").innerHTML));
+	//                 this.setPosY(parseInt(document.getElementById("y").innerHTML));
+	//                 this.setGrille(parseInt(document.getElementById("grille").innerHTML));
+	//                 this.couleurPrefere="#"+document.getElementById("couleur").innerHTML;
 	//
 	//                 loadDresseurs();//ci dessous
 	//         }
@@ -466,7 +465,7 @@ function loadDresseurs(){
 	//                 var dresseur;
 	//                 for(var i=0;i<dressNum.length;i++){
 	//                 	//console.log("test trouve dresseur num "+dressNum[i].innerHTML);
-	//                 	dresseur = monDresseur.getDresseurByNum(parseInt(dressNum[i].innerHTML));
+	//                 	dresseur = this.getDresseurByNum(parseInt(dressNum[i].innerHTML));
 	//                 	//console.log(dresseur.getName()+ " asPerdu:  "+ dresseur.aPerdu+ "  mais en fait :"+dressAsPerdu[i].innerHTML);
 	//                 	dresseur.aPerdu = parseInt(dressAsPerdu[i].innerHTML);
 	//                 }
@@ -518,18 +517,18 @@ function loadPokemons(){
 	//                 var def = document.getElementsByClassName('def');
 	//                 var agi = document.getElementsByClassName('agi');
 	//
-	//               	monDresseur.dresseur.pokemons = [];
+	//               	this.dresseur.pokemons = [];
 	//
 	//               	for(var i = 0;i<num.length;i++){
 	//               		var poke = new Pokemon(parseInt(num[i].innerHTML),parseInt(lvl[i].innerHTML),parseInt(exp[i].innerHTML),parseInt(pdvMax[i].innerHTML),parseInt(att[i].innerHTML),parseInt(def[i].innerHTML),parseInt(agi[i]).innerHTML);
 	//               		poke.pdv = parseInt(pdv[i].innerHTML);
-	//               		monDresseur.dresseur.addPokemon(poke);
+	//               		this.dresseur.addPokemon(poke);
 	//               	}
 	//
 	//
-	//               	 monDresseur.mode = 1;
-	// 								 monDresseur.hudMode = 10;
-	// 								 monDresseur.info = "Les données ont été chargées avec succès";
+	//               	 this.mode = 1;
+	// 								 this.hudMode = 10;
+	// 								 this.info = "Les données ont été chargées avec succès";
 	//
   //             	}
   //           }
@@ -548,9 +547,9 @@ function loadPokemons(){
 
 // function erreurLoad(){
 // 	// console.log("Erreur sauvegarde");
-// 	// monDresseur.mode = 1;
-// 	//  monDresseur.hudMode = 10;
-// 	//  monDresseur.info = "Il y a eu un probleme avec le chargement, vous pourriez reesayez, au cas ou..";
+// 	// this.mode = 1;
+// 	//  this.hudMode = 10;
+// 	//  this.info = "Il y a eu un probleme avec le chargement, vous pourriez reesayez, au cas ou..";
 // }
 
 export default PlayerController;
