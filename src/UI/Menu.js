@@ -2,16 +2,16 @@ import {monDresseur} from '../utils/globals.js';
 import {getContext, getCanvas} from '../utils/render_utils.js';
 import { pokedex } from '../utils/globals';
 
-
 function Menu(){
-	this.boutons = [];
-	this.boutons[0] = new SousMenu("Pokedex");
-	this.boutons[1] = new SousMenu("Pokemon");
-	this.boutons[2] = new SousMenu("Inventaire");
-	this.boutons[3] = new SousMenu(monDresseur.getName());
-	this.boutons[4] = new SousMenu("Carte");
-	this.boutons[5] = new SousMenu("Sauvegarde");
-	this.boutons[6] = new SousMenu("Options");
+	this.boutons = [
+		new SousMenu("Pokedex"),
+		new SousMenu("Pokemon"),
+		new SousMenu("Inventaire"),
+		new SousMenu(monDresseur.getName()),
+		new SousMenu("Carte"),
+		new SousMenu("Sauvegarde"),
+		new SousMenu("Options"),
+	];
 	this.selection = 0;//indice permettant de situer le curseur
 }
 
@@ -26,7 +26,6 @@ Menu.prototype.afficheMenu = function(){
 	}
 	this.afficheCurseur();
 }
-
 
 Menu.prototype.afficheCurseur= function(){
 	var context = getContext();
@@ -87,13 +86,8 @@ Menu.prototype.valider = function(){
 
 }
 
-Menu.prototype.showConversation = function(pokemons ){
-	var context = getContext();
-	context.font="20px Georgia";
-	context.fillStyle = monDresseur.couleurPrefere;
-	context.fillRect(50,480,800,150);
-	context.fillStyle="#ffffff";
-	context.fillText(monDresseur.discussion,60,510,780);
+Menu.prototype.showConversation = function(pokemons){
+	monDresseur.showCurrentMessage();
 }
 
 Menu.prototype.displayPokemons = function(pokemons ){
@@ -207,7 +201,6 @@ Menu.prototype.displayInfo = function(){
 	context.font="20px Georgia";
 	context.fillText(monDresseur.info,60,380);
 }
-
 
 Menu.prototype.displayWinCapture = function(){
 	var context = getContext();

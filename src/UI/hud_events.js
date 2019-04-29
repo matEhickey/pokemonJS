@@ -10,29 +10,40 @@ export default function applyHUD_event(touche){
 
     case(1):// discussion
       if(touche == BUTTON.CONFIRM || touche == BUTTON.BACK){
-          monDresseur.calculNextCase();
-          var nextCaseX = monDresseur.nextCaseX;
-          var nextCaseY = monDresseur.nextCaseY;
-          if(monDresseur.grille.getDresseur(nextCaseX,nextCaseY)){	//on parlait directement au dresseur pour l attaquer
-            if(!monDresseur.grille.getDresseur(nextCaseX,nextCaseY).aPerdu){
-              monDresseur.mode = 2;
-              monDresseur.adversaire = monDresseur.grille.getDresseur(nextCaseX,nextCaseY);
+        const isDiscussionOver = monDresseur.discussion.increaseMessage();
 
-              monDresseur.combat = new Combat();
+        if(isDiscussionOver){
+          monDresseur.discussion = null;
+
+          if(monDresseur.dresseur.adversaire){
+            monDresseur.calculNextCase();
+            var nextCaseX = monDresseur.nextCaseX;
+            var nextCaseY = monDresseur.nextCaseY;
+            if(monDresseur.grille.getDresseur(nextCaseX,nextCaseY)){	//on parlait directement au dresseur pour l attaquer
+              if(!monDresseur.grille.getDresseur(nextCaseX,nextCaseY).asPerdu){
+                monDresseur.mode = 2;
+                monDresseur.adversaire = monDresseur.grille.getDresseur(nextCaseX,nextCaseY);
+
+                monDresseur.combat = new Combat();
+              }
+              else{
+                monDresseur.mode = 0;
+              }
             }
-            else{
-              monDresseur.mode = 0;
-            }
-          }
-          else{	//le dresseur nous attaquait
-              if(monDresseur.getAdv().aPerdu){
+            else{	//le dresseur nous attaquait
+              if(monDresseur.getAdv().asPerdu){
                 monDresseur.mode = 0;
               }
               else{
                 monDresseur.mode = 2;
                 monDresseur.combat = new Combat();
               }
+            }
           }
+          else{
+            monDresseur.mode = 0; // was a pnj
+          }
+        }
       }
       break;
     case(2):// menu pokedex
@@ -94,6 +105,7 @@ export default function applyHUD_event(touche){
     break;
     case(11)://Menu bravo vous avez attrapper tel pokemon
       monDresseur.mode = 0;
+      monDresseur.dresseur.adversaire = null
       break;
     case(12):	//mode wait, pas de controles.
       console.log("mode wait")
@@ -155,8 +167,9 @@ function handleCarteEvent(touche){
 
 function sendDresseurToHealthCenter(){
   monDresseur.mode = 0;
-  monDresseur.setPosX(-74);//---> centre pokemon
-  monDresseur.setPosY(0);
+  monDresseur.dresseur.aversaire = null;
+  monDresseur.setPosX(-72);//---> devant centre pokemon
+  monDresseur.setPosY(6);
 }
 
 function changeColorHUD(){

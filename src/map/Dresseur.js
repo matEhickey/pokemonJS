@@ -1,6 +1,8 @@
 import {getContext} from '../utils/render_utils';
 import {monDresseur} from '../utils/globals';
+import Discussion from '../UI/Discussion';
 import dresseurVert from '../../assets/imgs/dresseurVert.png';
+
 
 
 var nbDresseur = 0;
@@ -11,14 +13,14 @@ var Dresseur = function(nom, posX,posY,orientation,grille){
 	this.posY = posY;
 	this.tailleX = 32;
 	this.tailleY = 48;
-	this.texte = "Il faut bien avoir quelque chose a dire.."
-	this.texteLooser = "J'ai perdu ..";
+	this.texte = ["Il faut bien avoir quelque chose a dire.."]
+	this.texteLooser = ["J'ai perdu .."];
 	this.pokemons = [];
 	this.pcDeLeo = [];
 	this.inventaire = [];
 	this.argent = 0;
 	this.badges = 0;
-	this.aPerdu = 0;
+	this.asPerdu = 0;
 	this.zone = new ZoneDresseur(this);
 
 	this.num = nbDresseur;
@@ -107,10 +109,6 @@ Dresseur.prototype.calculNextCase=function(){
 				this.nextCaseX = this.posX;
 				this.nextCaseY = this.posY-2;
 				break;
-
-
-
-
 	}
 }
 
@@ -121,12 +119,7 @@ Dresseur.prototype.isWalkable = function(posX,posY){
 
 Dresseur.prototype.parler= function(){
 	this.trouveOrientation();
-	if(this.aPerdu){
-		return(this.nom+": "+this.texteLooser);
-	}
-	else{
-		return(this.nom+": "+this.texte);
-	}
+	monDresseur.discussion = new Discussion(this.nom, this.asPerdu ? this.texteLooser : this.texte)
 }
 
 Dresseur.prototype.trouveOrientation= function(){
@@ -315,10 +308,10 @@ Dresseur.prototype.calculDistanceAParcourir= function(){
 Dresseur.prototype.attaqueJoueur = function(){
 				if(!this.asPerdu){
 							console.log(this.nom+" attaque");
-							monDresseur.discussion = this.parler();
 
-					   		monDresseur.mode = 1;
-					   		monDresseur.hudMode = 1;
+							monDresseur.mode = 1;
+							monDresseur.hudMode = 1;
+							this.parler();
 				}
 }
 
@@ -413,7 +406,7 @@ Dresseur.prototype.load = function(){
 	// 	console.log("asPerdu: "+asPerdu );
 	//
 	// 	var dresseur = monDresseur.getGrille(parseInt(document.getElementById("grille").innerHTML)).getDresseurByName(name);
-	// 	dresseur.aPerdu = (asPerdu == 0)?false:true;
+	// 	dresseur.asPerdu = (asPerdu == 0)?false:true;
 	//
 	// 	dresseur.loadPokemons();
 	//

@@ -1,13 +1,16 @@
+import {monDresseur} from "../utils/globals";
+import Discussion from "../UI/Discussion";
+
 var PNJ = function(nom,posX,posY,tailleX,tailleY,isInfirmiere){
 	this.nom = nom;
 	this.posX = posX;
 	this.posY = posY;
 	this.tailleX = tailleX;
 	this.tailleY = tailleY;
-	this.discussion = "Je ne suis qu'un pnj";
+	this.discussion = ["Je ne suis qu'un pnj"];
 	this.isInfirmiere = isInfirmiere;
 	if(isInfirmiere){
-		this.discussion = "Bienvenu au centre, nous avons soigné vos pokemons";
+		this.discussion = ["Bienvenue au centre pokémon, nous avons soigné vos pokemons"];
 	}
 }
 
@@ -16,12 +19,12 @@ PNJ.prototype.isInfirmiere = function(){
 }
 
 PNJ.prototype.getDiscuss = function(){
-	return(this.discussion);
+	monDresseur.discussion = new Discussion(this.nom, this.discussion);
 }
 
 PNJ.prototype.isOnPosition = function(posX,posY){
-		if(posX>this.posX&& posX< this.posX+(this.tailleX/2.7)){
-			if(posY>this.posY && posY<this.posY+(this.tailleY/2.5)){
+		if(posX>this.posX && posX < this.posX + (this.tailleX/2.7)){
+			if(posY>this.posY && posY < this.posY + (this.tailleY/2.5)){
 				return(true);
 			}
 		}

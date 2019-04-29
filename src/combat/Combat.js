@@ -73,11 +73,9 @@ Combat.prototype.runTour = function(){
 
 				}
 				else{
-					this.joueurs[1-this.tour].aPerdu = 1;
+					this.joueurs[1-this.tour].asPerdu = 1;
 
 					if(this.joueurs[1-this.tour] === monDresseur.dresseur){
-						monDresseur.mode = 1;//hud
-						monDresseur.hudMode = 9;//fail
 						//console.log("Perdu");
 						this.joueurs[this.tour].soignePokemons();
 						this.joueurs[this.tour].setOriginalOrientation();
@@ -258,12 +256,12 @@ Combat.prototype.gestionEvenement = function(touche){
 	if(this.mode == CombatMode.discussions_end){
 		if(touche == BUTTON.CONFIRM){
 			if(!this.joueurs[1].isSauvage()){//si c est un dresseur
-						monDresseur.mode = 1;
-						monDresseur.discussion = this.joueurs[1-this.tour].parler();
-						monDresseur.hudMode = 1;
+				this.joueurs[1].parler();
+				monDresseur.mode = 1;
+				monDresseur.hudMode = 1;
 			}
 			else{ //s'il s agit d un pokemon sauvage
-						monDresseur.mode = 0;
+				monDresseur.mode = 0;
 			}
 		}
 	}

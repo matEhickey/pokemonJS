@@ -249,7 +249,7 @@ Grille.prototype.checkZonesDresseurs = function(){
 	for(var i = 0;i<this.dresseurs.length;i++){
 
 		if(this.dresseurs[i].walkOnZone()){
-			if(!this.dresseurs[i].aPerdu){
+			if(!this.dresseurs[i].asPerdu){
 				monDresseur.setAdv(this.dresseurs[i]);
 				this.dresseurs[i].attaqueJoueur();
 			}

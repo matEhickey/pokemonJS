@@ -17,19 +17,19 @@ function loadData_dresseurs(grille){
 	var dresseurRougeChatain_img = document.createElement("img");
 	dresseurRougeChatain_img.src = dresseurRougeChatain;
 	dresseur1.setTexture(dresseurRougeChatain_img);
-	dresseur1.setTexte("Bienvenu dans ce jeu Pokemon. Des pokemons ont étrangement disparus. Tu m'as l'air plutot louche!");
-	dresseur1.setTexteLooser("J'ai du me tromper, fais moi signe si tu en apprend plus de ton coté.");
+	dresseur1.setTexte(["Bienvenue dans ce jeu Pokemon.", " Des pokemons ont étrangement disparus.", "Nous avons besoin de ton aide pour les retrouver"]);
+	dresseur1.setTexteLooser(["Tu me semble prêt à nous aider", "Nos soupcons se porte sur la team rocket qui sévit dans le secteur", "N'hésite pas à les affronter si tu les croise, ils trafiquent forcement quelque chose"]);
 	dresseur1.setGTX(3);
 	dresseur1.setGTY(3);
 		dresseur1.addPokemon(GenereUnPokemon(5));
-		dresseur1.addPokemon(GenereUnPokemon(5));
-		dresseur1.addPokemon(GenereUnPokemon(5));
+		// dresseur1.addPokemon(GenereUnPokemon(5));
+		// dresseur1.addPokemon(GenereUnPokemon(5));
 
 	const dresseur2 = new Dresseur("Quentin",225,-22,1,0);
 	dresseur2.setTexture(dresseurRougeChatain_img);
 	// dresseur2.setTexture(document.getElementById('dresseurRougeBrun'));
-	dresseur2.setTexte("C'est forcement un coup de la Team Rocket!");
-	dresseur2.setTexteLooser("Il faut vraiment s'entrainer pour esperer vaincre la Team Rocket!");
+	dresseur2.setTexte(["C'est forcement un coup de la Team Rocket!"]);
+	dresseur2.setTexteLooser(["Il faut vraiment s'entrainer pour esperer vaincre la Team Rocket!"]);
 	dresseur2.setGTX(3);
 	dresseur2.setGTY(5);
 		dresseur2.addPokemon(GenereUnPokemon(5));
@@ -38,8 +38,8 @@ function loadData_dresseurs(grille){
 	const dresseur3 = new Dresseur("Billy",196,172,2,0);
 	dresseur3.setTexture(dresseurRougeChatain_img);
 	// dresseur3.setTexture(document.getElementById('dresseurRougeChatain'));
-	dresseur3.setTexte("Si tu ne peux pas me battre, tu vas te faire massacrer par la Team Rocket");
-	dresseur3.setTexteLooser("Bon, toi tu as peut etre tes chances");
+	dresseur3.setTexte(["Si tu ne peux pas me battre, tu vas te faire massacrer par la Team Rocket"]);
+	dresseur3.setTexteLooser(["Bon, toi tu as peut etre tes chances"]);
 	dresseur3.setGTX(3);
 	dresseur3.setGTY(4);
 		dresseur3.addPokemon(GenereUnPokemon(5));
@@ -48,24 +48,24 @@ function loadData_dresseurs(grille){
 
 	const dresseur4 = new Dresseur("Theo",350,18,0,0);
 	// dresseur4.setTexture(document.getElementById('dresseurRougeBrun'));
-	dresseur4.setTexte("J'avais un pokemon vraiment très fort mais il s'est fait  capturer par la Team Rocket..");
-	dresseur4.setTexteLooser("Je ne serai pas fait voler, je t'aurai battu très largement..");
+	dresseur4.setTexte(["J'avais un pokemon vraiment très fort,", "...mais il s'est fait capturer par la Team Rocket.."]);
+	dresseur4.setTexteLooser(["Je ne serai pas fait voler, je t'aurai battu très largement.."]);
 	dresseur4.setGTX(0);
 	dresseur4.setGTY(0);
 		dresseur4.addPokemon(GenereUnPokemon(13));
 
 	const dresseur5 = new Dresseur("Leo",650,194,0,0);
 	// dresseur5.setTexture(document.getElementById('dresseurRougeBlond'));
-	dresseur5.setTexte("Attention!, la Team Rocket est toute proche!");
-	dresseur5.setTexteLooser("Tu m'as l'air bien préparé, bon courage!");
+	dresseur5.setTexte(["Attention!, la Team Rocket est toute proche!"]);
+	dresseur5.setTexteLooser(["Tu m'as l'air bien préparé, bon courage!"]);
 	dresseur5.setGTX(0);
 	dresseur5.setGTY(6);
 		dresseur5.addPokemon(GenereUnPokemon(13));
 
 	const dresseur6 = new Dresseur("Spyros",-34,110,2,0);
 	// dresseur6.setTexture(document.getElementById('dresseurRougeChatain'));
-	dresseur6.setTexte("La Team Rocket a apparement encore sévit.. Un combat?");
-	dresseur6.setTexteLooser("Bien joué, la prochaine fois je t'aurais !");
+	dresseur6.setTexte(["La Team Rocket a apparement encore sévit.. Un combat?"]);
+	dresseur6.setTexteLooser(["Bien joué, la prochaine fois je t'aurais !"]);
 	dresseur6.setGTX(2);
 	dresseur6.setGTY(9);
 		dresseur6.addPokemon(GenereUnPokemon(5));
@@ -83,15 +83,15 @@ function loadData_dresseurs(grille){
 function loadData_teamrocket(grille){
 	const teamR1 = new Dresseur("Bad Guy1",686,34,0,0);
 	// teamR1.setTexture(document.getElementById('teamRocketBasic'));
-	teamR1.setTexte("Tiens toi! Donnes moi tes pokémons!");
-	teamR1.setTexteLooser("La Team Rocket va t'anneantir!");
+	teamR1.setTexte(["Tiens toi! Donnes moi tes pokémons!"]);
+	teamR1.setTexteLooser(["La Team Rocket va t'anneantir!"]);
 		teamR1.addPokemon(GenereUnPokemon(7));
 		teamR1.addPokemon(GenereUnPokemon(10));
 		teamR1.addPokemon(GenereUnPokemon(10));
 
 	const teamR2 = new Dresseur("Bad Guy2",740,20,3,0);
 	// teamR2.setTexture(document.getElementById('teamRocketBasic'));
-	teamR2.setTexte("Hey toi, tu vas voir!");
+	teamR2.setTexte(["Hey toi, tu vas voir!"]);
 	teamR2.setTexteLooser("Tu m'as battu, mais attend toi au pire!");
 		teamR2.addPokemon(GenereUnPokemon(11));
 		teamR2.addPokemon(GenereUnPokemon(12));
@@ -99,16 +99,16 @@ function loadData_teamrocket(grille){
 
 	const teamR3 = new Dresseur("Bad Guy3",844,76,2,0);
 	// teamR3.setTexture(document.getElementById('teamRocketBasic'));
-	teamR3.setTexte("Pas si vite, mes plutot ces pokemons dans mon sac!");
-	teamR3.setTexteLooser("Ouais c'est facile aussi comme ca, tricheur..");
+	teamR3.setTexte(["Pas si vite, mes plutot ces pokemons dans mon sac!"]);
+	teamR3.setTexteLooser(["Ouais c'est facile aussi comme ca, tricheur.."]);
 		teamR3.addPokemon(GenereUnPokemon(17));
 
 
 
 	const teamR4 = new Dresseur("Bad Guy4",1008,54,3,0);
 	// teamR4.setTexture(document.getElementById('teamRocketBasic'));
-	teamR4.setTexte("Tu ne pourras meme pas approcher notre chef!");
-	teamR4.setTexteLooser("Notre chef va me venger!");
+	teamR4.setTexte(["Tu ne pourras meme pas approcher notre chef!"]);
+	teamR4.setTexteLooser(["Notre chef va me venger!"]);
 		teamR4.addPokemon(GenereUnPokemon(9));
 		teamR4.addPokemon(GenereUnPokemon(13));
 		teamR4.addPokemon(GenereUnPokemon(15));
@@ -116,8 +116,8 @@ function loadData_teamrocket(grille){
 
 	const teamR5 = new Dresseur("Capitaine Rocket",1076,24,1,0);
 	// teamR5.setTexture(document.getElementById('teamRocketBasic'));
-	teamR5.setTexte("Et oui c'est moi qui retiens tout les pokemons! Mouhahaha");
-	teamR5.setTexteLooser("Bravo, je vais redonner les pokemons a leurs proprietaires!");
+	teamR5.setTexte(["Et oui c'est moi qui retiens tout les pokemons! Mouhahaha"]);
+	teamR5.setTexteLooser(["Bravo, je vais redonner les pokemons a leurs proprietaires!"]);
 	teamR5.setGTX(9);
 	teamR5.setGTY(9);
 		teamR5.addPokemon(GenereUnPokemon(15));
