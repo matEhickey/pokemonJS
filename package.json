@@ -2,7 +2,7 @@
   "name": "PokemonJS",
   "version": "1.0.0",
   "scripts": {
-    "start": "node_modules/.bin/webpack-dev-server",
+    "start": "node_modules/.bin/webpack-dev-server & (sleep 2 && firefox http://localhost:3000)",
     "test": "echo TEST",
     "build": "npx webpack --devtool source-map --mode development  && cp src/index.html dist/index.html"
   },

@@ -38,6 +38,8 @@ var Dresseur = function(nom, posX,posY,orientation,grille){
 	this.nextCaseX = false;
 	this.nextCaseY = false;
 
+	this.attaqueCanceled = false;
+
 
 }
 
