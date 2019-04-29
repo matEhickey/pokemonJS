@@ -1,4 +1,4 @@
-//type -> 0:normal
+//type -> 0:normal 
 //1:plante
 //2:eau
 //3:feu
