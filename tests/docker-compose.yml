@@ -15,7 +15,7 @@ services:
     build: ./e2e
     container_name: cypress
     volumes:
-      - ./e2e/cypress:/app/cypress
+      - ./e2e:/app
     depends_on:
       - web
     environment:
