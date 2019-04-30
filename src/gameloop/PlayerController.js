@@ -5,7 +5,7 @@ import {monDresseur} from '../utils/globals';
 
 import PlayerMode from '../modes/PlayerMode';
 import PlayerHudMode from '../modes/PlayerHudMode';
-import BUTTON from '../modes/touches';
+import BUTTON from '../gameloop/touches';
 
 import terrain from '../../assets/imgs/terrrainTest2.png';
 import ville2 from '../../assets/imgs/ville2.png';
@@ -214,17 +214,6 @@ PlayerController.prototype.getDresseurByNum= function(num){
 	return(retour);
 }
 
-//for making colision press 'z' twice
-var Cx1,Cy1;
-var Cx2,Cy2;
-var boolPressC = false;//si touche deja appuye, car genere au bout du deuxieme appui
-
-//for making colision press 'z' twice
-var Hx1,Hy1;
-var Hx2,Hy2;
-var boolPressH = false;//si touche deja appuye, car genere au bout du deuxieme appui
-
-
 PlayerController.prototype.goToNextPosition = function(){
 	switch(this.getOrientation()){
 		case(1):
@@ -259,6 +248,17 @@ PlayerController.prototype.goToNextPosition = function(){
 	document.getElementById('posY').innerHTML = "Y:"+this.getPosY();
 
 }
+
+//for making colision press 'z' twice
+var Cx1,Cy1;
+var Cx2,Cy2;
+var boolPressC = false;//si touche deja appuye, car genere au bout du deuxieme appui
+
+//for making colision press 'z' twice
+var Hx1,Hy1;
+var Hx2,Hy2;
+var boolPressH = false;//si touche deja appuye, car genere au bout du deuxieme appui
+
 
 PlayerController.prototype.actions = function(touche){
 	switch(this.mode){
@@ -317,7 +317,7 @@ PlayerController.prototype.actions = function(touche){
 				   		}
 				   		break;
 
-				   	case(90)://z -> recupere message de collisions
+				   	case(BUTTON.C)://z -> recupere message de collisions
 				   		if(!boolPressC){
 				   			Cx1 = this.getPosX();
 				   			Cy1 = this.getPosY();
@@ -331,7 +331,7 @@ PlayerController.prototype.actions = function(touche){
 				   		boolPressC = !boolPressC;
 				   		break;
 
-				   	case(72)://h -> recupere message d herbes
+				   	case(BUTTON.H)://h -> recupere message d herbes
 
 				   		if(!boolPressH){
 				   			Hx1 = this.getPosX();

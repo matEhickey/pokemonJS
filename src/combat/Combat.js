@@ -1,6 +1,6 @@
 import {monDresseur} from '../utils/globals';
 import {getContext} from '../utils/render_utils';
-import BUTTON from '../modes/touches';
+import BUTTON from '../gameloop/touches';
 import MenuCombat from '../combat/MenuCombat';
 import hero from '../../assets/imgs/BackSpritesHero.png'
 

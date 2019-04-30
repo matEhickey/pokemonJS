@@ -1,4 +1,4 @@
-import BUTTON from '../modes/touches';
+import BUTTON from '../gameloop/touches';
 import {getContext} from '../utils/render_utils';
 import {monDresseur} from '../utils/globals';
 

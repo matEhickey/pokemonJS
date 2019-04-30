@@ -8,4 +8,7 @@ BUTTON.RIGHT = 39;
 BUTTON.UP = 38;
 BUTTON.DOWN = 40;
 
+BUTTON.C = 67;
+BUTTON.H = 72;
+
 export default BUTTON;

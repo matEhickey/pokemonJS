@@ -1,5 +1,5 @@
 import {monDresseur} from '../utils/globals';
-import BUTTON from '../modes/touches';
+import BUTTON from '../gameloop/touches';
 
 function keyPress(event) {
 		    var touche = event.keyCode;
@@ -13,7 +13,7 @@ function releaseKey(event){
 function init_inputs(){
 	window.addEventListener("keydown", function(e) {
 	    // space and arrow keys
-	    if([BUTTON.UP, BUTTON.DOWN, BUTTON.LEFT, BUTTON.RIGHT, BUTTON.PAUSE, BUTTON.CONFIRM, BUTTON.BACK].indexOf(e.keyCode) > -1) {	//pour les touches directionnelles
+	    if([BUTTON.UP, BUTTON.DOWN, BUTTON.LEFT, BUTTON.RIGHT, BUTTON.PAUSE, BUTTON.CONFIRM, BUTTON.BACK, BUTTON.C, BUTTON.H].indexOf(e.keyCode) > -1) {	//pour les touches directionnelles
 	        e.preventDefault();		//enlever comportement par default
 					keyPress(e);
 	    }

@@ -1,5 +1,5 @@
 import {monDresseur, combat, pokedex} from '../utils/globals';
-import BUTTON from '../modes/touches';
+import BUTTON from '../gameloop/touches';
 import Combat from '../combat/Combat';
 import PlayerMode from '../modes/PlayerMode';
 import PlayerHudMode from '../modes/PlayerHudMode';
