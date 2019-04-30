@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "license": "UNLICENSED",
   "scripts": {
-    "start": "(yarn build && sleep 2 && firefox http://localhost:3000) & node_modules/.bin/webpack-dev-server",
+    "start": "yarn build && node_modules/.bin/webpack-dev-server --open",
     "test": "echo TEST",
     "copy_index": "cp src/index.html dist/index.html",
+    "remove_dist": "rm -r dist",
+    "remove_docs": "rm -r docs",
     "build":      "npx webpack --mode development --devtool source-map  && yarn copy_index",
-    "buildProd":  "npx webpack --mode production  && yarn copy_index && rm -r docs && cp -r dist docs"
+    "buildProd":  "yarn remove_dist && npx webpack --mode production --optimize-minimize && yarn copy_index && yarn remove_docs && cp -r dist docs"
   },
   "main": "src/gameloop/main.js",
   "devDependencies": {
