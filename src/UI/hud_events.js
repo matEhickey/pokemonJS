@@ -1,14 +1,17 @@
 import {monDresseur, combat, pokedex} from '../utils/globals';
-import BUTTON from '../utils/touches';
+import BUTTON from '../modes/touches';
 import Combat from '../combat/Combat';
+import PlayerMode from '../modes/PlayerMode';
+import PlayerHudMode from '../modes/PlayerHudMode';
+
 
 export default function applyHUD_event(touche){
   switch(monDresseur.hudMode){
-    case(0):// menu pause
+    case(PlayerHudMode.PAUSE):
       handleMainMenuEvent(touche);
       break;
 
-    case(1):// discussion
+    case(PlayerHudMode.DISCUSSION):
       if(touche == BUTTON.CONFIRM || touche == BUTTON.BACK){
         const isDiscussionOver = monDresseur.discussion.increaseMessage();
 
@@ -21,70 +24,69 @@ export default function applyHUD_event(touche){
             var nextCaseY = monDresseur.nextCaseY;
             if(monDresseur.grille.getDresseur(nextCaseX,nextCaseY)){	//on parlait directement au dresseur pour l attaquer
               if(!monDresseur.grille.getDresseur(nextCaseX,nextCaseY).asPerdu){
-                monDresseur.mode = 2;
+                monDresseur.mode = PlayerMode.FIGHT;
                 monDresseur.adversaire = monDresseur.grille.getDresseur(nextCaseX,nextCaseY);
 
                 monDresseur.combat = new Combat();
               }
               else{
-                monDresseur.mode = 0;
+                monDresseur.mode = PlayerMode.MAP;
               }
             }
             else{	//le dresseur nous attaquait
               if(monDresseur.getAdv().asPerdu){
-                monDresseur.mode = 0;
+                monDresseur.mode = PlayerMode.MAP;
               }
               else{
-                monDresseur.mode = 2;
+                monDresseur.mode = PlayerMode.FIGHT;
                 monDresseur.combat = new Combat();
               }
             }
           }
           else{
-            monDresseur.mode = 0; // was a pnj
+            monDresseur.mode = PlayerMode.MAP;
           }
         }
       }
       break;
-    case(2):// menu pokedex
+    case(PlayerHudMode.POKEDEX):
       handlePokedexEvent(touche);
       break;
-    case(3):// menu mes pokemon
+    case(PlayerHudMode.MENUPOKEMON):
       switch(touche){
         case(BUTTON.BACK):
-          monDresseur.hudMode = 0;
+          monDresseur.hudMode = PlayerHudMode.PAUSE;
           break;
       }
       break;
-    case(4):// menu inventaire
+    case(PlayerHudMode.MENUINVENTAIRE):
       switch(touche){
         case(BUTTON.BACK):
           monDresseur.hudMode = 0;
         break;
       }
       break;
-    case(5): // mode infos dresseur
+    case(PlayerHudMode.MENUDRESSEUR):
       switch(touche){
         case(BUTTON.BACK):
           monDresseur.hudMode = 0;
         break;
       }
       break;
-    case(6)://mode carte
+    case(PlayerHudMode.MENUCARTE):
       handleCarteEvent(touche)
       break;
-    case(7)://mode sauvegarde
+    case(PlayerHudMode.MENUSAVE):
       switch(touche){
         case(BUTTON.CONFIRM):
-          // monDresseur.save();
-          alert("Cette fonctionnalité à été désactivé pour  le moment")
+          monDresseur.save();
         break;
         case(BUTTON.BACK):
           monDresseur.hudMode = 0;
         break;
       }
       break;
-    case(8)://mode option
+    case(PlayerHudMode.MENUOPTIONS):
       switch(touche){
         case(BUTTON.CONFIRM):
           changeColorHUD()
@@ -97,18 +99,17 @@ export default function applyHUD_event(touche){
         break;
       }
       break;
-    case(9)://menu fail
+    case(PlayerHudMode.FAIL):
       sendDresseurToHealthCenter()
       break;
-    case(10)://infos quelqonques
+    case(PlayerHudMode.INFO):
       monDresseur.mode = 0;
     break;
-    case(11)://Menu bravo vous avez attrapper tel pokemon
+    case(PlayerHudMode.SUCCESS):
       monDresseur.mode = 0;
       monDresseur.dresseur.adversaire = null
       break;
-    case(12):	//mode wait, pas de controles.
-      console.log("mode wait")
+    case(PlayerHudMode.WAIT):
       break;
   }
 }

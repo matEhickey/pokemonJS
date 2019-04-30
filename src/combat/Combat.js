@@ -1,11 +1,11 @@
 import {monDresseur} from '../utils/globals';
 import {getContext} from '../utils/render_utils';
-import BUTTON from '../utils/touches';
+import BUTTON from '../modes/touches';
 import MenuCombat from '../combat/MenuCombat';
 import hero from '../../assets/imgs/BackSpritesHero.png'
 
-import CombatTurn from "../utils/CombatTurn";
-import CombatMode from "../utils/CombatMode";
+import CombatTurn from "../modes/CombatTurn";
+import CombatMode from "../modes/CombatMode";
 
 var WaitLimit = {}
 WaitLimit.short = 5;

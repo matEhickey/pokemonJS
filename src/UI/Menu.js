@@ -2,6 +2,8 @@ import {monDresseur} from '../utils/globals.js';
 import {getContext, getCanvas} from '../utils/render_utils.js';
 import { pokedex } from '../utils/globals';
 
+import PlayerHudMode from '../modes/PlayerHudMode';
+
 function Menu(){
 	this.boutons = [
 		new SousMenu("Pokedex"),
@@ -49,41 +51,28 @@ Menu.prototype.selectM = function(){
 Menu.prototype.valider = function(){
 	switch(this.selection){
 		case(0):
-			console.log("affiche pokedex");
-			monDresseur.hudMode = 2;
+			monDresseur.hudMode = PlayerHudMode.POKEDEX;
 		break;
 		case(1):
-			console.log("affiche pokemon");
 			var pokemons = monDresseur.dresseur.pokemons;
-			console.log(pokemons.length);
-			monDresseur.hudMode = 3;
+			monDresseur.hudMode = PlayerHudMode.MENUPOKEMON;
 		break;
 		case(2):
-			monDresseur.hudMode = 4;
-			console.log("affiche inventaire");
-
+			monDresseur.hudMode = PlayerHudMode.MENUINVENTAIRE;
 		break;
 		case(3):
-			monDresseur.hudMode = 5;
-			console.log("affiche infos joueur");
+			monDresseur.hudMode = PlayerHudMode.MENUDRESSEUR;
 		break;
 		case(4):
-			console.log("affiche carte");
-			monDresseur.hudMode = 6;
-
-
+			monDresseur.hudMode = PlayerHudMode.MENUCARTE;
 		break;
 		case(5):
-			console.log("sauvegarde");
-			monDresseur.hudMode = 7;
+			monDresseur.hudMode = PlayerHudMode.MENUSAVE;
 		break;
 		case(6):
-			console.log("affiche options");
-			monDresseur.hudMode = 8;
+			monDresseur.hudMode = PlayerHudMode.MENUOPTIONS;
 		break;
-
 	}
-
 }
 
 Menu.prototype.showConversation = function(pokemons){

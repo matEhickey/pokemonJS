@@ -1,10 +1,10 @@
-import BUTTON from '../utils/touches';
+import BUTTON from '../modes/touches';
 import {getContext} from '../utils/render_utils';
 import {monDresseur} from '../utils/globals';
 
 import Color from "../utils/Color";
-import CombatMode from "../utils/CombatMode";
-import MenuCombatMode from "../utils/MenuCombatMode";
+import CombatMode from "../modes/CombatMode";
+import MenuCombatMode from "../modes/MenuCombatMode";
 
 function MenuCombat(combat){
 	this.combat = combat;

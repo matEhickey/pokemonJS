@@ -1,5 +1,5 @@
 import {monDresseur} from '../utils/globals';
-import BUTTON from '../utils/touches';
+import BUTTON from '../modes/touches';
 
 function keyPress(event) {
 		    var touche = event.keyCode;

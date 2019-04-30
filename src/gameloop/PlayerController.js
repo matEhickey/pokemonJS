@@ -3,6 +3,10 @@ import Grille from '../map/Grille';
 import applyHUD_event from '../UI/hud_events';
 import {monDresseur} from '../utils/globals';
 
+import PlayerMode from '../modes/PlayerMode';
+import PlayerHudMode from '../modes/PlayerHudMode';
+import BUTTON from '../modes/touches';
+
 import terrain from '../../assets/imgs/terrrainTest2.png';
 import ville2 from '../../assets/imgs/ville2.png';
 import centrePinterieur from '../../assets/imgs/centrePinterieur.png';
@@ -12,17 +16,18 @@ import areneArgenta from '../../assets/imgs/areneArgenta.png';
 import dresseurs from '../../assets/imgs/dresseurs.png';
 
 
-
 var PlayerController = function(dresseur,grille){
 
 	this.dresseur = dresseur;
 	this.dresseur.grandeTextureX = 1;
 	this.dresseur.grandeTextureY= 9;
 	this.dresseur.position = 5;
-	this.mode=0;   //0 = deplacement    1 = hud    2 = combat
+
+	this.mode=PlayerMode.MAP;
+	this.hudMode=PlayerHudMode.PAUSE;// 0 = pause 1 = discussion 2 = pokedex 3= menupokemon
+
 	this.nextCaseX;
 	this.nextCaseY;
-	this.hudMode=0;// 0 = pause 1 = discussion 2 = pokedex 3= menupokemon
 	this.fps = 90;
 	this.discussion = false;
 	this.info = false;
@@ -189,8 +194,8 @@ PlayerController.prototype.onLose= function(){
 	this.dresseur.posX = 0;
 	this.dresseur.posY = 0;
 
-	monDresseur.mode = 1;//hud
-	monDresseur.hudMode = 9;//fail
+	monDresseur.mode = PlayerMode.HUD;
+	monDresseur.hudMode = PlayerHudMode.FAIL;
 
 	monDresseur.soignePokemons();
 }
@@ -256,38 +261,35 @@ PlayerController.prototype.goToNextPosition = function(){
 }
 
 PlayerController.prototype.actions = function(touche){
-	//console.log("mode:"+this.mode+" hud:"+this.hudMode);
 	switch(this.mode){
-
-			case(0):									//deplacement
-
+			case(PlayerMode.MAP):									//deplacement
 				   switch(touche){
-				   	case(40)://down
+				   	case(BUTTON.DOWN):
 				   		this.setOrientation(1);
 				   		if(this.dresseur.position >= 5){this.dresseur.position = 0;}
 				   		this.grille.checkWalkOnHerbes();
 				   	break;
-				   	case(38)://up
+				   	case(BUTTON.UP):
 				   		this.setOrientation(4);
 				   		if(this.dresseur.position >= 5){this.dresseur.position = 0;}
 				   		this.grille.checkWalkOnHerbes();
 				   	break;
-				   	case(37)://left
+				   	case(BUTTON.LEFT):
 				   		this.setOrientation(2);
 				   		if(this.dresseur.position >= 5){this.dresseur.position = 0;}
 				   		this.grille.checkWalkOnHerbes();
 				   	break;
-				   	case(39)://right
+				   	case(BUTTON.RIGHT):
 				   		this.setOrientation(3);
 				   		if(this.dresseur.position >= 5){this.dresseur.position = 0;}
 				   		this.grille.checkWalkOnHerbes();
 				   	break;
-				   	case(80):
+				   	case(BUTTON.PAUSE):
 				   		console.log("Mise en pause");
-				   		this.mode = 1;
-				   		this.hudMode = 0;
+				   		this.mode = PlayerMode.HUD;
+				   		this.hudMode = PlayerHudMode.PAUSE;
 				   		break;
-				   	case(65)://touche action = a
+				   	case(BUTTON.CONFIRM):
 				   		this.calculNextCase();
 				   		var dress = this.grille.getDresseur(this.nextCaseX,this.nextCaseY);
 				   		//boolean si autre que dresseurs
@@ -296,8 +298,8 @@ PlayerController.prototype.actions = function(touche){
 				   			if(!dress.isInfirmiere()){
 					   			this.setAdv(dress);
 						   		this.getAdv().parler();
-						   		this.mode = 1;
-						   		this.hudMode = 1;
+						   		this.mode = PlayerMode.MAP;
+						   		this.hudMode = PlayerHudMode.DISCUSSION;
 						   	}
 
 				   		}
@@ -305,23 +307,20 @@ PlayerController.prototype.actions = function(touche){
 				   			var pnj = this.grille.getPNJ(this.nextCaseX,this.nextCaseY);
 				   			if(typeof(pnj)=="object"){
 				   				//console.log(pnj);
-					   			if(true){	//a remplacer par pnj.isInfirmiere(), mais ne marche pas ce soir.. vas savoir
+					   			if(true){	//a remplacer par utilisation du callback pnj ou dresseur
 								   	this.soignePokemons();
 							   	}
 							   	pnj.getDiscuss();
-									this.mode = 1;
-									this.hudMode = 1;
-							 }
-
+									this.mode = PlayerMode.HUD;
+									this.hudMode = PlayerHudMode.DISCUSSION;
+								}
 				   		}
 				   		break;
 
 				   	case(90)://z -> recupere message de collisions
-
 				   		if(!boolPressC){
 				   			Cx1 = this.getPosX();
 				   			Cy1 = this.getPosY();
-
 				   		}
 				   		else{
 				   			Cx2 = this.getPosX() - Cx1;	//x2,y2 representent la taille de l objet et non sa coordonnee
@@ -342,7 +341,7 @@ PlayerController.prototype.actions = function(touche){
 				   		else{
 				   			Hx2 = this.getPosX() - Hx1;	//x2,y2 representent la taille de l objet et non sa coordonnee
 				   			Hy2 = this.getPosY() - Hy1;
-				   			var chaine =  "this.grille.ajouteHerbe(new Herbe("+Hx1+","+Hy1+","+Hx2+","+Hy2+",5));<br>"
+				   			var chaine = "this.grille.ajouteHerbe(new Herbe("+Hx1+","+Hy1+","+Hx2+","+Hy2+",5));<br>"
 				   			document.getElementById("ajoutCollision").innerHTML += chaine;
 				   		}
 				   		boolPressH = !boolPressH;
@@ -350,15 +349,15 @@ PlayerController.prototype.actions = function(touche){
 
 				   }//fin switch touche
 
-				   break;//fin deplacement mode
+				   break;
 
-				case(1):	//mode hud
-					applyHUD_event(touche)
-				  break;//fin mode hud
+				case(PlayerMode.HUD):
+					applyHUD_event(touche);
+				  break;
 
-				case(2)://mode combat
+				case(PlayerMode.FIGHT):
 					  this.combat.gestionEvenement(touche);
-				 		break;//fin combat mode
+				 		break;
 
 		}
 }
@@ -376,10 +375,9 @@ PlayerController.prototype.getDresseurByNum=function(num){
 }
 
 PlayerController.prototype.save = function(){		//old way
-	alert("Cette fonctionnalité à étédésactivé pour  le moment")
-	// this.mode = 1;
-	// this.hudMode = 12; //mode attente
-	// this.info = "Sauvegarde en cours";
+	this.mode = PlayerMode.HUD;
+	this.hudMode = PlayerHudMode.INFO; //mode info
+	this.info = "Cette fonctionnalité à été désactivé pour le moment";
 	// new SauvegardeController(this.getPosX(),this.getPosY(),this.couleurPrefere,this.dresseur.badges,this.dresseur.argent,this.grille.num);
 	// //gere toute les sauvegardes a la suite, et pas en meme temps
 
@@ -399,10 +397,12 @@ PlayerController.prototype.savePokemons = function(){
 }
 
 PlayerController.prototype.load = function(){
-	alert("Cette fonctionnalité à étédésactivé pour  le moment")
+	this.mode = PlayerMode.HUD;
+	this.hudMode = PlayerHudMode.INFO;
+	this.info = "Cette fonctionnalité à été désactivé pour le moment";
 	// this.mode=1;
-  //       this.hudMode = 12;//attente
-  //       this.info="Loading Game";
+  // this.hudMode = PlayerHudMode.WAIT;//attente
+  // this.info="Loading Game";
 	//
 	// if (window.XMLHttpRequest) {
   //           // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -547,10 +547,9 @@ function loadPokemons(){
 }
 
 // function erreurLoad(){
-// 	// console.log("Erreur sauvegarde");
-// 	// this.mode = 1;
-// 	//  this.hudMode = 10;
-// 	//  this.info = "Il y a eu un probleme avec le chargement, vous pourriez reesayez, au cas ou..";
+//  // this.mode = PlayerMode.HUD;
+//  // this.hudMode = PlayerHudMode.INFO; //mode info
+// 	// this.info = "Il y a eu un probleme avec le chargement, vous pourriez reesayez, au cas ou..";
 // }
 
 export default PlayerController;
