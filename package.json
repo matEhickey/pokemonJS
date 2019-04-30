@@ -1,11 +1,13 @@
 {
   "name": "PokemonJS",
   "version": "1.0.0",
+  "license": "UNLICENSED",
   "scripts": {
-    "start": "node_modules/.bin/webpack-dev-server & (sleep 2 && firefox http://localhost:3000)",
+    "start": "(yarn build && sleep 2 && firefox http://localhost:3000) & node_modules/.bin/webpack-dev-server",
     "test": "echo TEST",
-    "build": "npx webpack --devtool source-map --mode development  && cp src/index.html dist/index.html",
-    "buildProd": "npx webpack --mode production  && cp src/index.html dist/index.html && rm -r docs && cp -r dist docs"
+    "copy_index": "cp src/index.html dist/index.html",
+    "build":      "npx webpack --mode development --devtool source-map  && yarn copy_index",
+    "buildProd":  "npx webpack --mode production  && yarn copy_index && rm -r docs && cp -r dist docs"
   },
   "main": "src/gameloop/main.js",
   "devDependencies": {
