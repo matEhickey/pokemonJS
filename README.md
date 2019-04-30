@@ -15,11 +15,10 @@ Also, feel free to help me with your art, as long as it's yours and I like your 
 ~~~
 
 ## How-to
-#### Try the game
-
+#### Try the game  
 Demo [**here**](https://matehickey.github.io/pokemonJS/)  
 
-#### Develop the game
+#### Develop the game  
 ~~~bash
 git clone https://github.com/matEhickey/pokemonJS
 cd pokemonJS
@@ -29,14 +28,14 @@ yarn start
 # got to http://localhost:3000
 ~~~
 
-#### Build the release version
+#### Build the release version  
 ~~~bash
 yarn buildProd
 # everything is ready into the docs folder
 # feel free to move/rename this folder (it's here only to deploy it to github pages)
 ~~~
 
-#### Integrate into website
+#### Integrate into website  
 Create an iframe, with the framed parameter:  
 ~~~html
   <iframe
@@ -46,6 +45,20 @@ Create an iframe, with the framed parameter:
   ></iframe>
 ~~~
 
+#### Docker / Compose  
+Run production  
+~~~bash
+docker build -t pokemonjs . && docker run -p 3000:80 pokemonjs
+~~~
+
+Run e2e tests cypress (wip - preparing CI)  
+~~~bash
+cd tests
+docker-compose build && docker-compose up -d
+
+# show e2e results
+docker logs -f cypress
+~~~
 
 ## WIP
 After many years, I'm currently adding more love to this project.  

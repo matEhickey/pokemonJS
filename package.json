@@ -6,12 +6,10 @@
     "start": "yarn build && node_modules/.bin/webpack-dev-server --open",
     "test": "echo TEST",
     "copy_index": "cp src/index.html dist/index.html",
-    "remove_dist": "rm -r dist",
-    "remove_docs": "rm -r docs",
-    "build":      "npx webpack --mode development --devtool source-map  && yarn copy_index",
-    "buildProd":  "yarn remove_dist && npx webpack --mode production --optimize-minimize && yarn copy_index && yarn remove_docs && cp -r dist docs"
+    "clean": "rm -r dist || true",
+    "build": "yarn clean && ./node_modules/webpack-cli/bin/cli.js --mode development --devtool source-map  && yarn copy_index",
+    "buildProd":  "(rm -r docs || true) && yarn clean && ./node_modules/webpack-cli/bin/cli.js --mode production --optimize-minimize && yarn copy_index && cp -r dist docs"
   },
-  "main": "src/gameloop/main.js",
   "devDependencies": {
     "css-loader": "^2.1.1",
     "file-loader": "^3.0.1",
