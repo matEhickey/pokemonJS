@@ -1,6 +1,5 @@
 import {chargeObjetsDansGrille0, chargeObjetsDansGrille1, chargeObjetsDansGrille2, chargeObjetsDansGrille3, chargeObjetsDansGrille4, chargeObjetsDansGrille5, chargeObjetsDansGrille6} from '../gamecontent/Loader';
 import Grille from '../map/Grille';
-import applyHUD_event from '../UI/hud_events';
 
 import PlayerMode from '../modes/PlayerMode';
 import PlayerHudMode from '../modes/PlayerHudMode';
@@ -296,9 +295,9 @@ PlayerController.prototype.actions = function(touche){
 
 				   		if(typeof(dress)=="object"){
 				   			if(!dress.isInfirmiere()){
-									console.log("Action: Parle avec dresseur")
+									console.log(`Action: Parle avec dresseur ${dress.nom}`)
 					   			this.setAdv(dress);
-						   		this.getAdv().parler(this.player);
+						   		this.getAdv().parler(this);
 						   		this.mode = PlayerMode.HUD;
 						   		this.hudMode = PlayerHudMode.DISCUSSION;
 						   	}
@@ -352,7 +351,7 @@ PlayerController.prototype.actions = function(touche){
 				   break;
 
 				case(PlayerMode.HUD):
-					applyHUD_event(touche, this);
+					this.menu.event(touche);
 				  break;
 
 				case(PlayerMode.FIGHT):
@@ -378,6 +377,8 @@ PlayerController.prototype.save = function(){		//old way
 	this.mode = PlayerMode.HUD;
 	this.hudMode = PlayerHudMode.INFO; //mode info
 	this.info = "Cette fonctionnalité à été désactivé pour le moment";
+
+	console.log("tryin to save");
 	// new SauvegardeController(this.getPosX(),this.getPosY(),this.couleurPrefere,this.dresseur.badges,this.dresseur.argent,this.grille.num);
 	// //gere toute les sauvegardes a la suite, et pas en meme temps
 
