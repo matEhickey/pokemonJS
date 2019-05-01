@@ -37,51 +37,7 @@ export default function render(player){	//Moteur d affichage
 
 			break;
 			case(1)://hud
-				switch(player.hudMode){
-					case(0)://pause
-						player.menu.afficheMenu();
-
-					break;
-
-					case(1)://discussion
-						player.menu.showConversation();
-					break;
-					case(2)://mode pokedex
-						player.menu.displayPokedex();
-						break;
-					case(3)://mode pokemon
-						player.menu.displayPokemons(player.dresseur.pokemons);
-
-					break;
-					case(4)://mode inventaire
-							player.menu.displayInventaire();
-					break;
-					case(5)://mode infos
-							player.menu.displayInfosJoueur();
-					break;
-					case(6)://mode carte
-							player.menu.displayCarte();
-					break;
-					case(7)://mode sauv
-							player.menu.displaySauv();
-					break;
-					case(8)://mode carte
-							player.menu.displayOptions();
-					break;
-					case(9)://fail
-							player.menu.displayFail();
-					break;
-					case(10):	//informations simples, avec controle pour retour au plateau
-						player.menu.displayInfo();
-					break;
-					case(11):	//affichage bravo vous avez capturer tel pokemon
-						player.menu.displayWinCapture();
-					break;
-					case(12):	//attente + informations simples
-						player.menu.displayInfo();
-					break;
-
-				}
+				player.menu.show();
 			break;//mode hud
 
 			case(2)://combat
