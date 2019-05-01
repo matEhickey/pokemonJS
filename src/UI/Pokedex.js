@@ -280,8 +280,6 @@ Pokedex.prototype.chargePokedex = function(){
 
 }
 
-export default Pokedex;
-
 
 //--------------------------------------------------
 class PokedexPokemon {
@@ -404,3 +402,6 @@ class PokedexPokemon {
 		return(this.type.includes(type));
 	}
 }
+
+var pokedex = new Pokedex();
+export default pokedex;

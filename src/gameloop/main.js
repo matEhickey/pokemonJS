@@ -1,7 +1,6 @@
 import {getCanvas, getContext} from '../utils/render_utils';
-import {monDresseur, combat} from '../utils/globals.js';
 
-export default function render(){	//Moteur d affichage
+export default function render(player){	//Moteur d affichage
 
 	var canvas = getCanvas();
 	var context = getContext();
@@ -9,85 +8,85 @@ export default function render(){	//Moteur d affichage
 	context.save();
 	context.clearRect(0, 0, canvas.width, canvas.height);
 
-	monDresseur.grille.drawTerrain();
+	player.grille.drawTerrain();
 
-	monDresseur.grille.afficheBatiments(monDresseur.dresseur.posX,monDresseur.dresseur.posY);
-
-
-	monDresseur.grille.drawDresseur(monDresseur.dresseur.posX,monDresseur.dresseur.posY);// Dessines tout les dresseurs   posXY sont les coord du controller
+	player.grille.afficheBatiments(player.dresseur.posX,player.dresseur.posY);
 
 
-			if(monDresseur.mode != 2){ //si on est pas en combat
+	player.grille.drawDresseur(player.dresseur.posX,player.dresseur.posY);// Dessines tout les dresseurs   posXY sont les coord du controller
+
+
+			if(player.mode != 2){ //si on est pas en combat
 
 					//test colision nextCase
-					monDresseur.calculNextCase();
-					var nextCaseX = monDresseur.nextCaseX;
-					var nextCaseY = monDresseur.nextCaseY;
-					monDresseur.walkable = monDresseur.grille.isWalkable(nextCaseX,nextCaseY);
+					player.calculNextCase();
+					var nextCaseX = player.nextCaseX;
+					var nextCaseY = player.nextCaseY;
+					player.walkable = player.grille.isWalkable(nextCaseX,nextCaseY);
 
-          monDresseur.goToNextPosition()
+          player.goToNextPosition()
 					//dessine joueur
-					monDresseur.grille.drawMonDresseur();
+					player.grille.drawMonDresseur();
 
 			}//fin si mode != combat
 
-		switch(monDresseur.mode){ //--------------------------------------------------Affichage
+		switch(player.mode){ //--------------------------------------------------Affichage
 			case(0):// map
-				monDresseur.grille.checkZonesDresseurs();
-				monDresseur.grille.checkWalkOnPorte();
+				player.grille.checkZonesDresseurs(player);
+				player.grille.checkWalkOnPorte();
 
 			break;
 			case(1)://hud
-				switch(monDresseur.hudMode){
+				switch(player.hudMode){
 					case(0)://pause
-						monDresseur.menu.afficheMenu();
+						player.menu.afficheMenu();
 
 					break;
 
 					case(1)://discussion
-						monDresseur.menu.showConversation();
+						player.menu.showConversation();
 					break;
 					case(2)://mode pokedex
-						monDresseur.menu.displayPokedex();
+						player.menu.displayPokedex();
 						break;
 					case(3)://mode pokemon
-						monDresseur.menu.displayPokemons(monDresseur.dresseur.pokemons);
+						player.menu.displayPokemons(player.dresseur.pokemons);
 
 					break;
 					case(4)://mode inventaire
-							monDresseur.menu.displayInventaire();
+							player.menu.displayInventaire();
 					break;
 					case(5)://mode infos
-							monDresseur.menu.displayInfosJoueur();
+							player.menu.displayInfosJoueur();
 					break;
 					case(6)://mode carte
-							monDresseur.menu.displayCarte();
+							player.menu.displayCarte();
 					break;
 					case(7)://mode sauv
-							monDresseur.menu.displaySauv();
+							player.menu.displaySauv();
 					break;
 					case(8)://mode carte
-							monDresseur.menu.displayOptions();
+							player.menu.displayOptions();
 					break;
 					case(9)://fail
-							monDresseur.menu.displayFail();
+							player.menu.displayFail();
 					break;
 					case(10):	//informations simples, avec controle pour retour au plateau
-						monDresseur.menu.displayInfo();
+						player.menu.displayInfo();
 					break;
 					case(11):	//affichage bravo vous avez capturer tel pokemon
-						monDresseur.menu.displayWinCapture();
+						player.menu.displayWinCapture();
 					break;
 					case(12):	//attente + informations simples
-						monDresseur.menu.displayInfo();
+						player.menu.displayInfo();
 					break;
 
 				}
 			break;//mode hud
 
 			case(2)://combat
-				monDresseur.combat.drawCombat();
-				monDresseur.combat.runTour();
+				player.combat.drawCombat();
+				player.combat.runTour();
 			break;
 	}
 

@@ -1,9 +1,10 @@
 import {getContext, getCanvas} from '../utils/render_utils';
-import {monDresseur} from '../utils/globals';
 import {CombatContreSauvage} from '../combat/Sauvage';
 
 var nbG = 0;
-function Grille(terrain){
+function Grille(player, terrain){
+	this.player = player;
+
 	this.terrain = terrain;
 	this.objets = [];
 	this.dresseurs = [];
@@ -87,20 +88,20 @@ Grille.prototype.isWalkable = function(posX,posY){
 
 Grille.prototype.checkWalkOnPorte = function(){
 	for(var i = 0;i<this.portes.length;i++){
-		if(this.portes[i].walkOn()){
-			this.portes[i].rejoindreDestination();
+		if(this.portes[i].walkOn(this.player)){
+			this.portes[i].rejoindreDestination(this.player);
 		}
 	}
 }
 
 Grille.prototype.checkWalkOnHerbes = function(){
 	for(var i = 0;i<this.herbes.length;i++){
-		if(this.herbes[i].walkOn()){
+		if(this.herbes[i].walkOn(this.player)){
 			//console.log("marche sur de l'herbe de puissance :"+this.herbes[i].getPuissance());
 			var rand = Math.random();
 			// console.log(rand);
 			if(rand > 0.95){
-				CombatContreSauvage(this.herbes[i].getPuissance());
+				CombatContreSauvage(this.player, this.herbes[i].getPuissance());
 			}
 		}
 	}
@@ -146,31 +147,31 @@ Grille.prototype.drawTerrain = function(){
 		var context = getContext();
 		var canvas = getCanvas();
 
-		context.drawImage(this.terrain, monDresseur.getPosX()+250, monDresseur.getPosY()+250, canvas.width/3, canvas.height/3, 0,0, canvas.width, canvas.height);
+		context.drawImage(this.terrain, this.player.getPosX()+250, this.player.getPosY()+250, canvas.width/3, canvas.height/3, 0,0, canvas.width, canvas.height);
 }
 
 Grille.prototype.drawMonDresseur= function(){
 	var context = getContext();
 
-	switch(monDresseur.getOrientation()){
+	switch(this.player.getOrientation()){
 							case(1):
 
 
-									switch(monDresseur.dresseur.position){
+									switch(this.player.dresseur.position){
 									case(0):
-										context.drawImage(monDresseur.dresseur.texture,0,0,32,48   ,320,240,32,48);
+										context.drawImage(this.player.dresseur.texture,0,0,32,48   ,320,240,32,48);
 										break;
 									case(1):
-										context.drawImage(monDresseur.dresseur.texture,32,0,32,48  ,320,240,32,48);
+										context.drawImage(this.player.dresseur.texture,32,0,32,48  ,320,240,32,48);
 										break;
 									case(2):
-										context.drawImage(monDresseur.dresseur.texture,64,0,32,48  ,320,240,32,48);
+										context.drawImage(this.player.dresseur.texture,64,0,32,48  ,320,240,32,48);
 										break;
 									case(3):
-										context.drawImage(monDresseur.dresseur.texture,96,0,32,48  ,320,240,32,48);
+										context.drawImage(this.player.dresseur.texture,96,0,32,48  ,320,240,32,48);
 										break;
 									case(5):
-										context.drawImage(monDresseur.dresseur.texture,0,0,32,48   ,320,240,32,48);
+										context.drawImage(this.player.dresseur.texture,0,0,32,48   ,320,240,32,48);
 										break;
 								}
 
@@ -178,64 +179,64 @@ Grille.prototype.drawMonDresseur= function(){
 
 							case(2):
 
-									switch(monDresseur.dresseur.position){
+									switch(this.player.dresseur.position){
 									case(0):
-										context.drawImage(monDresseur.dresseur.texture,0,48,32,48   ,320,240,32,48);
+										context.drawImage(this.player.dresseur.texture,0,48,32,48   ,320,240,32,48);
 										break;
 									case(1):
-										context.drawImage(monDresseur.dresseur.texture,32,48,32,48  ,320,240,32,48);
+										context.drawImage(this.player.dresseur.texture,32,48,32,48  ,320,240,32,48);
 										break;
 									case(2):
-										context.drawImage(monDresseur.dresseur.texture,64,48,32,48  ,320,240,32,48);
+										context.drawImage(this.player.dresseur.texture,64,48,32,48  ,320,240,32,48);
 										break;
 									case(3):
-										context.drawImage(monDresseur.dresseur.texture,96,48,32,48  ,320,240,32,48);
+										context.drawImage(this.player.dresseur.texture,96,48,32,48  ,320,240,32,48);
 										break;
 									case(5):
-										context.drawImage(monDresseur.dresseur.texture,0,48,32,48   ,320,240,32,48);
+										context.drawImage(this.player.dresseur.texture,0,48,32,48   ,320,240,32,48);
 										break;
 								}
 							break;
 
 							case(3):
 
-									switch(monDresseur.dresseur.position){
+									switch(this.player.dresseur.position){
 									case(0):
-										context.drawImage(monDresseur.dresseur.texture,0,96,32,48   ,320,240,32,48);
+										context.drawImage(this.player.dresseur.texture,0,96,32,48   ,320,240,32,48);
 										break;
 									case(1):
-										context.drawImage(monDresseur.dresseur.texture,32,96,32,48  ,320,240,32,48);
+										context.drawImage(this.player.dresseur.texture,32,96,32,48  ,320,240,32,48);
 										break;
 									case(2):
-										context.drawImage(monDresseur.dresseur.texture,64,96,32,48  ,320,240,32,48);
+										context.drawImage(this.player.dresseur.texture,64,96,32,48  ,320,240,32,48);
 										break;
 									case(3):
-										context.drawImage(monDresseur.dresseur.texture,96,96,32,48  ,320,240,32,48);
+										context.drawImage(this.player.dresseur.texture,96,96,32,48  ,320,240,32,48);
 										break;
 									case(5):
-										context.drawImage(monDresseur.dresseur.texture,0,96,32,48   ,320,240,32,48);
+										context.drawImage(this.player.dresseur.texture,0,96,32,48   ,320,240,32,48);
 										break;
 								}
 							break;
 
 							case(4):
 
-									switch(monDresseur.dresseur.position){
+									switch(this.player.dresseur.position){
 									case(0):
-										context.drawImage(monDresseur.dresseur.texture,0,144,32,48   ,320,240,32,48);
+										context.drawImage(this.player.dresseur.texture,0,144,32,48   ,320,240,32,48);
 										break;
 									case(1):
-										context.drawImage(monDresseur.dresseur.texture,32,144,32,48  ,320,240,32,48);
+										context.drawImage(this.player.dresseur.texture,32,144,32,48  ,320,240,32,48);
 										break;
 									case(2):
-										context.drawImage(monDresseur.dresseur.texture,64,144,32,48  ,320,240,32,48);
+										context.drawImage(this.player.dresseur.texture,64,144,32,48  ,320,240,32,48);
 										break;
 									case(3):
-										context.drawImage(monDresseur.dresseur.texture,96,144,32,48  ,320,240,32,48);
+										context.drawImage(this.player.dresseur.texture,96,144,32,48  ,320,240,32,48);
 												//{x,y,taileX,tailleY} Portion , {x,y,tailleX,tailleY} Canvas
 										break;
 									case(5):
-										context.drawImage(monDresseur.dresseur.texture,0,144,32,48   ,320,240,32,48);
+										context.drawImage(this.player.dresseur.texture,0,144,32,48   ,320,240,32,48);
 										break;
 								}
 							break;
@@ -244,14 +245,12 @@ Grille.prototype.drawMonDresseur= function(){
 
 
 
-Grille.prototype.checkZonesDresseurs = function(){
-
+Grille.prototype.checkZonesDresseurs = function(player){
 	for(var i = 0;i<this.dresseurs.length;i++){
-
-		if(this.dresseurs[i].walkOnZone()){
+		if(this.dresseurs[i].walkOnZone(player)){
 			if(!this.dresseurs[i].asPerdu){
-				monDresseur.setAdv(this.dresseurs[i]);
-				this.dresseurs[i].attaqueJoueur();
+				this.player.setAdv(this.dresseurs[i]);
+				this.dresseurs[i].attaqueJoueur(this.player);
 			}
 		}
 	}

@@ -1,4 +1,6 @@
-import {monDresseur} from '../utils/globals';
+import PlayerController from '../gameloop/PlayerController';
+import Dresseur from '../map/Dresseur';
+
 import Carte, {ChargeCarte} from '../UI/Carte';
 import {animate, getContext} from '../utils/render_utils';
 import Pokemon from '../combat/Pokemon';
@@ -18,23 +20,26 @@ export default function init(){
 	context.fillText("Chargement",250,250);
 	context.restore();
 
+	var player = new PlayerController(new Dresseur("Sacha",0,0,1,0));
+
 	var sacha_img = document.createElement("img");
 	sacha_img.src = sacha;
-	monDresseur.setTexture(sacha_img);
-	monDresseur.setGrille(0);
+	player.setTexture(sacha_img);
+	player.setGrille(0);
 
-	monDresseur.addPokemon(new Pokemon(25,5,0,100,20,15,15));
+	player.addPokemon(new Pokemon(25,5,0,100,20,15,15));
 	var sacha_img = document.createElement("img");
 	sacha_img.src = sacha;
-	monDresseur.texture= sacha;
+	player.texture= sacha;
 
-	monDresseur.carte = new Carte();
-	ChargeCarte(monDresseur.carte);
+	player.carte = new Carte(player);
+	ChargeCarte(player);
 
-	monDresseur.menu = new Menu()
-	monDresseur.loadObjects();
+	player.menu = new Menu(player);
+	
+	player.loadObjects();
 
-	init_inputs();
-	animate();
+	init_inputs(player);
+	animate(player);
 
 }

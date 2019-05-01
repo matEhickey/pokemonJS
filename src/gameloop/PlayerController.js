@@ -1,7 +1,6 @@
 import {chargeObjetsDansGrille0, chargeObjetsDansGrille1, chargeObjetsDansGrille2, chargeObjetsDansGrille3, chargeObjetsDansGrille4, chargeObjetsDansGrille5, chargeObjetsDansGrille6} from '../gamecontent/Loader';
 import Grille from '../map/Grille';
 import applyHUD_event from '../UI/hud_events';
-import {monDresseur} from '../utils/globals';
 
 import PlayerMode from '../modes/PlayerMode';
 import PlayerHudMode from '../modes/PlayerHudMode';
@@ -67,13 +66,13 @@ var PlayerController = function(dresseur,grille){
 	areneArgenta_img.src = areneArgenta;
 
 
-	this.grilles.push(new Grille(terrain_img));
-	this.grilles.push(new Grille(ville2_img));
-	this.grilles.push(new Grille(centrePinterieur_img));
-	this.grilles.push(new Grille(centrePinterieur_img));
-	this.grilles.push(new Grille(argenta_img));
-	this.grilles.push(new Grille(pokeshopInside_img));
-	this.grilles.push(new Grille(areneArgenta_img));
+	this.grilles.push(new Grille(this, terrain_img));
+	this.grilles.push(new Grille(this, ville2_img));
+	this.grilles.push(new Grille(this, centrePinterieur_img));
+	this.grilles.push(new Grille(this, centrePinterieur_img));
+	this.grilles.push(new Grille(this, argenta_img));
+	this.grilles.push(new Grille(this, pokeshopInside_img));
+	this.grilles.push(new Grille(this, areneArgenta_img));
 
 }
 
@@ -89,6 +88,7 @@ PlayerController.prototype.loadObjects = function(num){
 
 PlayerController.prototype.setGrille= function(num){
 	this.grille = this.grilles[num];
+	this.dresseur.grille = num;
 }
 
 PlayerController.prototype.getGrille= function(num){
@@ -194,14 +194,14 @@ PlayerController.prototype.onLose= function(){
 	this.dresseur.posX = 0;
 	this.dresseur.posY = 0;
 
-	monDresseur.mode = PlayerMode.HUD;
-	monDresseur.hudMode = PlayerHudMode.FAIL;
+	this.mode = PlayerMode.HUD;
+	this.hudMode = PlayerHudMode.FAIL;
 
-	monDresseur.soignePokemons();
+	this.soignePokemons();
 }
 
-PlayerController.prototype.showCurrentMessage = function(num){
-	this.discussion.showCurrentMessage()
+PlayerController.prototype.showCurrentMessage = function(){
+	this.discussion.showCurrentMessage(this);
 }
 PlayerController.prototype.getDresseurByNum= function(num){
 	var retour = false;
@@ -298,7 +298,7 @@ PlayerController.prototype.actions = function(touche){
 				   			if(!dress.isInfirmiere()){
 									console.log("Action: Parle avec dresseur")
 					   			this.setAdv(dress);
-						   		this.getAdv().parler();
+						   		this.getAdv().parler(this.player);
 						   		this.mode = PlayerMode.HUD;
 						   		this.hudMode = PlayerHudMode.DISCUSSION;
 						   	}
@@ -310,7 +310,7 @@ PlayerController.prototype.actions = function(touche){
 					   			if(true){	//a remplacer par utilisation du callback pnj ou dresseur
 								   	this.soignePokemons();
 							   	}
-							   	pnj.getDiscuss();
+							   	this.discussion = pnj.getDiscuss();
 									this.mode = PlayerMode.HUD;
 									this.hudMode = PlayerHudMode.DISCUSSION;
 								}
@@ -352,7 +352,7 @@ PlayerController.prototype.actions = function(touche){
 				   break;
 
 				case(PlayerMode.HUD):
-					applyHUD_event(touche);
+					applyHUD_event(touche, this);
 				  break;
 
 				case(PlayerMode.FIGHT):

@@ -1,4 +1,3 @@
-import {monDresseur} from "../utils/globals";
 import Discussion from "../UI/Discussion";
 
 var PNJ = function(nom,posX,posY,tailleX,tailleY,isInfirmiere){
@@ -19,7 +18,7 @@ PNJ.prototype.isInfirmiere = function(){
 }
 
 PNJ.prototype.getDiscuss = function(){
-	monDresseur.discussion = new Discussion(this.nom, this.discussion);
+	return(new Discussion(this.nom, this.discussion));
 }
 
 PNJ.prototype.isOnPosition = function(posX,posY){

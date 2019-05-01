@@ -1,4 +1,4 @@
-import { pokedex } from '../utils/globals';
+import pokedex from '../UI/Pokedex';
 
 
 var Pokemon = function(num,lvl,exp,pdv,att,def,agi){

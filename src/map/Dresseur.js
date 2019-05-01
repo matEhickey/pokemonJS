@@ -1,5 +1,5 @@
 import {getContext} from '../utils/render_utils';
-import {monDresseur} from '../utils/globals';
+import ZoneDresseur from './ZoneDresseur'
 import Discussion from '../UI/Discussion';
 import dresseurVert from '../../assets/imgs/dresseurVert.png';
 
@@ -117,15 +117,15 @@ Dresseur.prototype.isWalkable = function(posX,posY){
 	return(!this.isOnPosition(posX,posY));
 }
 
-Dresseur.prototype.parler= function(){
-	this.trouveOrientation();
-	monDresseur.discussion = new Discussion(this.nom, this.asPerdu ? this.texteLooser : this.texte)
+Dresseur.prototype.parler= function(player){
+	this.trouveOrientation(player);
+	player.discussion = new Discussion(this.nom, this.asPerdu ? this.texteLooser : this.texte)
 }
 
-Dresseur.prototype.trouveOrientation= function(){
+Dresseur.prototype.trouveOrientation= function(player){
 	var sens;
-	var x = monDresseur.getPosX() - this.getPosX();
-	var y = monDresseur.getPosY() - this.getPosY();
+	var x = player.getPosX() - this.getPosX();
+	var y = player.getPosY() - this.getPosY();
 
 
 	if(x <= y){
@@ -258,8 +258,8 @@ Dresseur.prototype.getPosY= function(){
 	return(this.posY);
 }
 
-Dresseur.prototype.walkOnZone= function(){
-	return(this.zone.isWalkOn());
+Dresseur.prototype.walkOnZone= function(player){
+	return(this.zone.isWalkOn(player));
 }
 
 Dresseur.prototype.getDistance = function(){
@@ -294,84 +294,25 @@ Dresseur.prototype.avance= function(num){
 	}
 }
 
-Dresseur.prototype.calculDistanceAParcourir= function(){
-	if(this.orientation==1 || this.orientation ==4  ){//Y
-		return(Math.abs(this.getPosY()-monDresseur.getPosY()));
-	}
-	else{//X
-		return(Math.abs(this.getPosX()-monDresseur.getPosX()));
-	}
-}
+// Dresseur.prototype.calculDistanceAParcourir= function(player){
+// 	if(this.orientation==1 || this.orientation ==4  ){//Y
+// 		return(Math.abs(this.getPosY()-player.getPosY()));
+// 	}
+// 	else{//X
+// 		return(Math.abs(this.getPosX()-player.getPosX()));
+// 	}
+// }
 
 
 
-Dresseur.prototype.attaqueJoueur = function(){
+Dresseur.prototype.attaqueJoueur = function(player){
 				if(!this.asPerdu){
 							console.log(this.nom+" attaque");
 
-							monDresseur.mode = 1;
-							monDresseur.hudMode = 1;
-							this.parler();
+							player.mode = 1;
+							player.hudMode = 1;
+							this.parler(player);
 				}
-}
-
-//---------------------------------------------------Zone d attaque
-
-var ZoneDresseur = function(dresseur){
-	this.taille = 40;
-
-	this.dresseur = dresseur;
-}
-
-
-ZoneDresseur.prototype.isWalkOn = function(){
-	var x = monDresseur.getPosX();
-	var y = monDresseur.getPosY();
-
-	var orientation = this.dresseur.getOrientation();
-	if(this.dresseur.nom == "Mathias"){
-		//console.log(" check if walk on "+this.dresseur.nom);
-	}
-
-	switch(orientation){
-
-		case(0)://de face seul Y+
-			if((x>(this.dresseur.getPosX()))  && (x<(this.dresseur.getPosX()+this.dresseur.tailleX/3))  ){
-				if((y>(this.dresseur.getPosY()+this.dresseur.tailleY/3))  && (y<(this.dresseur.getPosY()+this.dresseur.tailleY/3+this.taille))  ){
-
-					return(true);
-				}
-			}
-		break;
-		case(1)://de gauche seul X-
-			if((x>(this.dresseur.getPosX()+this.dresseur.tailleX/3-this.taille))  && (x<(this.dresseur.getPosX()+this.dresseur.tailleX/3))  ){
-				if((y>(this.dresseur.getPosY()))  && (y<(this.dresseur.getPosY()+this.dresseur.tailleY/3))  ){
-
-					return(true);
-				}
-			}
-		break;
-		case(2)://de droite seul X+
-			if((x>(this.dresseur.getPosX()+this.dresseur.tailleX/3))  && (x<(this.dresseur.getPosX()+this.dresseur.tailleX/3+this.taille))  ){
-				if((y>(this.dresseur.getPosY()))  && (y<(this.dresseur.getPosY()+this.dresseur.tailleY/3))  ){
-
-					return(true);
-				}
-			}
-		break;
-		case(3)://de derriere seul Y-
-			if((x>(this.dresseur.getPosX()+this.dresseur.tailleX/3))  && (x<(this.dresseur.getPosX()+this.dresseur.tailleX/3+this.taille))  ){
-				if((y>(this.dresseur.getPosY()+this.dresseur.tailleY/3-this.taille))  && (y<(this.dresseur.getPosY()+this.dresseur.tailleY/3))  ){
-
-					return(true);
-				}
-			}
-		break;
-
-
-	}
-
-	return(false);
 }
 
 Dresseur.prototype.isSauvage=function(){//pendant un combat, un pokemon sauavge agit + ou - comme un dresseur
@@ -405,7 +346,7 @@ Dresseur.prototype.load = function(){
 	// 	console.log("name: "+name );
 	// 	console.log("asPerdu: "+asPerdu );
 	//
-	// 	var dresseur = monDresseur.getGrille(parseInt(document.getElementById("grille").innerHTML)).getDresseurByName(name);
+	// 	var dresseur = player.getGrille(parseInt(document.getElementById("grille").innerHTML)).getDresseurByName(name);
 	// 	dresseur.asPerdu = (asPerdu == 0)?false:true;
 	//
 	// 	dresseur.loadPokemons();
@@ -458,12 +399,12 @@ Dresseur.prototype.loadPokemons = function(){ // no more suported for now
   //                var def=  document.getElementsByClassName('def');
   //                var agi=  document.getElementsByClassName('agi');
 	//
-  //               var dresseur = monDresseur.getDresseurByNum(parseInt(document.getElementById('dressNum').innerHTML));
+  //               var dresseur = player.getDresseurByNum(parseInt(document.getElementById('dressNum').innerHTML));
 	//
 	//
 	//
   //               if(dresseur == false){//il s agit du controller (seul dresseur hors des dresseurs des grilles)
-  //               	dresseur = monDresseur.dresseur;
+  //               	dresseur = player.dresseur;
   //               }
 	//
   //               dresseur.videPokemons();

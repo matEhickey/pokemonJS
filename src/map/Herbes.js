@@ -1,5 +1,3 @@
-import {monDresseur} from '../utils/globals';
-
 function Herbe(posX,posY,tailleX,tailleY,puissance){
 	this.posX=posX;
 	this.tailleX=tailleX;
@@ -8,10 +6,10 @@ function Herbe(posX,posY,tailleX,tailleY,puissance){
 	this.puissance = puissance;//pour qq niveau de pokemon presents, pourra etre complexifier sur les types, genre une liste de types possibles
 }
 
-Herbe.prototype.walkOn = function(){
+Herbe.prototype.walkOn = function(player){
 	var retour = false;
-	if(monDresseur.getPosX()>this.posX && monDresseur.getPosX()<this.posX+this.tailleX){
-		if(monDresseur.getPosY()>this.posY && monDresseur.getPosY()<this.posY+this.tailleY){
+	if(player.getPosX()>this.posX && player.getPosX()<this.posX+this.tailleX){
+		if(player.getPosY()>this.posY && player.getPosY()<this.posY+this.tailleY){
 			//console.log("marche sur des hautes herbes");
 			retour = true;
 		}

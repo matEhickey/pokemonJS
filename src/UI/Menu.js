@@ -1,15 +1,15 @@
-import {monDresseur} from '../utils/globals.js';
 import {getContext, getCanvas} from '../utils/render_utils.js';
-import { pokedex } from '../utils/globals';
+import pokedex from '../UI/Pokedex';
 
 import PlayerHudMode from '../modes/PlayerHudMode';
 
-function Menu(){
+function Menu(player){
+	this.player = player;
 	this.boutons = [
 		new SousMenu("Pokedex"),
 		new SousMenu("Pokemon"),
 		new SousMenu("Inventaire"),
-		new SousMenu(monDresseur.getName()),
+		new SousMenu(this.player.getName()),
 		new SousMenu("Carte"),
 		new SousMenu("Sauvegarde"),
 		new SousMenu("Options"),
@@ -19,7 +19,7 @@ function Menu(){
 
 Menu.prototype.afficheMenu = function(){
 	var context = getContext();
-	context.fillStyle=monDresseur.couleurPrefere;
+	context.fillStyle=this.player.couleurPrefere;
 	context.fillRect(630,25,250,270);
 	context.fillStyle="#000000";
 	context.font="20px Georgia";
@@ -51,37 +51,36 @@ Menu.prototype.selectM = function(){
 Menu.prototype.valider = function(){
 	switch(this.selection){
 		case(0):
-			monDresseur.hudMode = PlayerHudMode.POKEDEX;
+			this.player.hudMode = PlayerHudMode.POKEDEX;
 		break;
 		case(1):
-			var pokemons = monDresseur.dresseur.pokemons;
-			monDresseur.hudMode = PlayerHudMode.MENUPOKEMON;
+			this.player.hudMode = PlayerHudMode.MENUPOKEMON;
 		break;
 		case(2):
-			monDresseur.hudMode = PlayerHudMode.MENUINVENTAIRE;
+			this.player.hudMode = PlayerHudMode.MENUINVENTAIRE;
 		break;
 		case(3):
-			monDresseur.hudMode = PlayerHudMode.MENUDRESSEUR;
+			this.player.hudMode = PlayerHudMode.MENUDRESSEUR;
 		break;
 		case(4):
-			monDresseur.hudMode = PlayerHudMode.MENUCARTE;
+			this.player.hudMode = PlayerHudMode.MENUCARTE;
 		break;
 		case(5):
-			monDresseur.hudMode = PlayerHudMode.MENUSAVE;
+			this.player.hudMode = PlayerHudMode.MENUSAVE;
 		break;
 		case(6):
-			monDresseur.hudMode = PlayerHudMode.MENUOPTIONS;
+			this.player.hudMode = PlayerHudMode.MENUOPTIONS;
 		break;
 	}
 }
 
 Menu.prototype.showConversation = function(pokemons){
-	monDresseur.showCurrentMessage();
+	this.player.showCurrentMessage();
 }
 
 Menu.prototype.displayPokemons = function(pokemons ){
 	var context = getContext();
-	context.fillStyle=monDresseur.couleurPrefere;
+	context.fillStyle=this.player.couleurPrefere;
 	context.fillRect(50,50,800,550);
 	context.font="20px Georgia";
 
@@ -103,13 +102,13 @@ Menu.prototype.displayPokemons = function(pokemons ){
 
 Menu.prototype.displayCarte = function(){
 
-	monDresseur.carte.displayCarte();
+	this.player.carte.displayCarte();
 
 }
 
 Menu.prototype.displayOptions = function(){
 	var context = getContext();
-	context.fillStyle=monDresseur.couleurPrefere;
+	context.fillStyle=this.player.couleurPrefere;
 	context.fillRect(50,50,800,550);
 	context.fillStyle="#000000";
 	context.font="20px Georgia";
@@ -119,7 +118,7 @@ Menu.prototype.displayOptions = function(){
 
 Menu.prototype.displayPokedex = function(){
 	var context = getContext();
-	context.fillStyle=monDresseur.couleurPrefere;
+	context.fillStyle=this.player.couleurPrefere;
 	context.fillRect(50,50,800,550);
 
 	pokedex.affichePokemon();
@@ -129,21 +128,21 @@ Menu.prototype.displayPokedex = function(){
 
 Menu.prototype.displayInfosJoueur = function(){
 	var context = getContext();
-	context.fillStyle=monDresseur.couleurPrefere;
+	context.fillStyle=this.player.couleurPrefere;
 	context.fillRect(50,50,800,550);
 	context.fillStyle="#000000";
 	context.font="20px Georgia";
-	context.fillText("Nom : "+monDresseur.getName(),65,270);
-	context.fillText("Argent : "+monDresseur.dresseur.argent,65,300);
-	context.fillText("Badges : "+monDresseur.dresseur.badges,65,330);
-	context.fillText("Objets : "+monDresseur.dresseur.inventaire.length,65,360);
-	context.fillText("Pokemon capturés : "+(monDresseur.dresseur.pokemons.length+monDresseur.dresseur.pcDeLeo.length),65,390);
-	context.drawImage(monDresseur.charSprites,0+(80*monDresseur.getGTX()),0+(80*monDresseur.getGTY()), 80, 80, 400,200,250,250);
+	context.fillText("Nom : "+this.player.getName(),65,270);
+	context.fillText("Argent : "+this.player.dresseur.argent,65,300);
+	context.fillText("Badges : "+this.player.dresseur.badges,65,330);
+	context.fillText("Objets : "+this.player.dresseur.inventaire.length,65,360);
+	context.fillText("Pokemon capturés : "+(this.player.dresseur.pokemons.length+this.player.dresseur.pcDeLeo.length),65,390);
+	context.drawImage(this.player.charSprites,0+(80*this.player.getGTX()),0+(80*this.player.getGTY()), 80, 80, 400,200,250,250);
 }
 
 Menu.prototype.displaySauv = function(){
 	var context = getContext();
-	context.fillStyle=monDresseur.couleurPrefere;
+	context.fillStyle=this.player.couleurPrefere;
 	context.fillRect(50,50,800,550);
 	context.fillStyle="#000000";
 	context.font="20px Georgia";
@@ -158,11 +157,11 @@ Menu.prototype.displaySauv = function(){
 
 Menu.prototype.displayInventaire = function(){
 	var context = getContext();
-	context.fillStyle=monDresseur.couleurPrefere;
+	context.fillStyle=this.player.couleurPrefere;
 	context.fillRect(50,50,800,550);
 	context.fillStyle="#000000";
 	context.font="20px Georgia";
-	context.fillText("Vous avez "+monDresseur.dresseur.inventaire.length+" objets dans votre inventaire",65,300);
+	context.fillText("Vous avez "+this.player.dresseur.inventaire.length+" objets dans votre inventaire",65,300);
 }
 
 Menu.prototype.displayFail = function(){
@@ -170,7 +169,7 @@ Menu.prototype.displayFail = function(){
 	var canvas = getCanvas();
 	context.fillStyle="#000000";
 	context.fillRect(0, 0, canvas.width, canvas.height);
-	context.fillStyle=monDresseur.couleurPrefere;
+	context.fillStyle=this.player.couleurPrefere;
 	context.fillRect(50,50,800,550);
 	context.fillStyle="#000000";
 	context.font="30px Georgia";
@@ -184,23 +183,23 @@ Menu.prototype.displayFail = function(){
 
 Menu.prototype.displayInfo = function(){
 	var context = getContext();
-	context.fillStyle=monDresseur.couleurPrefere;
+	context.fillStyle=this.player.couleurPrefere;
 	context.fillRect(50,350,800,250);
 	context.fillStyle="#000000";
 	context.font="20px Georgia";
-	context.fillText(monDresseur.info,60,380);
+	context.fillText(this.player.info,60,380);
 }
 
 Menu.prototype.displayWinCapture = function(){
 	var context = getContext();
-	context.fillStyle=monDresseur.couleurPrefere;
+	context.fillStyle=this.player.couleurPrefere;
 	context.fillRect(50,350,800,250);
 	context.fillStyle="#000000";
 	context.font="20px Georgia";
 	context.fillText("Bravo, vous avez capturé un :",160,380);
-	context.fillText(monDresseur.getPokemonCapture().getName(),200,430);
-	context.fillText("Niveau "+monDresseur.getPokemonCapture().lvl,160,480);
-	monDresseur.getPokemonCapture().afficheToiAt(550,400);
+	context.fillText(this.player.getPokemonCapture().getName(),200,430);
+	context.fillText("Niveau "+this.player.getPokemonCapture().lvl,160,480);
+	this.player.getPokemonCapture().afficheToiAt(550,400);
 }
 
 

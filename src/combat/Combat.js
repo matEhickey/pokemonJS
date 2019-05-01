@@ -1,4 +1,3 @@
-import {monDresseur} from '../utils/globals';
 import {getContext} from '../utils/render_utils';
 import BUTTON from '../gameloop/touches';
 import MenuCombat from '../combat/MenuCombat';
@@ -12,16 +11,18 @@ WaitLimit.short = 5;
 WaitLimit.middle = 10;
 WaitLimit.long = 20;
 
-var Combat = function(){
-	this.joueurs = [monDresseur.dresseur, monDresseur.getAdv()];
+var Combat = function(player){
+	this.player = player;
+
+	this.joueurs = [this.player.dresseur, this.player.getAdv()];
 	this.tour = this.joueurs[0].getPokemon(0).agi-this.joueurs[1].getPokemon(0).agi > 0? 0:1;
 	this.checkTourComplete = 0;	//-> devient 1 quand un pokemon a attaquer, repasse a 0 quand le deuwieme aussi, et change le mode.
 
 
 	this.mode = CombatMode.dresseurs;
-	this.menu = new MenuCombat(this);
+	this.menu = new MenuCombat(player, this);
 
-	this.time = 0; //comteur incremental de temps (pas d unité speciales, n*monDresseur.fps)
+	this.time = 0; //comteur incremental de temps (pas d unité speciales, n*this.player.fps)
 
 	this.infos = [];
 }
@@ -31,7 +32,7 @@ Combat.prototype.runTour = function(){
 	if(this.mode == CombatMode.attaque){
 			//recuperer l attaque, et surtout son type
 
-		if(!(this.joueurs[this.tour] === monDresseur.dresseur)){
+		if(!(this.joueurs[this.tour] === this.player.dresseur)){
 			var rand = Math.round(Math.random()*4);
 			//console.log("rand = "+rand);
 			this.joueurs[this.tour].getPokemon(0).setSelectAttaque(rand);
@@ -75,11 +76,11 @@ Combat.prototype.runTour = function(){
 				else{
 					this.joueurs[1-this.tour].asPerdu = 1;
 
-					if(this.joueurs[1-this.tour] === monDresseur.dresseur){
+					if(this.joueurs[1-this.tour] === this.player.dresseur){
 						//console.log("Perdu");
 						this.joueurs[this.tour].soignePokemons();
 						this.joueurs[this.tour].setOriginalOrientation();
-						monDresseur.onLose();
+						this.player.onLose();
 					}
 					else{
 						this.finCombat();
@@ -129,21 +130,21 @@ Combat.prototype.finCombat = function(){
 
 Combat.prototype.drawCombat=function(){
 	var context = getContext();
-	context.fillStyle=monDresseur.couleurPrefere;
+	context.fillStyle=this.player.couleurPrefere;
 	context.fillRect(50,50,800,550);
 	context.fillStyle="#000000";
 
 
 
 	if(this.mode == CombatMode.dresseurs){
-		if(monDresseur.getAdv().isSauvage()){
-			monDresseur.getAdv().getPokemon(0).afficheToiCombat();
+		if(this.player.getAdv().isSauvage()){
+			this.player.getAdv().getPokemon(0).afficheToiCombat();
 		}
 		else{
-			context.drawImage(monDresseur.charSprites,0+(80*monDresseur.getAdv().getGTX()),0+(80*monDresseur.getAdv().getGTY()), 80, 80, 600,50,250,250);
+			context.drawImage(this.player.charSprites,0+(80*this.player.getAdv().getGTX()),0+(80*this.player.getAdv().getGTY()), 80, 80, 600,50,250,250);
 		}
 		context.font="25px Georgia";
-		context.fillText("Adversaire :"+monDresseur.getAdv().getName(),65,100);
+		context.fillText("Adversaire :"+this.player.getAdv().getName(),65,100);
 		var hero_img = document.createElement("img");
 		hero_img.src = hero;
 		context.drawImage(hero_img,0,0, 70, 75, 50,250,400,400);
@@ -154,33 +155,33 @@ Combat.prototype.drawCombat=function(){
 	if(this.mode == CombatMode.pokemons){
 
 		context.font="20px Georgia";
-		context.fillText(monDresseur.getAdv().getPokemon(0).getName(),65,140);
-		context.fillText("Niveau :"+monDresseur.getAdv().getPokemon(0).lvl,90,170);
-		context.fillText("Pdv :"+monDresseur.getAdv().getPokemon(0).pdv+"/"+monDresseur.getAdv().getPokemon(0).pdvMax,90,190,200);
-		monDresseur.getAdv().getPokemon(0).afficheToiCombat();
+		context.fillText(this.player.getAdv().getPokemon(0).getName(),65,140);
+		context.fillText("Niveau :"+this.player.getAdv().getPokemon(0).lvl,90,170);
+		context.fillText("Pdv :"+this.player.getAdv().getPokemon(0).pdv+"/"+this.player.getAdv().getPokemon(0).pdvMax,90,190,200);
+		this.player.getAdv().getPokemon(0).afficheToiCombat();
 
 
 		context.font="20px Georgia";
-		context.fillText(monDresseur.dresseur.getPokemon(0).getName(),450,400);
-		context.fillText("Niveau :"+monDresseur.dresseur.getPokemon(0).lvl,500,430);
-		context.fillText("Pdv :"+monDresseur.dresseur.getPokemon(0).pdv+"/"+monDresseur.dresseur.getPokemon(0).pdvMax,500,450,200);
-		monDresseur.dresseur.getPokemon(0).getBackSprite();
+		context.fillText(this.player.dresseur.getPokemon(0).getName(),450,400);
+		context.fillText("Niveau :"+this.player.dresseur.getPokemon(0).lvl,500,430);
+		context.fillText("Pdv :"+this.player.dresseur.getPokemon(0).pdv+"/"+this.player.dresseur.getPokemon(0).pdvMax,500,450,200);
+		this.player.dresseur.getPokemon(0).getBackSprite();
 	}
 
 	if(this.mode == CombatMode.discussions){
 
 		context.font="20px Georgia";
-		context.fillText(monDresseur.getAdv().getPokemon(0).getName(),65,140);
-		context.fillText("Niveau :"+monDresseur.getAdv().getPokemon(0).lvl,90,170);
-		context.fillText("Pdv :"+monDresseur.getAdv().getPokemon(0).pdv+"/"+monDresseur.getAdv().getPokemon(0).pdvMax,90,190,200);
-		monDresseur.getAdv().getPokemon(0).afficheToiCombat();
+		context.fillText(this.player.getAdv().getPokemon(0).getName(),65,140);
+		context.fillText("Niveau :"+this.player.getAdv().getPokemon(0).lvl,90,170);
+		context.fillText("Pdv :"+this.player.getAdv().getPokemon(0).pdv+"/"+this.player.getAdv().getPokemon(0).pdvMax,90,190,200);
+		this.player.getAdv().getPokemon(0).afficheToiCombat();
 
 
 		context.font="20px Georgia";
-		context.fillText(monDresseur.dresseur.getPokemon(0).getName(),450,400);
-		context.fillText("Niveau :"+monDresseur.dresseur.getPokemon(0).lvl,500,430);
-		context.fillText("Pdv :"+monDresseur.dresseur.getPokemon(0).pdv+"/"+monDresseur.dresseur.getPokemon(0).pdvMax,500,450,200);
-		monDresseur.dresseur.getPokemon(0).getBackSprite();
+		context.fillText(this.player.dresseur.getPokemon(0).getName(),450,400);
+		context.fillText("Niveau :"+this.player.dresseur.getPokemon(0).lvl,500,430);
+		context.fillText("Pdv :"+this.player.dresseur.getPokemon(0).pdv+"/"+this.player.dresseur.getPokemon(0).pdvMax,500,450,200);
+		this.player.dresseur.getPokemon(0).getBackSprite();
 
 		context.fillStyle = "#aaaaaa";
 		context.fillRect(50,450,800,30+(this.infos.length*25));
@@ -196,17 +197,17 @@ Combat.prototype.drawCombat=function(){
 
 	if(this.mode == CombatMode.menuSelection){
 		context.font="20px Georgia";
-		context.fillText(monDresseur.getAdv().getPokemon(0).getName(),65,140);
-		context.fillText("Niveau :"+monDresseur.getAdv().getPokemon(0).lvl,90,170);
-		context.fillText("Pdv :"+monDresseur.getAdv().getPokemon(0).pdv+"/"+monDresseur.getAdv().getPokemon(0).pdvMax,90,190,200);
-		monDresseur.getAdv().getPokemon(0).afficheToiCombat();
+		context.fillText(this.player.getAdv().getPokemon(0).getName(),65,140);
+		context.fillText("Niveau :"+this.player.getAdv().getPokemon(0).lvl,90,170);
+		context.fillText("Pdv :"+this.player.getAdv().getPokemon(0).pdv+"/"+this.player.getAdv().getPokemon(0).pdvMax,90,190,200);
+		this.player.getAdv().getPokemon(0).afficheToiCombat();
 
 
 		context.font="20px Georgia";
-		context.fillText(monDresseur.dresseur.getPokemon(0).getName(),450,400);
-		context.fillText("Niveau :"+monDresseur.dresseur.getPokemon(0).lvl,500,430);
-		context.fillText("Pdv :"+monDresseur.dresseur.getPokemon(0).pdv+"/"+monDresseur.dresseur.getPokemon(0).pdvMax,500,450,200);
-		monDresseur.dresseur.getPokemon(0).getBackSprite();
+		context.fillText(this.player.dresseur.getPokemon(0).getName(),450,400);
+		context.fillText("Niveau :"+this.player.dresseur.getPokemon(0).lvl,500,430);
+		context.fillText("Pdv :"+this.player.dresseur.getPokemon(0).pdv+"/"+this.player.dresseur.getPokemon(0).pdvMax,500,450,200);
+		this.player.dresseur.getPokemon(0).getBackSprite();
 
 
 		this.menu.afficheToi();
@@ -215,17 +216,17 @@ Combat.prototype.drawCombat=function(){
 	if(this.mode == CombatMode.discussions_end){	//copie du 3 mais pour la fin
 
 		context.font="20px Georgia";
-		context.fillText(monDresseur.getAdv().getPokemon(0).getName(),65,140);
-		context.fillText("Niveau :"+monDresseur.getAdv().getPokemon(0).lvl,90,170);
-		context.fillText("Pdv :"+monDresseur.getAdv().getPokemon(0).pdv+"/"+monDresseur.getAdv().getPokemon(0).pdvMax,90,190,200);
-		//monDresseur.getAdv().getPokemon(0).afficheToiCombat();
+		context.fillText(this.player.getAdv().getPokemon(0).getName(),65,140);
+		context.fillText("Niveau :"+this.player.getAdv().getPokemon(0).lvl,90,170);
+		context.fillText("Pdv :"+this.player.getAdv().getPokemon(0).pdv+"/"+this.player.getAdv().getPokemon(0).pdvMax,90,190,200);
+		//this.player.getAdv().getPokemon(0).afficheToiCombat();
 
 
 		context.font="20px Georgia";
-		context.fillText(monDresseur.dresseur.getPokemon(0).getName(),450,400);
-		context.fillText("Niveau :"+monDresseur.dresseur.getPokemon(0).lvl,500,430);
-		context.fillText("Pdv :"+monDresseur.dresseur.getPokemon(0).pdv+"/"+monDresseur.dresseur.getPokemon(0).pdvMax,500,450,200);
-		monDresseur.dresseur.getPokemon(0).getBackSprite();
+		context.fillText(this.player.dresseur.getPokemon(0).getName(),450,400);
+		context.fillText("Niveau :"+this.player.dresseur.getPokemon(0).lvl,500,430);
+		context.fillText("Pdv :"+this.player.dresseur.getPokemon(0).pdv+"/"+this.player.dresseur.getPokemon(0).pdvMax,500,450,200);
+		this.player.dresseur.getPokemon(0).getBackSprite();
 
 		context.fillStyle = "#aaaaaa";
 		context.fillRect(50,450,800,30+(this.infos.length*25));
@@ -256,12 +257,12 @@ Combat.prototype.gestionEvenement = function(touche){
 	if(this.mode == CombatMode.discussions_end){
 		if(touche == BUTTON.CONFIRM){
 			if(!this.joueurs[1].isSauvage()){//si c est un dresseur
-				this.joueurs[1].parler();
-				monDresseur.mode = 1;
-				monDresseur.hudMode = 1;
+				this.joueurs[1].parler(this.player);
+				this.player.mode = 1;
+				this.player.hudMode = 1;
 			}
 			else{ //s'il s agit d un pokemon sauvage
-				monDresseur.mode = 0;
+				this.player.mode = 0;
 			}
 		}
 	}

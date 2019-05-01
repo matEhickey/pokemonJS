@@ -1,4 +1,3 @@
-import {monDresseur} from './globals';
 import render from '../gameloop/main';
 
 function getCanvas(){
@@ -8,8 +7,8 @@ function getContext(){
     return document.getElementById("ecran").getContext("2d");
 }
 
-function animate(){
-	setInterval(function () {render()}, monDresseur.fps);
+function animate(player){
+	setInterval(function () {render(player)}, player.fps);
 }
 
 export {getCanvas, getContext, animate};
