@@ -1,6 +1,7 @@
 import {monDresseur, combat, pokedex} from '../utils/globals';
 import BUTTON from '../gameloop/touches';
 import Combat from '../combat/Combat';
+
 import PlayerMode from '../modes/PlayerMode';
 import PlayerHudMode from '../modes/PlayerHudMode';
 
@@ -63,14 +64,14 @@ export default function applyHUD_event(touche){
     case(PlayerHudMode.MENUINVENTAIRE):
       switch(touche){
         case(BUTTON.BACK):
-          monDresseur.hudMode = 0;
+          monDresseur.hudMode = PlayerHudMode.PAUSE;
         break;
       }
       break;
     case(PlayerHudMode.MENUDRESSEUR):
       switch(touche){
         case(BUTTON.BACK):
-          monDresseur.hudMode = 0;
+          monDresseur.hudMode = PlayerHudMode.PAUSE;
         break;
       }
       break;
@@ -83,7 +84,7 @@ export default function applyHUD_event(touche){
           monDresseur.save();
         break;
         case(BUTTON.BACK):
-          monDresseur.hudMode = 0;
+          monDresseur.hudMode = PlayerHudMode.PAUSE;
         break;
       }
       break;
@@ -93,7 +94,7 @@ export default function applyHUD_event(touche){
           changeColorHUD()
         break;
         case(BUTTON.BACK):
-          monDresseur.hudMode = 0;
+          monDresseur.hudMode = PlayerHudMode.PAUSE;
         break;
         case(BUTTON.PAUSE):
           monDresseur.couleurPrefere = "#bbbbbb";
@@ -105,10 +106,10 @@ export default function applyHUD_event(touche){
       monDresseur.dresseur.adversaire = null;
       break;
     case(PlayerHudMode.INFO):
-      monDresseur.mode = 0;
+      monDresseur.mode = PlayerHudMode.PAUSE;
     break;
     case(PlayerHudMode.SUCCESS):
-      monDresseur.mode = 0;
+      monDresseur.mode = PlayerHudMode.PAUSE;
       monDresseur.dresseur.adversaire = null;
       break;
     case(PlayerHudMode.WAIT):
@@ -119,14 +120,14 @@ export default function applyHUD_event(touche){
 function handleMainMenuEvent(touche){
   switch(touche){
     case(BUTTON.PAUSE):
-      monDresseur.mode = 0;
+      monDresseur.mode = PlayerHudMode.PAUSE;
       break;
     case(BUTTON.CONFIRM):
       //valide
       monDresseur.menu.valider();
       break;
     case(BUTTON.BACK):
-      monDresseur.mode = 0;
+      monDresseur.mode = PlayerHudMode.PAUSE;
       break;
     case(BUTTON.UP):
       monDresseur.menu.selectM();
@@ -140,7 +141,7 @@ function handleMainMenuEvent(touche){
 function handlePokedexEvent(touche){
   switch(touche){
     case(BUTTON.BACK):
-      monDresseur.hudMode = 0;
+      monDresseur.hudMode = PlayerHudMode.PAUSE;
     break;
     case(BUTTON.UP):
       pokedex.getPokeInf()
@@ -161,15 +162,16 @@ function handleCarteEvent(touche){
     break;
     case(BUTTON.CONFIRM)://valider
       monDresseur.carte.voyage();
+      monDresseur.mode = PlayerMode.MAP;
     break;
     case(BUTTON.BACK)://retour
-      monDresseur.hudMode = 0;
+      monDresseur.hudMode = PlayerHudMode.PAUSE;
     break;
   }
 }
 
 function sendDresseurToHealthCenter(){
-  monDresseur.mode = 0;
+  monDresseur.mode = PlayerHudMode.PAUSE;
   monDresseur.dresseur.aversaire = null;
   monDresseur.setPosX(-72);//---> devant centre pokemon
   monDresseur.setPosY(6);
