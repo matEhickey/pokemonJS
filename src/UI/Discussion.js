@@ -9,8 +9,6 @@ class Discussion {
     this.showCount = 0;
 
     this.context = getContext();
-
-    // this.showCurrentMessage = this.showCurrentMessage.bind(this);
   }
   increaseMessage(){
     this.showCount += 1;

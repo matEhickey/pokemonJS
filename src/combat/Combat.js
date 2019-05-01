@@ -117,7 +117,7 @@ Combat.prototype.runTour = function(){
 	if(this.mode == CombatMode.menuSelection){
 
 	}
-	console.log("mode  "+this.mode);
+	// console.log("mode  "+this.mode);
 	// console.log("time  "+this.time);
 }
 

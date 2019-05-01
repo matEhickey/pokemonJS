@@ -70,7 +70,7 @@ The goal of the current iteration is:
 - animations  
 - better game-designer tools (to produce content)
 - reshape and upgrade of the game engine (event & rendering & colisions) system  
-
+- e2e testing / try screenshot matching home-made or via logs
 ![vue](assets/imgs/readme/vue.png)  
 
 ## Combats

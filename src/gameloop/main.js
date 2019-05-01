@@ -32,22 +32,20 @@ export default function render(){	//Moteur d affichage
 			}//fin si mode != combat
 
 		switch(monDresseur.mode){ //--------------------------------------------------Affichage
-			case(0):
+			case(0):// map
 				monDresseur.grille.checkZonesDresseurs();
 				monDresseur.grille.checkWalkOnPorte();
 
 			break;
 			case(1)://hud
-
 				switch(monDresseur.hudMode){
 					case(0)://pause
-						//console.log("jeu en pause");
 						monDresseur.menu.afficheMenu();
 
 					break;
 
 					case(1)://discussion
-						monDresseur.menu.showConversation()
+						monDresseur.menu.showConversation();
 					break;
 					case(2)://mode pokedex
 						monDresseur.menu.displayPokedex();

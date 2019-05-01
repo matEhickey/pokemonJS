@@ -296,12 +296,12 @@ PlayerController.prototype.actions = function(touche){
 
 				   		if(typeof(dress)=="object"){
 				   			if(!dress.isInfirmiere()){
+									console.log("Action: Parle avec dresseur")
 					   			this.setAdv(dress);
 						   		this.getAdv().parler();
-						   		this.mode = PlayerMode.MAP;
+						   		this.mode = PlayerMode.HUD;
 						   		this.hudMode = PlayerHudMode.DISCUSSION;
 						   	}
-
 				   		}
 				   		else{
 				   			var pnj = this.grille.getPNJ(this.nextCaseX,this.nextCaseY);
