@@ -4,45 +4,38 @@ import {getContext} from '../utils/render_utils';
 import allPokemon from "../../assets/imgs/all-pokemon.png";
 import backSprites from "../../assets/imgs/back_sprites.png";
 
-function Pokedex(){
-	this.pokemons = ["empty"];//pour retrouver les poke simplement grace a leur num, il faut commencer par un vide
-	this.index = 1; //pour la visualisation
-}
+class Pokedex {
+	constructor(){
+		this.pokemons = ["empty"];//pour retrouver les poke simplement grace a leur num, il faut commencer par un vide
+		this.index = 1; //pour la visualisation
 
-
-Pokedex.prototype.addPPokemon = function(pokemon){	//	pokedexPokemon  (pp) != pokemon
-	this.pokemons.push(pokemon);
-}
-
-
-
-Pokedex.prototype.getPokeInf = function(){
-	this.index--;
-	if(this.index < 1){
-		this.index = this.pokemons.length-1;
+		this.chargePokedex();
 	}
-}
-
-Pokedex.prototype.getPokeSup = function(){
-	this.index++;
-	if(this.index >= this.pokemons.length){
-		this.index = 1;
+	addPPokemon(pokemon){	//	pokedexPokemon  (pp) != pokemon
+		this.pokemons.push(pokemon);
 	}
-}
-
-Pokedex.prototype.getAttaques= function(pokemon){
-	try{
+	getPokeInf(){
+		this.index--;
+		if(this.index < 1){
+			this.index = this.pokemons.length-1;
+		}
+	}
+	getPokeSup(){
+		this.index++;
+		if(this.index >= this.pokemons.length){
+			this.index = 1;
+		}
+	}
+	getAttaques(pokemon){
 		return(this.pokemons[pokemon.num].getAttaques(pokemon.lvl));
 	}
-	catch(e){
-		//console.log(e);
-		return([]);
+	affichePokemon(){
+		this.pokemons[this.index].afficheToi();
+	}
+	getPoke(numero){
+		return(this.pokemons[numero]);
 	}
 }
-
-
-
-//pokemon1.addAttaque("nom",niveau,type,puissance,precision,pp,description);
 
 Pokedex.prototype.chargePokedex = function(){
 	var pokemon1=new PokedexPokemon(1,"Bulbizarre","Plante/Poison","Au matin de sa vie, la graine sur son dos lui fournit les éléments dont il a besoin pour grandir.",2,16);
@@ -72,7 +65,7 @@ Pokedex.prototype.chargePokedex = function(){
 	this.addPPokemon(new PokedexPokemon(11,"Chrysacier","Insecte","Son corps frêle est protégé par sa carapace d'acier. Il encaisse les coups durs en attendant d'évoluer.",12,10));
 	this.addPPokemon(new PokedexPokemon(12,"Papilusion","Insecte/Vol","Il raffole du nectar des fleurs. Il est capable de repérer la plus petite quantité de pollen.",0,0));
 	this.addPPokemon(new PokedexPokemon(13,"Aspicot","Insecte/Poison","Il mange chaque jour son poids en feuilles. Il utilise l'aiguillon sur sa tête pour repousser l'ennemi.",14,7));
-	this.addPPokemon(new PokedexPokemon(14,"Coconfort","Insecte/Poison","Il se cache sous les feuilles et les branches pour fuir les prédateurs en attendant d'évoluer.",0,10));
+	this.addPPokemon(new PokedexPokemon(14,"Coconfort","Insecte/Poison","Il se cache sous les feuilles et les branches pour fuir les prédateurs en attendant d'évoluer.",15,10));
 	this.addPPokemon(new PokedexPokemon(15,"Dardagnan","Insecte/Poison","Il virevolte rapidement autour de l'ennemi et frappe de son dard empoisonné avant de décamper.",0,0));
 
 	this.addPPokemon(new PokedexPokemon(16,"Roucool","Normal/Vol","",17,8));
@@ -287,162 +280,127 @@ Pokedex.prototype.chargePokedex = function(){
 
 }
 
-Pokedex.prototype.affichePokemon = function(){
-
-
-	this.pokemons[this.index].afficheToi();
-}
-
-Pokedex.prototype.getPoke = function(numero){
-	return(this.pokemons[numero]);
-}
-
 export default Pokedex;
 
 
-
-
-
 //--------------------------------------------------
-function PokedexPokemon(num,nom,type,desc,evol,lvlEvol){		//pour differencier entre un pokemon theorique et un pokemon capturé ou rencontré, et pour alleger les objets pokemons
+class PokedexPokemon {
+	constructor(num,nom,type,desc,evol,lvlEvol){		//pour differencier entre un pokemon theorique et un pokemon capturé ou rencontré, et pour alleger les objets pokemons
+		this.numero=num;  //numerotation officielle, pour facilement utiliser les sprites, et faciliter debug
+		this.nom=nom;
+		this.type=type;
+		this.description=desc;
+		this.attaques = [];
+		this.evolution=evol;		//numero
+		this.niveauEvolution=lvlEvol;	//si 0, pas d évolution
 
-	this.numero=num;  //numerotation officielle, pour facilement utiliser les sprites, et faciliter debug
-	this.nom=nom;
-	this.type=type;
-	this.description=desc;
-	this.attaques = [];
-	this.evolution=evol;		//numero
-	this.niveauEvolution=lvlEvol;	//si 0, pas d évolution
-
-
-	this.addAttaque(new Attaque("Charge",0,0,40,100,20));
-	this.addAttaque(new Attaque("Frenesie",0,0,20,100,20));
-	this.addAttaque(new Attaque("Mimiqueue",0,0,0,100,30));
-	this.addAttaque(new Attaque("Belier",0,0,90,85,20));
-	this.addAttaque(new Attaque("Damocle",0,0,120,100,20));
-	this.addAttaque(new Attaque("Mimiqueue",0,0,0,100,30));
-	this.addAttaque(new Attaque("Rugissement",0,0,50,100,20));
-	this.addAttaque(new Attaque("Camaraderie",0,0,0,0,20));
-	this.addAttaque(new Attaque("Vive Attaque",12,0,40,100,30));
-	this.addAttaque(new Attaque("Griffe Acier",0,0,50,95,35));
-	this.addAttaque(new Attaque("Griffe",0,0,40,100,35));
-
-
-	if(this.isType("Plante")){
-		this.addAttaque(new Attaque("Canon Graine",0,0,80,100,15));
-		this.addAttaque(new Attaque("Fouet lianes",10,1,45,100,25));
-
-		this.addAttaque(new Attaque("Tranch Herbe",20,1,55,95,25));
-
+		this.chargeGlobalAttaques();
+		this.chargeAttaquesByTypes();
 	}
 
-	if(this.isType("Feu")){
-
-		this.addAttaque(new Attaque("Flameche",4,3,40,100,25));
-		this.addAttaque(new Attaque("Lance Flame",13,3,90,100,25));
-		this.addAttaque(new Attaque("Para spore",23,3,90,75,15));
-	}
-	if(this.isType("Poison")){
-		this.addAttaque(new Attaque("Para spore",3,4,10,75,35));
-		this.addAttaque(new Attaque("Doux Parfum",7,4,0,100,20));
-		this.addAttaque(new Attaque("Poudre Dodo",15,4,0,75,15));
-		this.addAttaque(new Attaque("Para spore",17,4,40,75,15));
-	}
-	if(this.isType("Eau")){
-		this.addAttaque(new Attaque("Ecume",5,2,20,75,35));
-		this.addAttaque(new Attaque("Pistolet a O",13,2,50,80,15));
-		this.addAttaque(new Attaque("Hydro Canon",23,4,95,85,5));
-	}
-	if(this.isType("Vol")){
-		this.addAttaque(new Attaque("Cru Aile",23,0,10,75,15));
-	}
-	if(this.isType("Electr")){
-		this.addAttaque(new Attaque("Eclair",0,4,40,100,30));
-		this.addAttaque(new Attaque("Cage Eclair",8,4,0,100,20));
-	}
-	if(this.isType("Roche")){
-		this.addAttaque(new Attaque("Poli Roche",4,0,40,100,30));
-		this.addAttaque(new Attaque("Poli Roche",4,0,40,100,30));
+	chargeGlobalAttaques(){
+		this.addAttaque(new Attaque("Charge",0,0,40,100,20));
+		this.addAttaque(new Attaque("Frenesie",0,0,20,100,20));
+		this.addAttaque(new Attaque("Mimiqueue",0,0,0,100,30));
+		this.addAttaque(new Attaque("Belier",0,0,90,85,20));
+		this.addAttaque(new Attaque("Damocle",0,0,120,100,20));
+		this.addAttaque(new Attaque("Mimiqueue",0,0,0,100,30));
+		this.addAttaque(new Attaque("Rugissement",0,0,50,100,20));
+		this.addAttaque(new Attaque("Camaraderie",0,0,0,0,20));
+		this.addAttaque(new Attaque("Vive Attaque",12,0,40,100,30));
+		this.addAttaque(new Attaque("Griffe Acier",0,0,50,95,35));
+		this.addAttaque(new Attaque("Griffe",0,0,40,100,35));
 	}
 
-
-
-
-
-
-
-
-}
-PokedexPokemon.prototype.afficheToi = function(){
-	var context = getContext();
-	context.fillStyle="#000000";
-	context.font="20px Georgia";
-
-
-
-	context.fillText("Nom : "+this.nom,65,270);
-	context.fillText("Type : "+this.type,65,300);
-	context.fillText("Descr : "+this.description,65,330,750);
-
-	var allPokemon_img = document.createElement("img");
-	allPokemon_img.src = allPokemon
-	context.drawImage(allPokemon_img,80*this.getGTX(),80*this.getGTY(),80, 80, 500,100,150,150);
-
-}
-
-PokedexPokemon.prototype.afficheToiCombat = function(){
-	var context = getContext();
-	var allPokemon_img = document.createElement("img");
-	allPokemon_img.src = allPokemon
-	context.drawImage(allPokemon_img,80*this.getGTX(),80*this.getGTY(), 80, 80, 600,100,200,200);
-
-}
-PokedexPokemon.prototype.afficheToiAt = function(x,y){
-	var context = getContext();
-	var allPokemon_img = document.createElement("img");
-	allPokemon_img.src = allPokemon
-	context.drawImage(allPokemon_img,80*this.getGTX(),80*this.getGTY(), 80, 80, x,y,150,150);
-}
-
-
-PokedexPokemon.prototype.getBackSprite= function(){
-	var context = getContext();
-	var backSprites_img = document.createElement("img");
-	backSprites_img.src = backSprites
-	context.drawImage(backSprites_img,80*this.getGTX(),80*this.getGTY(), 80, 80, 100,300,200,200);
-}
-
-PokedexPokemon.prototype.getGTX = function(){
-	return((this.numero-1)%25);
-}
-
-PokedexPokemon.prototype.getGTY = function(){
-	return(Math.floor((this.numero-1)/25));
-}
-
-PokedexPokemon.prototype.getName = function(){
-	return(this.nom);
-}
-
-PokedexPokemon.prototype.addAttaque= function(att){
-	this.attaques.push(att);
-}
-
-
-
-PokedexPokemon.prototype.getAttaques= function(niveau){
-	var tab = [];
-	for(var i = 0; i< this.attaques.length ;i++){
-		if(niveau >= this.attaques[i].lvl){
-			tab.push(this.attaques[i]);
+	chargeAttaquesByTypes(){
+		if(this.isType("Plante")){
+			this.addAttaque(new Attaque("Canon Graine",0,0,80,100,15));
+			this.addAttaque(new Attaque("Fouet lianes",10,1,45,100,25));
+			this.addAttaque(new Attaque("Tranch Herbe",20,1,55,95,25));
+		}
+		if(this.isType("Feu")){
+			this.addAttaque(new Attaque("Flameche",4,3,40,100,25));
+			this.addAttaque(new Attaque("Lance Flame",13,3,90,100,25));
+			this.addAttaque(new Attaque("Para spore",23,3,90,75,15));
+		}
+		if(this.isType("Poison")){
+			this.addAttaque(new Attaque("Para spore",3,4,10,75,35));
+			this.addAttaque(new Attaque("Doux Parfum",7,4,0,100,20));
+			this.addAttaque(new Attaque("Poudre Dodo",15,4,0,75,15));
+			this.addAttaque(new Attaque("Para spore",17,4,40,75,15));
+		}
+		if(this.isType("Eau")){
+			this.addAttaque(new Attaque("Ecume",5,2,20,75,35));
+			this.addAttaque(new Attaque("Pistolet a O",13,2,50,80,15));
+			this.addAttaque(new Attaque("Hydro Canon",23,4,95,85,5));
+		}
+		if(this.isType("Vol")){
+			this.addAttaque(new Attaque("Cru Aile",23,0,10,75,15));
+		}
+		if(this.isType("Electr")){
+			this.addAttaque(new Attaque("Eclair",0,4,40,100,30));
+			this.addAttaque(new Attaque("Cage Eclair",8,4,0,100,20));
+		}
+		if(this.isType("Roche")){
+			this.addAttaque(new Attaque("Poli Roche",4,0,40,100,30));
+			this.addAttaque(new Attaque("Poli Roche",4,0,40,100,30));
 		}
 	}
-	return(tab);
-}
 
-PokedexPokemon.prototype.isType=function(type){	//verifie si un pokedexPokemon est de type en faisant une recherche dans le mot (car des fois le type est genre Plante/Poison)
-	var str1 = this.type;
-	var res = str1.replace(type,"fezef");//remplace le mot contenu dans type pour verifier l egalité plus tard
-	//console.log(str1+" est de type "+type+ " ? " + !( str1 == res));
-	return(!( str1 == res));
+	afficheToi(){
+		var context = getContext();
+		context.fillStyle="#000000";
+		context.font="20px Georgia";
+
+		context.fillText("Nom : "+this.nom,65,270);
+		context.fillText("Type : "+this.type,65,300);
+		context.fillText("Descr : "+this.description,65,330,750);
+
+		var allPokemon_img = document.createElement("img");
+		allPokemon_img.src = allPokemon
+		context.drawImage(allPokemon_img,80*this.getGTX(),80*this.getGTY(),80, 80, 500,100,150,150);
+	}
+
+	afficheToiCombat(){
+		var context = getContext();
+		var allPokemon_img = document.createElement("img");
+		allPokemon_img.src = allPokemon
+		context.drawImage(allPokemon_img,80*this.getGTX(),80*this.getGTY(), 80, 80, 600,100,200,200);
+	}
+	afficheToiAt(x,y){
+		var context = getContext();
+		var allPokemon_img = document.createElement("img");
+		allPokemon_img.src = allPokemon
+		context.drawImage(allPokemon_img,80*this.getGTX(),80*this.getGTY(), 80, 80, x,y,150,150);
+	}
+	getBackSprite(){
+		var context = getContext();
+		var backSprites_img = document.createElement("img");
+		backSprites_img.src = backSprites
+		context.drawImage(backSprites_img,80*this.getGTX(),80*this.getGTY(), 80, 80, 100,300,200,200);
+	}
+	getGTX(){
+		return((this.numero-1)%25);
+	}
+	getGTY(){
+		return(Math.floor((this.numero-1)/25));
+	}
+	getName(){
+		return(this.nom);
+	}
+	addAttaque(att){
+		this.attaques.push(att);
+	}
+	getAttaques(niveau){
+		var tab = [];
+		for(var i = 0; i< this.attaques.length ;i++){
+			if(niveau >= this.attaques[i].lvl){
+				tab.push(this.attaques[i]);
+			}
+		}
+		return(tab);
+	}
+	isType(type){	//verifie si un pokedexPokemon est de type en faisant une recherche dans le mot (car des fois le type est genre Plante/Poison)
+		return(this.type.includes(type));
+	}
 }

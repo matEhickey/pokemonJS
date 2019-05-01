@@ -139,7 +139,6 @@ Pokemon.prototype.addExperience= function(expe,combat){
 	if(this.exp >= this.expMax){
 		this.monteNiveauCombat(combat);
 	}
-
 }
 
 Pokemon.prototype.monteNiveauCombat= function(combat){   //pour afficher les infos
@@ -172,10 +171,15 @@ Pokemon.prototype.monteNiveau= function(){   //pour afficher les infos
 	this.expMax += this.lvl*this.lvl*this.lvl*10;
 
 	if(this.lvl >= pokedex.pokemons[this.num].niveauEvolution && pokedex.pokemons[this.num].niveauEvolution>0 ){
-
 		var name = this.getName();
-		this.num = pokedex.pokemons[this.num].evolution;
+		const evolutionNumber = pokedex.pokemons[this.num].evolution
 
+		if(evolutionNumber > 0){
+			this.num = evolutionNumber;
+		}
+		else{
+			console.warn(`Warning: pokemon (${this.num} : ${this.nom}) have a niveauEvolution set but no evolution   [Pokemon.monteNiveau]`)
+		}
 	}
 
 	// ameliore les stats
@@ -184,7 +188,6 @@ Pokemon.prototype.monteNiveau= function(){   //pour afficher les infos
 	this.def = Math.round(this.def * 1.2);
 	this.agi = Math.round(this.agi * 1.1);
 	this.getAttaques();
-
 }
 
 
@@ -199,11 +202,9 @@ Pokemon.prototype.save=function(dresseur_num){
 }
 
 
-
-
-
 function GenereUnPokemon(niveau){
-	var num = Math.floor(Math.random()*149);
+	var num = Math.floor(Math.random()*148)+1;
+
 	var pokemon = new Pokemon(num,5,0,100,10,10,10)
 	while(pokemon.lvl<niveau){
 		pokemon.monteNiveau();

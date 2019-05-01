@@ -22,6 +22,7 @@ export default function applyHUD_event(touche){
             monDresseur.calculNextCase();
             var nextCaseX = monDresseur.nextCaseX;
             var nextCaseY = monDresseur.nextCaseY;
+
             if(monDresseur.grille.getDresseur(nextCaseX,nextCaseY)){	//on parlait directement au dresseur pour l attaquer
               if(!monDresseur.grille.getDresseur(nextCaseX,nextCaseY).asPerdu){
                 monDresseur.mode = PlayerMode.FIGHT;
@@ -101,13 +102,14 @@ export default function applyHUD_event(touche){
       break;
     case(PlayerHudMode.FAIL):
       sendDresseurToHealthCenter()
+      monDresseur.dresseur.adversaire = null;
       break;
     case(PlayerHudMode.INFO):
       monDresseur.mode = 0;
     break;
     case(PlayerHudMode.SUCCESS):
       monDresseur.mode = 0;
-      monDresseur.dresseur.adversaire = null
+      monDresseur.dresseur.adversaire = null;
       break;
     case(PlayerHudMode.WAIT):
       break;

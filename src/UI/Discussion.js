@@ -20,7 +20,14 @@ class Discussion {
   	this.context.fillStyle = monDresseur.couleurPrefere;
   	this.context.fillRect(50,480,800,150);
   	this.context.fillStyle="#ffffff";
-  	this.context.fillText(this.nom + " : " + this.messages[this.showCount], 60,510,780);
+  	this.context.fillText(`${this.nom} : `, 60,510,780);
+
+    const message = this.messages[this.showCount];
+    const lineheight = 25;
+    // split message by \n
+    var lines = message.split('\n');
+    for (var i = 0; i<lines.length; i++)
+      this.context.fillText(lines[i], 80, 550 + (i*lineheight) );
   }
 }
 
