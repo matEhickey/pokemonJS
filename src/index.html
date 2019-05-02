@@ -8,43 +8,41 @@
 	</head>
 
 	<body>
-		<div>
-			<h2 class="hideIfIframed">My Pocket Monster Fan Art</h2>
+		<h2 class="hideIfIframed">My Pocket Monster Fan Art</h2>
 
-			<canvas id="ecran" width="900" height="680" ></canvas>
+		<canvas id="ecran" width="900" height="680" ></canvas>
 
-			<div class="hideIfIframed">
-				<h3>Commandes</h3>
-				<hr />
-				<ul>
-					<li>Flèches directionnelles = se déplacer</li>
-					<li>a = Action (parler, lire, valider, ..)</li>
-					<li>b = Retour</li>
-					<li>p = Pause/Menu </li>
-					<li><button onclick="window.stopMusique()" id="buttonMusique">Musique ON</button></li>
-				</ul>
+		<div class="hideIfIframed">
+			<h3>Commandes</h3>
+			<hr />
+			<ul>
+				<li>Flèches directionnelles = se déplacer</li>
+				<li>a = Action (parler, lire, valider, ..)</li>
+				<li>b = Retour</li>
+				<li>p = Pause/Menu </li>
+				<li><button onclick="window.stopMusique()" id="buttonMusique">Musique ON</button></li>
+			</ul>
 
-				<hr />
+			<hr />
 
-				<strong>Position</strong>
-				<p id="posX"></p>
-				<p id="posY"></p>
+			<strong>Position</strong>
+			<p id="posX"></p>
+			<p id="posY"></p>
 
-			</div>
+		</div>
 
-			<div id="debug">
-				<p id="ajoutCollision"><p>
-			</div>
-
+		<div id="debug">
+			<p id="ajoutCollision"><p>
 		</div>
 	</body>
 
 	<script>
 		if(location.search === "?framed"){
+			console.log("framed mode")
 			// hide all but the canvas
 			var hideElements = document.getElementsByClassName("hideIfIframed");
 			for (let elem of hideElements) {
-				elem.disabled = true;
+				elem.setAttribute('hidden', true)
 			}
 
 			// remove the 8px margin of many browsers
