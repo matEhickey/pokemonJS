@@ -1,4 +1,4 @@
-var PlayerHudMode = {}
+const PlayerHudMode = {};
 PlayerHudMode.PAUSE = 0;
 PlayerHudMode.DISCUSSION = 1;
 PlayerHudMode.POKEDEX = 2;

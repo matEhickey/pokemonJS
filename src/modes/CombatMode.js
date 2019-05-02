@@ -1,4 +1,4 @@
-var CombatMode = {}
+const CombatMode = {};
 CombatMode.dresseurs = 1; // juste les dresseurs,
 CombatMode.pokemons = 2; // juste les pokemons,
 CombatMode.discussions = 3; // discussion (ex:pokemon gagne pts, pokemon recoit degats) ,

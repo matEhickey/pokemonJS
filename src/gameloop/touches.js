@@ -1,4 +1,4 @@
-var BUTTON = {};
+const BUTTON = {};
 BUTTON.CONFIRM = 65;
 BUTTON.BACK = 66;
 BUTTON.PAUSE = 80;

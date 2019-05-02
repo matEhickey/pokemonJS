@@ -8,7 +8,7 @@ function releaseKey(player, event){
 	player.dresseur.position = 5;
 }
 
-function init_inputs(player){
+function initInput(player){
 	window.addEventListener("keydown", function(e) {
 	    // space and arrow keys
 	    if([BUTTON.UP, BUTTON.DOWN, BUTTON.LEFT, BUTTON.RIGHT, BUTTON.PAUSE, BUTTON.CONFIRM, BUTTON.BACK, BUTTON.C, BUTTON.H].indexOf(e.keyCode) > -1) {	//pour les touches directionnelles
@@ -23,4 +23,4 @@ function init_inputs(player){
 }
 
 
-export default init_inputs;
+export default initInput;
