@@ -1,6 +1,4 @@
-import {monDresseur} from '../utils/globals';
-
-var Porte = function(posX,posY,joueurX,joueurY,destination, monDresseur){
+var Porte = function(posX,posY,joueurX,joueurY,destination){
 	this.posX=posX;
 	this.posY=posY;
 	this.tailleX=5;
@@ -10,10 +8,10 @@ var Porte = function(posX,posY,joueurX,joueurY,destination, monDresseur){
 	this.destination=destination;
 }
 
-Porte.prototype.walkOn = function(){
+Porte.prototype.walkOn = function(player){
 	var retour = false;
-	if((monDresseur.getPosX()>=this.posX) && (monDresseur.getPosX()<=(this.posX+this.tailleX)) ){
-		if((monDresseur.getPosY()>=this.posY) && (monDresseur.getPosY()<=(this.posY+this.tailleY)) ){
+	if((player.getPosX()>=this.posX) && (player.getPosX()<=(this.posX+this.tailleX)) ){
+		if((player.getPosY()>=this.posY) && (player.getPosY()<=(this.posY+this.tailleY)) ){
 			retour = true;
 		}
 	}
@@ -22,51 +20,39 @@ Porte.prototype.walkOn = function(){
 
 
 Porte.prototype.setLargeur = function(value){
-
 	this.tailleX = value;
-
 	return(this);
 }
 
 
 
-Porte.prototype.rejoindreDestination = function(){
-	// console.log("voyage");
+Porte.prototype.rejoindreDestination = function(player){
+	console.log(`Voyage to: '${this.destination}'`);
 	switch(this.destination){
 		case("foret1"):
-			monDresseur.setGrille(0);
-			monDresseur.dresseur.grille = 0;
-
-
+			player.setGrille(0);
 		break;
 		case("ville2"):
-			monDresseur.setGrille(1);
-			monDresseur.dresseur.grille = 1;
-
+			player.setGrille(1);
 		break;
 		case("centreP1"):	//foret1
-			monDresseur.setGrille(2);
-			monDresseur.dresseur.grille = 2;
+			player.setGrille(2);
 		break;
 		case("centreP2"):	//argenta
-			monDresseur.setGrille(3);
-			monDresseur.dresseur.grille = 3;
+			player.setGrille(3);
 		break;
 		case("argenta"):
-			monDresseur.setGrille(4);
-			monDresseur.dresseur.grille = 4;
+			player.setGrille(4);
 		break;
 		case("pokeshopArgenta"):
-			monDresseur.setGrille(5);
-			monDresseur.dresseur.grille = 5;
+			player.setGrille(5);
 		break;
 		case("areneArgenta"):
-			monDresseur.setGrille(6);
-			monDresseur.dresseur.grille = 6;
+			player.setGrille(6);
 		break;
 	}
-	monDresseur.setPosX(this.joueurX);
-	monDresseur.setPosY(this.joueurY);
+	player.setPosX(this.joueurX);
+	player.setPosY(this.joueurY);
 }
 
 export default Porte;

@@ -1,10 +1,11 @@
 import Porte from '../map/Porte';
-import {monDresseur} from '../utils/globals';
 import {getContext} from '../utils/render_utils';
 import pokeworldmap from '../../assets/imgs/pokeworldmap.png';
 
 
-var Carte = function(){
+var Carte = function(player){
+	this.player = player;
+
 	this.endroits = [];
 	this.selection = 0;
 }
@@ -12,7 +13,7 @@ var Carte = function(){
 Carte.prototype.displayCarte = function(){
 	var context = getContext();
 
-	context.fillStyle=monDresseur.couleurPrefere;
+	context.fillStyle = this.player.couleurPrefere;
 	context.fillRect(50,50,800,550);
 	context.fillStyle="#000000";
 	context.font="20px Georgia";
@@ -45,8 +46,8 @@ Carte.prototype.selectM = function(){
 	}
 }
 
-Carte.prototype.voyage = function(){
-	this.endroits[this.selection].rejoindreDestination();
+Carte.prototype.voyage = function(player){
+	this.endroits[this.selection].rejoindreDestination(player);
 }
 
 
@@ -60,8 +61,8 @@ var EndroitCarte = function(nom,x,y,porte){
 	this.porte = porte;//porte qui n a pas de coordonnées sur la grille
 }
 
-EndroitCarte.prototype.rejoindreDestination= function(){
-	this.porte.rejoindreDestination();
+EndroitCarte.prototype.rejoindreDestination= function(player){
+	this.porte.rejoindreDestination(player);
 }
 
 
@@ -73,12 +74,11 @@ EndroitCarte.prototype.displayOnCarte = function(){
 
 }
 
-function ChargeCarte(carte){
-	carte.addEndroit(new EndroitCarte("Foret",240,220,new Porte(0,0,0,0,"foret1", monDresseur)));
-	carte.addEndroit(new EndroitCarte("Ville",320,295,new Porte(-102,30,712,692,"ville2", monDresseur)));
-	carte.addEndroit(new EndroitCarte("Argenta",310,395,new Porte(-102,30,18,198,"argenta", monDresseur)));
-	carte.addEndroit(new EndroitCarte("Arene Argenta (debug)",310,395,new Porte(-102,30,-60,42,"areneArgenta", monDresseur)));
-	return(carte);
+function ChargeCarte(player){
+	player.carte.addEndroit(new EndroitCarte("Foret",240,220,new Porte(0,0,0,0,"foret1", player)));
+	player.carte.addEndroit(new EndroitCarte("Ville",320,295,new Porte(-102,30,712,692,"ville2", player)));
+	player.carte.addEndroit(new EndroitCarte("Argenta",310,395,new Porte(-102,30,18,198,"argenta", player)));
+	player.carte.addEndroit(new EndroitCarte("Arene Argenta (debug)",310,395,new Porte(-102,30,-60,42,"areneArgenta", player)));
 }
 
 

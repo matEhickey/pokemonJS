@@ -1,4 +1,3 @@
-import {monDresseur} from '../utils/globals';
 import Combat from './Combat';
 import { GenereUnPokemon } from '../combat/Pokemon';
 
@@ -39,13 +38,13 @@ PokemonSauvage.prototype.isSauvage=function(){//pendant un combat, un pokemon sa
 
 
 
-function CombatContreSauvage(zone){
+function CombatContreSauvage(player, zone){
 	var poke = GenereUnPokemon(zone);
 	//alert("combat niv: "+zone+"  contre un "+poke.getName());
 	var sauvage = new PokemonSauvage(poke);
-	monDresseur.setAdv(sauvage);
-	monDresseur.mode = 2;
-	monDresseur.combat = new Combat();
+	player.setAdv(sauvage);
+	player.mode = 2;
+	player.combat = new Combat(player);
 }
 
 export default PokemonSauvage;
