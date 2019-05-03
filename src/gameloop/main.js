@@ -20,13 +20,7 @@ export default function render(player) { // Moteur d affichage
 
 	if (player.mode !== 2) { // si on est pas en combat
 		// test colision nextCase
-		player.calculNextCase();
-		const { nextCaseX, nextCaseY } = { ...player };
-
-		player.walkable = player.grille.isWalkable(nextCaseX, nextCaseY);
-
-		player.goToNextPosition();
-
+		player.avance();
 		// dessine joueur
 		player.grille.drawMonDresseur();
 	}

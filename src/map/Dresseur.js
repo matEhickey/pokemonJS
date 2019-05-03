@@ -263,6 +263,8 @@ class Dresseur {
 		default:
 			console.warn('Dresseur.avance: no compatible option');
 		}
+
+		// console.log(`avance ${this.posX}:${this.posX}`);
 	}
 
 	attaqueJoueur(player) {

@@ -209,39 +209,44 @@ class PlayerController {
 		);
 	}
 
-	goToNextPosition() {
-		switch (this.getOrientation()) {
-		case (1):
-			if (this.dresseur.position !== 5 && (this.mode === 0) && this.walkable) {
-				this.setPosY(this.getPosY() + 2);
-			}
-			break;
-		case (2):
-			if (this.dresseur.position !== 5 && (this.mode === 0) && this.walkable) {
-				this.setPosX(this.getPosX() - 2);
-			}
-			break;
-		case (3):
-			if (this.dresseur.position !== 5 && (this.mode === 0) && this.walkable) {
-				this.setPosX(this.getPosX() + 2);
-			}
-			break;
-		case (4):
-			if (this.dresseur.position !== 5 && (this.mode === 0) && this.walkable) {
-				this.setPosY(this.getPosY() - 2);
-			}
-			break;
-		default:
-			console.warn('goToNextPosition: no corresponding orientation');
-		}
+	avance() {
+		this.calculNextCase();
+		const walkable = this.grille.isWalkable(this.nextCaseX, this.nextCaseY);
 
-		if (this.dresseur.position < 4 && (this.mode === 0)) {
-			this.dresseur.position += 1;
-		}
-		if (this.dresseur.position === 4) { this.dresseur.position = 0; }
+		if (walkable) {
+			switch (this.getOrientation()) {
+			case (1):
+				if (this.dresseur.position !== 5 && (this.mode === 0) && this.walkable) {
+					this.setPosY(this.getPosY() + 2);
+				}
+				break;
+			case (2):
+				if (this.dresseur.position !== 5 && (this.mode === 0) && this.walkable) {
+					this.setPosX(this.getPosX() - 2);
+				}
+				break;
+			case (3):
+				if (this.dresseur.position !== 5 && (this.mode === 0) && this.walkable) {
+					this.setPosX(this.getPosX() + 2);
+				}
+				break;
+			case (4):
+				if (this.dresseur.position !== 5 && (this.mode === 0) && this.walkable) {
+					this.setPosY(this.getPosY() - 2);
+				}
+				break;
+			default:
+				console.warn('PlayerController.avance: no corresponding orientation');
+			}
 
-		document.getElementById('posX').innerHTML = `X:${this.getPosX()}`;
-		document.getElementById('posY').innerHTML = `Y:${this.getPosY()}`;
+			if (this.dresseur.position < 4 && (this.mode === 0)) {
+				this.dresseur.position += 1;
+			}
+			if (this.dresseur.position === 4) { this.dresseur.position = 0; }
+
+			// document.getElementById('posX').innerHTML = `X:${this.getPosX()}`;
+			// document.getElementById('posY').innerHTML = `Y:${this.getPosY()}`;
+		}
 	}
 
 	actions(touche) {

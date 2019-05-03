@@ -73,12 +73,8 @@ class Grille {
 	}
 
 	isWalkable(posX, posY) {
-		this.objets.forEach((objet) => {
-			if (!objet.isWalkable(posX, posY)) {
-				return false;
-			}
-		});
-		return true;
+		const notWalkable = this.objets.some(objet => !objet.isWalkable(posX, posY));
+		return !notWalkable;
 	}
 
 	checkWalkOnPorte() {
