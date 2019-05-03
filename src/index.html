@@ -8,11 +8,11 @@
 	</head>
 
 	<body>
-		<h2 class="hideIfIframed">My Pocket Monster Fan Art</h2>
+		<h2 class="hideIfDevMode hideIfIframed">My Pocket Monster Fan Art</h2>
 
 		<canvas id="ecran" width="900" height="680" ></canvas>
 
-		<div class="hideIfIframed">
+		<div class="hideIfDevMode hideIfIframed">
 			<h3>Commandes</h3>
 			<hr />
 			<ul>
@@ -24,15 +24,55 @@
 			</ul>
 
 			<hr />
-
-			<strong>Position</strong>
-			<p id="posX"></p>
-			<p id="posY"></p>
-
 		</div>
 
-		<div id="debug">
-			<p id="ajoutCollision"><p>
+		<div class="grid-container hideIfNotDevMode">
+			<div class="grid-item">
+				<strong>PlayerController</strong>
+				<hr />
+				<p id="playerControllerX"></p>
+				<p id="playerControllerY"></p>
+			</div>
+
+			<div class="grid-item">
+				<strong>Cheats</strong>
+				<hr />
+				<input
+					id="input_dev_noCollision"
+					type="checkbox"
+				/> No collisions <br />
+				<input
+					id="input_dev_noAgression"
+					type="checkbox"
+				/> No agressions <br />
+			</div>
+
+			<div class="grid-item">
+				<strong>Display</strong>
+				<hr />
+				<input
+					id="input_dev_dresseursAsDots"
+					type="checkbox"
+				/> Dresseurs <br />
+				<input
+					id="input_dev_showCollision"
+					type="checkbox"
+				/> Collisions <br />
+				<input
+					id="input_dev_showPortes"
+					type="checkbox"
+				/> Portes <br />
+				<input
+					id="input_dev_showHerbes"
+					type="checkbox"
+				/> Herbes <br />
+				<input
+					id="input_dev_showBatiments"
+					type="checkbox"
+				/> Batiments
+			</div>
+
+			<p id="loaderOutput"><p>
 		</div>
 	</body>
 </html>

@@ -32,6 +32,8 @@ class Objet {
 		const { posX, posY } = player.dresseur;
 		const context = getContext();
 
+		context.fillStyle = 'rgba(0, 0, 0, 0.5)';
+
 		context.fillRect(
 			this.coordX * 3 - (posX * 3) + 340,
 			this.coordY * 3 - (posY * 3) + 280,

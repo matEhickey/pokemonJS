@@ -1,8 +1,10 @@
+import { getContext } from '../utils/render';
+
 class Herbe {
 	constructor(posX, posY, tailleX, tailleY, puissance) {
 		this.posX = posX;
-		this.tailleX = tailleX;
 		this.posY = posY;
+		this.tailleX = tailleX;
 		this.tailleY = tailleY;
 
 		this.puissance = puissance;
@@ -22,6 +24,19 @@ class Herbe {
 
 	getPuissance() {
 		return this.puissance;
+	}
+
+	showDebug(player) {
+		const { posX, posY } = player.dresseur;
+		const context = getContext();
+
+		context.fillStyle = 'rgba(0, 255, 0, 0.5)';
+		context.fillRect(
+			this.posX * 3 - (posX * 3) + 340,
+			this.posY * 3 - (posY * 3) + 280,
+			this.tailleX * 3,
+			this.tailleY * 3,
+		);
 	}
 }
 

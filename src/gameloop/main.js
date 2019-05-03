@@ -1,4 +1,6 @@
 import { getCanvas, getContext } from '../utils/render';
+import DevMode from '../modes/DevMode';
+import PlayerMode from '../modes/PlayerMode';
 
 export default function render(player) { // Moteur d affichage
 	const canvas = getCanvas();
@@ -7,40 +9,25 @@ export default function render(player) { // Moteur d affichage
 	context.save();
 	context.clearRect(0, 0, canvas.width, canvas.height);
 
-	player.grille.drawTerrain();
-
-	player.grille.afficheBatiments(player.dresseur.posX, player.dresseur.posY);
-
-	if (window.mode === 'dev') {
-		player.grille.showColisions();
-	}
-
-	player.grille.drawDresseur(
-		player.dresseur.posX,
-		player.dresseur.posY,
-	);// Dessines tout les dresseurs   posXY sont les coord du controller
-
-	if (player.mode !== 2) { // si on est pas en combat
-		// test colision nextCase
-		player.avance();
-		// dessine joueur
-		player.grille.drawMonDresseur();
-	}
+	player.grille.show();
 
 	switch (player.mode) {
-	case (0):// map
-		player.grille.checkZonesDresseurs(player);
-		player.grille.checkWalkOnPorte();
+	case (PlayerMode.MAP):
+		player.mainLoopEvent();
+		if (DevMode.dev) { player.grille.showDebug();	}
 		break;
-	case (1): // hud
+
+	case (PlayerMode.HUD):
 		player.menu.show();
-		break; // mode hud
-	case (2): // combat
+		break;
+
+	case (PlayerMode.FIGHT):
 		player.combat.drawCombat();
 		player.combat.runTour();
 		break;
+
 	default:
-		console.warn(`render: no mode ${player.mode}`);
+		console.error(`main.render: no compatible option ${player.mode}`);
 	}
 
 	context.restore();

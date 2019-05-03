@@ -1,5 +1,5 @@
 import { getContext } from '../utils/render';
-
+import Font from '../modes/Font';
 
 class Discussion {
 	constructor(nom, messages) {
@@ -16,7 +16,7 @@ class Discussion {
 	}
 
 	showCurrentMessage(player) {
-		this.context.font = '20px Georgia';
+		this.context.font = Font.little;
 		this.context.fillStyle = player.couleurPrefere;
 		this.context.fillRect(50, 480, 800, 150);
 		this.context.fillStyle = '#ffffff';

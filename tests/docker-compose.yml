@@ -6,7 +6,7 @@ services:
       context: ..
       dockerfile: ./Dockerfile
     container_name: apache
-    restart: always
+    # restart: always
     ports:
       - "3000:80"
 

@@ -1,6 +1,5 @@
 import { getContext } from '../utils/render';
-// penser a virer ce fichier qui n est utilisé que sur le centreP de la premiere grille (foret1)
-// donc gimp l image du centreP a l endroit voulu
+// Adapter pour creer automatiquement via devMode
 
 class Batiment {
 	constructor(nom, texture, posX, posY, tailleX, tailleY) {
@@ -14,11 +13,12 @@ class Batiment {
 		this.context = getContext();
 	}
 
-	afficheToi(posiX, posiY) {
+	afficheToi(player) {
+		const { posX, posY } = player.dresseur;
 		this.context.drawImage(
 			this.texture,
-			this.posX * 3 - (posiX * 3) + 340,
-			this.posY * 3 - (posiY * 3) + 280,
+			this.posX * 3 - (posX * 3) + 340,
+			this.posY * 3 - (posY * 3) + 280,
 			this.tailleX,
 			this.tailleY,
 		);
@@ -35,6 +35,20 @@ class Batiment {
 			}
 		}
 		return (false);
+	}
+
+	showDebug(player) {
+		const { posX, posY } = player.dresseur;
+		const context = getContext();
+
+		context.fillStyle = 'rgba(0, 0, 0, 0.5)';
+
+		context.fillRect(
+			this.posX * 3 - (posX * 3) + 340,
+			this.posY * 3 - (posY * 3) + 280,
+			this.tailleX,
+			this.tailleY,
+		);
 	}
 }
 

@@ -1,5 +1,6 @@
 import Attaque from '../combat/Attaques';
 import { getContext } from '../utils/render';
+import Font from '../modes/Font';
 
 import allPokemon from '../../assets/imgs/all-pokemon.png';
 import backSprites from '../../assets/imgs/back_sprites.png';
@@ -73,7 +74,7 @@ class PokedexPokemon {
 	afficheToi() {
 		const context = getContext();
 		context.fillStyle = '#000000';
-		context.font = '20px Georgia';
+		context.font = Font.little;
 
 		context.fillText(`Nom : ${this.nom}`, 65, 270);
 		context.fillText(`Type : ${this.type}`, 65, 300);

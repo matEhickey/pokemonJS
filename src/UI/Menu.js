@@ -4,6 +4,7 @@ import pokedex from './Pokedex';
 import BUTTON from '../gameloop/touches';
 import PlayerMode from '../modes/PlayerMode';
 import PlayerHudMode from '../modes/PlayerHudMode';
+import Font from '../modes/Font';
 
 class SousMenu {
 	constructor(title, render, validate) {
@@ -249,7 +250,7 @@ class Menu {
 		context.fillStyle = this.player.couleurPrefere;
 		context.fillRect(630, 25, 250, 270);
 		context.fillStyle = '#000000';
-		context.font = '20px Georgia';
+		context.font = Font.little;
 
 		this.options.forEach((option, index) => {
 			context.fillText(option.title, 665, 80 + (index * 30));
@@ -313,14 +314,14 @@ class Menu {
 		const context = getContext();
 		context.fillStyle = this.player.couleurPrefere;
 		context.fillRect(50, 50, 800, 550);
-		context.font = '20px Georgia';
+		context.font = Font.little;
 
 		pokemons.forEach((pokemon, index) => {
 		// for(var i = 0;i<pokemons.length;i++){
 			context.fillStyle = '#eeeeee';
 			context.fillRect(55, (index * 80) + 95, 780, 35);
 			context.fillStyle = '#000000';
-			context.font = '20px Georgia';
+			context.font = Font.little;
 			context.fillText(`Nom: ${pokemon.getName()}`, 65, 120 + (index * 80));
 			context.fillText(`Niveau: ${pokemon.lvl}`, 230, 120 + (index * 80));
 			context.fillText(`Pdv: ${pokemon.pdv}/${pokemon.pdvMax}`, 370, 120 + (index * 80));
@@ -340,7 +341,7 @@ class Menu {
 		context.fillStyle = this.player.couleurPrefere;
 		context.fillRect(50, 50, 800, 550);
 		context.fillStyle = '#000000';
-		context.font = '20px Georgia';
+		context.font = Font.little;
 		context.fillText('\'a\' Changer la couleur des menus', 65, 300);
 		context.fillText('\'p\' Retour au gris', 65, 330);
 	}
@@ -358,7 +359,7 @@ class Menu {
 		context.fillStyle = this.player.couleurPrefere;
 		context.fillRect(50, 50, 800, 550);
 		context.fillStyle = '#000000';
-		context.font = '20px Georgia';
+		context.font = Font.little;
 		context.fillText(`Nom : ${this.player.getName()}`, 65, 270);
 		context.fillText(`Argent : ${this.player.dresseur.argent}`, 65, 300);
 		context.fillText(`Badges : ${this.player.dresseur.badges}`, 65, 330);
@@ -380,7 +381,7 @@ class Menu {
 		context.fillStyle = this.player.couleurPrefere;
 		context.fillRect(50, 50, 800, 550);
 		context.fillStyle = '#000000';
-		context.font = '20px Georgia';
+		context.font = Font.little;
 		context.fillText('Voulez vous sauvegarder votre partie ?', 65, 240);
 		context.fillText("'A' : Oui", 65, 270);
 		context.fillText("'B' :Retour", 65, 300);
@@ -391,7 +392,7 @@ class Menu {
 		context.fillStyle = this.player.couleurPrefere;
 		context.fillRect(50, 50, 800, 550);
 		context.fillStyle = '#000000';
-		context.font = '20px Georgia';
+		context.font = Font.little;
 		context.fillText(`Vous avez ${this.player.dresseur.inventaire.length} objets dans votre inventaire`, 65, 300);
 	}
 
@@ -403,9 +404,9 @@ class Menu {
 		context.fillStyle = this.player.couleurPrefere;
 		context.fillRect(50, 50, 800, 550);
 		context.fillStyle = '#000000';
-		context.font = '30px Georgia';
+		context.font = Font.medium;
 		context.fillText('Vos pokemons sont tous K.O', 65, 250);
-		context.font = '20px Georgia';
+		context.font = Font.little;
 		context.fillText('Vous avez perdu', 65, 300);
 		context.font = '15px Georgia';
 		context.fillText('(Appuyer sur une touche)', 65, 350);
@@ -416,7 +417,7 @@ class Menu {
 		context.fillStyle = this.player.couleurPrefere;
 		context.fillRect(50, 350, 800, 250);
 		context.fillStyle = '#000000';
-		context.font = '20px Georgia';
+		context.font = Font.little;
 		context.fillText(this.player.info, 60, 380);
 	}
 
@@ -425,7 +426,7 @@ class Menu {
 		context.fillStyle = this.player.couleurPrefere;
 		context.fillRect(50, 350, 800, 250);
 		context.fillStyle = '#000000';
-		context.font = '20px Georgia';
+		context.font = Font.little;
 		context.fillText('Bravo, vous avez capturé un :', 160, 380);
 		context.fillText(this.player.getPokemonCapture().getName(), 200, 430);
 		context.fillText(`Niveau ${this.player.getPokemonCapture().lvl}`, 160, 480);

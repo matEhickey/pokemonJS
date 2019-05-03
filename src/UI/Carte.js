@@ -2,7 +2,7 @@ import Porte from '../map/Porte';
 import { getContext } from '../utils/render';
 import EndroitCarte from './EndroitCarte';
 import pokeworldmap from '../../assets/imgs/pokeworldmap.png';
-
+import Font from '../modes/Font';
 
 class Carte {
 	constructor(player) {
@@ -17,7 +17,7 @@ class Carte {
 		context.fillStyle = this.player.couleurPrefere;
 		context.fillRect(50, 50, 800, 550);
 		context.fillStyle = '#000000';
-		context.font = '20px Georgia';
+		context.font = Font.little;
 
 		const pokeworldmapImg = document.createElement('img');
 		pokeworldmapImg.src = pokeworldmap;

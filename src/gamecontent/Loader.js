@@ -418,13 +418,13 @@ const chargeObjetsDansGrille4 = (grille, player) => {		// argenta
 	grille.ajoutePorte(new Porte(190, 52, 10, 42, 'pokeshopArgenta').setLargeur(10), player);
 	grille.ajoutePorte(new Porte(-18, 20, -60, 42, 'areneArgenta').setLargeur(8), player);
 
-	grille.ajouteObjet(new Objet('CentreP', -26, 102, 86, 62));
-	grille.ajouteObjet(new Objet('CentreP', 22, 162, 38, 12));
-	grille.ajouteObjet(new Objet('CentreP', -26, 160, 38, 16));
+	grille.ajouteObjet(new Objet('Batiment', -26, 102, 86, 62));
+	grille.ajouteObjet(new Objet('Batiment', 22, 162, 38, 12));
+	grille.ajouteObjet(new Objet('Batiment', -26, 160, 38, 16));
 
-	grille.ajouteObjet(new Objet('market', 150, -4, 70, 56));
-	grille.ajouteObjet(new Objet('market', 198, 48, 22, 12));
-	grille.ajouteObjet(new Objet('market', 150, 48, 40, 12));
+	grille.ajouteObjet(new Objet('Batiment', 150, -4, 70, 56));
+	grille.ajouteObjet(new Objet('Batiment', 198, 48, 22, 12));
+	grille.ajouteObjet(new Objet('Batiment', 150, 48, 40, 12));
 
 
 	grille.ajouteObjet(new Objet('Collision', 54, 102, 38, 72));

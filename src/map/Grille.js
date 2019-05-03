@@ -1,5 +1,6 @@
 import { getContext, getCanvas } from '../utils/render';
 import { CombatContreSauvage } from '../combat/Sauvage';
+import DevMode from '../modes/DevMode';
 
 class Grille {
 	constructor(player, terrain) {
@@ -14,6 +15,13 @@ class Grille {
 		this.herbes = [];
 		this.num = Grille.nbG;
 		Grille.nbG += 1;
+	}
+
+	show() {
+		this.drawTerrain();
+		this.afficheBatiments(this.player);
+		this.drawDresseurs();
+		this.drawMonDresseur();
 	}
 
 	saveDresseurs() {
@@ -52,23 +60,15 @@ class Grille {
 		this.objets.push(bati);
 	}
 
-	afficheBatiments(posiX, posiY) {
+	afficheBatiments(player) {
 		this.batiments.forEach((batiment) => {
-			batiment.afficheToi(posiX, posiY);
+			batiment.afficheToi(player);
 		});
 	}
 
 	displayObjetConsole() {
 		this.objets.forEach((objet) => {
 			objet.displayName();
-		});
-	}
-
-	displayDresseurConsole() {
-		console.log(`${this.dresseurs.length} dresseurs:`);
-		this.dresseurs.forEach((dresseur) => {
-			dresseur.displayName();
-			console.log(dresseur.getOrientation());
 		});
 	}
 
@@ -96,12 +96,12 @@ class Grille {
 	}
 
 	getDresseur(posX, posY) {
-		this.dresseurs.forEach((dresseur) => {
+		return this.dresseurs.find((dresseur) => {
 			if (dresseur.isOnPosition(posX, posY)) {
 				return dresseur;
 			}
+			return null;
 		});
-		return null;
 	}
 
 	getPNJ(posX, posY) {
@@ -122,9 +122,9 @@ class Grille {
 		return null;
 	}
 
-	drawDresseur(posX, posY) {
+	drawDresseurs() {
 		this.dresseurs.forEach((dresseur) => {
-			dresseur.afficheToi(posX, posY);
+			dresseur.afficheToi(this.player);
 		});
 	}
 
@@ -146,108 +146,63 @@ class Grille {
 	}
 
 	drawMonDresseur() {
-		// {x, y, taileX, tailleY} Portion , {x, y, tailleX, tailleY} Canvas
 		const context = getContext();
-		switch (this.player.getOrientation()) {
-		case 1:
-			switch (this.player.dresseur.position) {
-			case 0:
-				context.drawImage(this.player.dresseur.texture, 0, 0, 32, 48, 320, 240, 32, 48);
-				break;
-			case 1:
-				context.drawImage(this.player.dresseur.texture, 32, 0, 32, 48, 320, 240, 32, 48);
-				break;
-			case 2:
-				context.drawImage(this.player.dresseur.texture, 64, 0, 32, 48, 320, 240, 32, 48);
-				break;
-			case 3:
-				context.drawImage(this.player.dresseur.texture, 96, 0, 32, 48, 320, 240, 32, 48);
-				break;
-			case 5:
-				context.drawImage(this.player.dresseur.texture, 0, 0, 32, 48, 320, 240, 32, 48);
-				break;
-			default:
-				console.warn('Grille.drawMonDresseur switch a: not compatible option');
-			}
-			break;
-
-		case 2:
-			switch (this.player.dresseur.position) {
-			case 0:
-				context.drawImage(this.player.dresseur.texture, 0, 48, 32, 48, 320, 240, 32, 48);
-				break;
-			case 1:
-				context.drawImage(this.player.dresseur.texture, 32, 48, 32, 48, 320, 240, 32, 48);
-				break;
-			case 2:
-				context.drawImage(this.player.dresseur.texture, 64, 48, 32, 48, 320, 240, 32, 48);
-				break;
-			case 3:
-				context.drawImage(this.player.dresseur.texture, 96, 48, 32, 48, 320, 240, 32, 48);
-				break;
-			case 5:
-				context.drawImage(this.player.dresseur.texture, 0, 48, 32, 48, 320, 240, 32, 48);
-				break;
-			default:
-				console.warn('Grille.drawMonDresseur switch b : not compatible option');
-			}
-			break;
-
-		case 3:
-			switch (this.player.dresseur.position) {
-			case 0:
-				context.drawImage(this.player.dresseur.texture, 0, 96, 32, 48, 320, 240, 32, 48);
-				break;
-			case 1:
-				context.drawImage(this.player.dresseur.texture, 32, 96, 32, 48, 320, 240, 32, 48);
-				break;
-			case 2:
-				context.drawImage(this.player.dresseur.texture, 64, 96, 32, 48, 320, 240, 32, 48);
-				break;
-			case 3:
-				context.drawImage(this.player.dresseur.texture, 96, 96, 32, 48, 320, 240, 32, 48);
-				break;
-			case 5:
-				context.drawImage(this.player.dresseur.texture, 0, 96, 32, 48, 320, 240, 32, 48);
-				break;
-			default:
-				console.warn('Grille.drawMonDresseur switch c : not compatible option');
-			}
-			break;
-
-		case 4:
-			switch (this.player.dresseur.position) {
-			case 0:
-				context.drawImage(this.player.dresseur.texture, 0, 144, 32, 48, 320, 240, 32, 48);
-				break;
-			case 1:
-				context.drawImage(this.player.dresseur.texture, 32, 144, 32, 48, 320, 240, 32, 48);
-				break;
-			case 2:
-				context.drawImage(this.player.dresseur.texture, 64, 144, 32, 48, 320, 240, 32, 48);
-				break;
-			case 3:
-				context.drawImage(this.player.dresseur.texture, 96, 144, 32, 48, 320, 240, 32, 48);
-				break;
-			case 5:
-				context.drawImage(this.player.dresseur.texture, 0, 144, 32, 48, 320, 240, 32, 48);
-				break;
-			default:
-				console.warn('Grille.drawMonDresseur switch d : not compatible option');
-			}
-			break;
-
-		default:
-			console.warn('Grille.drawMonDresseur switch e: not compatible option');
+		if (DevMode.dev && DevMode.getOption('dresseursAsDots')) {
+			context.fillStyle = 'rgba(111, 24, 218, 0.5)';
+			context.fillRect(
+				320,
+				240,
+				32,
+				48,
+			);
+			// tryin to show cursor
+			context.fillRect(
+				320 + (32 / 2) - 5,
+				240 + 48 - 10,
+				10,
+				10,
+			);
 		}
+
+		// {x, y, taileX, tailleY} Portion , {x, y, tailleX, tailleY} Canvas
+
+		const xClip = this.player.dresseur.position === 5
+			?	0
+			: this.player.dresseur.position * 32;
+
+		// -1 because orientation is 1 to 4 normally
+		const orientation = this.player.getOrientation() - 1;
+		const yClip = orientation * 48;
+
+		context.drawImage(this.player.dresseur.texture, xClip, yClip, 32, 48, 320, 240, 32, 48);
 	}
 
-	showColisions() {
-		this.objets.forEach((objet) => {
-			if (objet.nom === 'Collision') {
-				objet.showDebug(this.player);
-			}
-		});
+	showDebug() {
+		if (DevMode.getOption('showCollision')) {
+			this.objets.forEach((objet) => {
+				if (['Collision', 'Batiment'].includes(objet.nom)) {
+					objet.showDebug(this.player);
+				}
+			});
+		}
+
+		if (DevMode.getOption('showPortes')) {
+			this.portes.forEach((porte) => {
+				porte.showDebug(this.player);
+			});
+		}
+
+		if (DevMode.getOption('showHerbes')) {
+			this.herbes.forEach((herbe) => {
+				herbe.showDebug(this.player);
+			});
+		}
+
+		if (DevMode.getOption('showBatiments')) {
+			this.batiments.forEach((batiment) => {
+				batiment.showDebug(this.player);
+			});
+		}
 	}
 
 	checkZonesDresseurs(player) {

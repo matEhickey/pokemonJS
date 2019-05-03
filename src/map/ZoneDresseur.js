@@ -1,3 +1,5 @@
+import { getContext } from '../utils/render';
+
 class ZoneDresseur {
 	constructor(dresseur) {
 		this.taille = 40;
@@ -53,6 +55,39 @@ class ZoneDresseur {
 			console.warn('ZoneDresseur.isWalkon: no orientation option');
 		}
 		return false;
+	}
+
+	showDebug(player) {
+		const { posX, posY } = player.dresseur;
+		const context = getContext();
+
+		context.fillStyle = 'rgba(226, 217, 0, 0.5)';
+
+		let tailles = {};
+		switch (this.dresseur.getOrientation()) {
+		case (0): // de face seul Y+
+			tailles = { x: 0, y: this.taille };
+			break;
+		case (1): // de gauche seul X-
+			tailles = { x: -this.taille, y: 0 };
+			break;
+		case (2): // de droite seul X+
+			tailles = { x: this.taille, y: 0 };
+			break;
+		case (3): // de derriere seul Y-
+			tailles = { x: 0, y: -this.taille };
+			break;
+		default:
+			console.warn('ZoneDresseur.showDebug: no compatible options');
+		}
+
+
+		context.fillRect(
+			this.dresseur.posX * 3 - (posX * 3) + 340,
+			this.dresseur.posY * 3 - (posY * 3) + 280,
+			this.dresseur.tailleX + tailles.x,
+			this.dresseur.tailleY + tailles.y,
+		);
 	}
 }
 

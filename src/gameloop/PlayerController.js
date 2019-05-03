@@ -13,6 +13,8 @@ import pokeshopInside from '../../assets/imgs/pokeshopInside.png';
 import areneArgenta from '../../assets/imgs/areneArgenta.png';
 import dresseurs from '../../assets/imgs/dresseurs.png';
 
+import DevMode from '../modes/DevMode';
+
 
 // for making colision press 'z' twice
 window.boolPressC = false; // si touche deja appuye, car genere au bout du deuxieme appui
@@ -31,7 +33,7 @@ class PlayerController {
 
 		this.nextCaseX = null;
 		this.nextCaseY = null;
-		this.fps = 90;
+		this.fps = DevMode.dev ? 20 : 90;
 		this.discussion = false;
 		this.info = false;
 		this.couleurPrefere = '#bbbbbb';
@@ -153,8 +155,8 @@ class PlayerController {
 	}
 
 	isWalkable(posX, posY) {
-		if (posX > this.getPosX() - 20 && posX < this.getPosX() + this.getTailleX() + 20) {
-			if (posY > this.getPosY() - 20 && posY < this.getPosY() + this.getTailleY() + 20) {
+		if (posX > this.getPosX() && posX < this.getPosX() + this.getTailleX()) {
+			if (posY > this.getPosY() && posY < this.getPosY() + this.getTailleY()) {
 				return (false);
 			}
 		}
@@ -211,132 +213,83 @@ class PlayerController {
 
 	avance() {
 		this.calculNextCase();
-		const walkable = this.grille.isWalkable(this.nextCaseX, this.nextCaseY);
 
-		if (walkable) {
-			switch (this.getOrientation()) {
-			case (1):
-				if (this.dresseur.position !== 5 && (this.mode === 0) && this.walkable) {
-					this.setPosY(this.getPosY() + 2);
-				}
-				break;
-			case (2):
-				if (this.dresseur.position !== 5 && (this.mode === 0) && this.walkable) {
-					this.setPosX(this.getPosX() - 2);
-				}
-				break;
-			case (3):
-				if (this.dresseur.position !== 5 && (this.mode === 0) && this.walkable) {
-					this.setPosX(this.getPosX() + 2);
-				}
-				break;
-			case (4):
-				if (this.dresseur.position !== 5 && (this.mode === 0) && this.walkable) {
-					this.setPosY(this.getPosY() - 2);
-				}
-				break;
-			default:
-				console.warn('PlayerController.avance: no corresponding orientation');
+		switch (this.getOrientation()) {
+		case (1):
+			if (this.dresseur.position !== 5 && (this.mode === 0) && this.walkable) {
+				this.setPosY(this.getPosY() + 2);
 			}
-
-			if (this.dresseur.position < 4 && (this.mode === 0)) {
-				this.dresseur.position += 1;
+			break;
+		case (2):
+			if (this.dresseur.position !== 5 && (this.mode === 0) && this.walkable) {
+				this.setPosX(this.getPosX() - 2);
 			}
-			if (this.dresseur.position === 4) { this.dresseur.position = 0; }
+			break;
+		case (3):
+			if (this.dresseur.position !== 5 && (this.mode === 0) && this.walkable) {
+				this.setPosX(this.getPosX() + 2);
+			}
+			break;
+		case (4):
+			if (this.dresseur.position !== 5 && (this.mode === 0) && this.walkable) {
+				this.setPosY(this.getPosY() - 2);
+			}
+			break;
+		default:
+			console.warn('PlayerController.avance: no corresponding orientation');
+		}
 
-			// document.getElementById('posX').innerHTML = `X:${this.getPosX()}`;
-			// document.getElementById('posY').innerHTML = `Y:${this.getPosY()}`;
+		if (this.dresseur.position < 4 && (this.mode === 0)) {
+			this.dresseur.position += 1;
+		}
+		if (this.dresseur.position === 4) { this.dresseur.position = 0; }
+
+		if (DevMode.dev) {
+			document.getElementById('playerControllerX').innerHTML = `X: ${this.getPosX()}`;
+			document.getElementById('playerControllerY').innerHTML = `Y: ${this.getPosY()}`;
 		}
 	}
 
 	actions(touche) {
 		switch (this.mode) {
 		case (PlayerMode.MAP):	// deplacement
-			switch (touche) {
-			case (BUTTON.DOWN):
-				this.setOrientation(1);
-				if (this.dresseur.position >= 5) { this.dresseur.position = 0; }
-				this.grille.checkWalkOnHerbes();
-				break;
-			case (BUTTON.UP):
-				this.setOrientation(4);
-				if (this.dresseur.position >= 5) { this.dresseur.position = 0; }
-				this.grille.checkWalkOnHerbes();
-				break;
-			case (BUTTON.LEFT):
-				this.setOrientation(2);
-				if (this.dresseur.position >= 5) { this.dresseur.position = 0; }
-				this.grille.checkWalkOnHerbes();
-				break;
-			case (BUTTON.RIGHT):
-				this.setOrientation(3);
-				if (this.dresseur.position >= 5) { this.dresseur.position = 0; }
-				this.grille.checkWalkOnHerbes();
-				break;
-			case (BUTTON.PAUSE):
+			if ([BUTTON.DOWN, BUTTON.UP, BUTTON.LEFT, BUTTON.RIGHT].includes(touche)) {
+				this.handleDirectionnalEvent(touche);
+			}
+
+			if (touche === BUTTON.PAUSE) {
 				console.log('Mise en pause');
 				this.mode = PlayerMode.HUD;
 				this.hudMode = PlayerHudMode.PAUSE;
-				break;
-			case (BUTTON.CONFIRM):
+			}
+			if (BUTTON.CONFIRM) {
 				this.calculNextCase();
 				const dress = this.grille.getDresseur(this.nextCaseX, this.nextCaseY);
-				// boolean si autre que dresseurs
 
-				if (typeof (dress) === 'object') {
-					if (!dress.isInfirmiere()) {
-						console.log(`Action: Parle avec dresseur ${dress.nom}`);
-						this.setAdv(dress);
-						this.getAdv().parler(this);
-						this.mode = PlayerMode.HUD;
-						this.hudMode = PlayerHudMode.DISCUSSION;
-					}
-				}
-				else {
-					const pnj = this.grille.getPNJ(this.nextCaseX, this.nextCaseY);
-					if (typeof (pnj) === 'object') {
-						// if (true){ // a remplacer par utilisation du callback pnj ou dresseur
-						this.soignePokemons();
-						// }
-						this.discussion = pnj.getDiscuss();
-						this.mode = PlayerMode.HUD;
-						this.hudMode = PlayerHudMode.DISCUSSION;
-					}
-				}
-				break;
+				if (dress) {
+					console.log(`Action: Parle avec dresseur ${dress.nom}`);
+					this.setAdv(dress);
+					this.getAdv().parler(this);
+					this.mode = PlayerMode.HUD;
+					this.hudMode = PlayerHudMode.DISCUSSION;
 
-			case (BUTTON.C): // z -> recupere message de collisions
-				if (!window.boolPressC) {
-					window.Cx1 = this.getPosX();
-					window.Cy1 = this.getPosY();
+					// console.log(dress);
+					// if (dress.isInfirmiere()) {
+					// 	const pnj = this.grille.getPNJ(this.nextCaseX, this.nextCaseY);
+					// 	if (pnj) {
+					// 		// if (true){ // a remplacer par utilisation du callback pnj ou dresseur
+					// 		this.soignePokemons();
+					// 		// }
+					// 		this.discussion = pnj.getDiscuss();
+					// 		this.mode = PlayerMode.HUD;
+					// 		this.hudMode = PlayerHudMode.DISCUSSION;
+					// 	}
+					// }
+					// else {
+					// }
 				}
-				else {
-					// x2,y2 representent la taille de l objet et non sa coordonnee
-					window.Cx2 = this.getPosX() - window.Cx1;
-					window.Cy2 = this.getPosY() - window.Cy1;
-					const chaine = `grille.ajouteObjet(new Objet("Collision",${window.Cx1}, ${window.Cy1}, ${window.Cx2},${window.Cy2}));<br>`;
-					document.getElementById('ajoutCollision').innerHTML += chaine;
-				}
-				window.boolPressC = !window.boolPressC;
-				break;
-
-			case (BUTTON.H): // h -> recupere message d herbes
-				if (!window.boolPressH) {
-					window.Hx1 = this.getPosX();
-					window.Hy1 = this.getPosY();
-				}
-				else {
-					// x2,y2 representent la taille de l objet et non sa coordonnee
-					window.Hx2 = this.getPosX() - window.Hx1;
-					window.Hy2 = this.getPosY() - window.Hy1;
-					const chaine = `this.grille.ajouteHerbe(new Herbe(${window.Hx1}, ${window.Hy1}, ${window.Hx2}, ${window.Hy2}, 5));<br>`;
-					document.getElementById('ajoutCollision').innerHTML += chaine;
-				}
-				window.boolPressH = !window.boolPressH;
-				break;
-			default:
-				console.warn('no corresponding button');
-			} // fin switch touche
+			}
+			this.handleDevMapEvent(touche);
 			break;
 
 		case (PlayerMode.HUD):
@@ -348,6 +301,74 @@ class PlayerController {
 			break;
 		default:
 			console.warn('No corresponding PlayerMode');
+		}
+	}
+
+	handleDirectionnalEvent(touche) {
+		switch (touche) {
+		case (BUTTON.DOWN):
+			this.setOrientation(1);
+			break;
+		case (BUTTON.LEFT):
+			this.setOrientation(2);
+			break;
+		case (BUTTON.RIGHT):
+			this.setOrientation(3);
+			break;
+		case (BUTTON.UP):
+			this.setOrientation(4);
+			break;
+		default:
+			console.warn('PlayerController.handleDirectionnalEvent no compatible option');
+		}
+
+		if (this.dresseur.position >= 5) { this.dresseur.position = 0; }
+	}
+
+	mainLoopEvent() {
+		const walkable = this.grille.isWalkable(this.nextCaseX, this.nextCaseY);
+		if (walkable || (DevMode.dev && DevMode.getOption('noCollision'))) {
+			this.avance();
+
+			if (!(DevMode.getOption('noAgression'))) {
+				this.grille.checkZonesDresseurs(this);
+				this.grille.checkWalkOnHerbes();
+			}
+			this.grille.checkWalkOnPorte();
+		}
+	}
+
+	handleDevMapEvent(touche) {
+		if (DevMode.dev) {
+			if (touche === BUTTON.C) { // z -> recupere message de collisions
+				if (!window.boolPressC) {
+					window.Cx1 = this.getPosX();
+					window.Cy1 = this.getPosY();
+				}
+				else {
+					// x2,y2 representent la taille de l objet et non sa coordonnee
+					window.Cx2 = this.getPosX() - window.Cx1;
+					window.Cy2 = this.getPosY() - window.Cy1;
+					const chaine = `grille.ajouteObjet(new Objet("Collision",${window.Cx1}, ${window.Cy1}, ${window.Cx2},${window.Cy2}));<br>`;
+					document.getElementById('loaderOutput').innerHTML += chaine;
+				}
+				window.boolPressC = !window.boolPressC;
+			}
+
+			if (touche === BUTTON.H) { // h -> recupere message d herbes
+				if (!window.boolPressH) {
+					window.Hx1 = this.getPosX();
+					window.Hy1 = this.getPosY();
+				}
+				else {
+					// x2,y2 representent la taille de l objet et non sa coordonnee
+					window.Hx2 = this.getPosX() - window.Hx1;
+					window.Hy2 = this.getPosY() - window.Hy1;
+					const chaine = `this.grille.ajouteHerbe(new Herbe(${window.Hx1}, ${window.Hy1}, ${window.Hx2}, ${window.Hy2}, 5));<br>`;
+					document.getElementById('loaderOutput').innerHTML += chaine;
+				}
+				window.boolPressH = !window.boolPressH;
+			}
 		}
 	}
 

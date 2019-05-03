@@ -1,6 +1,7 @@
 import { getContext } from '../utils/render';
 import ZoneDresseur from './ZoneDresseur';
 import Discussion from '../UI/Discussion';
+import DevMode from '../modes/DevMode';
 import dresseurVert from '../../assets/imgs/dresseurVert.png';
 
 class Dresseur {
@@ -139,19 +140,40 @@ class Dresseur {
 		}
 	}
 
-	afficheToi(posiX, posiY) {
+	afficheToi(player) {
 		const context = getContext();
+		const { posX, posY } = player.dresseur;
+
+		if (DevMode.dev && DevMode.getOption('dresseursAsDots')) {
+			this.showDebug(player);
+		}
+
 		context.drawImage(
 			this.texture,
 			0,
 			this.orientation * 48,
 			32,
 			48,
-			this.posX * 3 - (posiX * 3) + 340,
-			this.posY * 3 - (posiY * 3) + 280,
+			this.posX * 3 - (posX * 3) + 340,
+			this.posY * 3 - (posY * 3) + 280,
 			this.tailleX,
 			this.tailleY,
 		);
+	}
+
+	showDebug(player) {
+		const context = getContext();
+		const { posX, posY } = player.dresseur;
+
+		context.fillStyle = 'rgba(255, 0, 0, 0.5)';
+		context.fillRect(
+			this.posX * 3 - (posX * 3) + 340,
+			this.posY * 3 - (posY * 3) + 280,
+			this.tailleX,
+			this.tailleY,
+		);
+
+		this.zone.showDebug(player);
 	}
 
 	isOnPosition(posX, posY) {
