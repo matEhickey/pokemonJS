@@ -1,4 +1,4 @@
-import { getContext, getCanvas } from '../utils/render_utils';
+import { getContext, getCanvas } from '../utils/render';
 import Combat from '../combat/Combat';
 import pokedex from './Pokedex';
 import BUTTON from '../gameloop/touches';

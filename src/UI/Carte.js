@@ -1,5 +1,5 @@
 import Porte from '../map/Porte';
-import { getContext } from '../utils/render_utils';
+import { getContext } from '../utils/render';
 import EndroitCarte from './EndroitCarte';
 import pokeworldmap from '../../assets/imgs/pokeworldmap.png';
 

@@ -1,4 +1,4 @@
-import { getCanvas, getContext } from '../utils/render_utils';
+import { getCanvas, getContext } from '../utils/render';
 
 export default function render(player) { // Moteur d affichage
 	const canvas = getCanvas();
@@ -11,12 +11,14 @@ export default function render(player) { // Moteur d affichage
 
 	player.grille.afficheBatiments(player.dresseur.posX, player.dresseur.posY);
 
+	if (window.mode === 'dev') {
+		player.grille.showColisions();
+	}
 
 	player.grille.drawDresseur(
 		player.dresseur.posX,
 		player.dresseur.posY,
 	);// Dessines tout les dresseurs   posXY sont les coord du controller
-
 
 	if (player.mode !== 2) { // si on est pas en combat
 		// test colision nextCase

@@ -1,4 +1,4 @@
-import { getContext } from '../utils/render_utils';
+import { getContext } from '../utils/render';
 
 
 class Discussion {

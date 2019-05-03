@@ -1,4 +1,4 @@
-import { getContext } from '../utils/render_utils';
+import { getContext } from '../utils/render';
 import ZoneDresseur from './ZoneDresseur';
 import Discussion from '../UI/Discussion';
 import dresseurVert from '../../assets/imgs/dresseurVert.png';
@@ -144,7 +144,9 @@ class Dresseur {
 		context.drawImage(
 			this.texture,
 			0,
-			this.orientation * 48, 32, 48,
+			this.orientation * 48,
+			32,
+			48,
 			this.posX * 3 - (posiX * 3) + 340,
 			this.posY * 3 - (posiY * 3) + 280,
 			this.tailleX,

@@ -33,6 +33,7 @@ module.exports = {
       "no-case-declarations": "off",
       "no-param-reassign": "off",
       "no-use-before-define": "off",
+      "no-restricted-globals": "off",
 
       "import/no-extraneous-dependencies": "off",
       "import/no-unresolved": "off",

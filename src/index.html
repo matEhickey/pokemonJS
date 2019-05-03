@@ -35,18 +35,4 @@
 			<p id="ajoutCollision"><p>
 		</div>
 	</body>
-
-	<script>
-		if(location.search === "?framed"){
-			console.log("framed mode")
-			// hide all but the canvas
-			var hideElements = document.getElementsByClassName("hideIfIframed");
-			for (let elem of hideElements) {
-				elem.setAttribute('hidden', true)
-			}
-
-			// remove the 8px margin of many browsers
-			document.getElementsByTagName("body")[0].style.margin = "0px";
-		}
-	</script>
 </html>

@@ -1,5 +1,5 @@
 import BUTTON from '../gameloop/touches';
-import {getContext} from '../utils/render_utils';
+import {getContext} from '../utils/render';
 
 import Color from "../utils/Color";
 import CombatMode from "../modes/CombatMode";

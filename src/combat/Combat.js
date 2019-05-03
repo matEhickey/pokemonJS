@@ -1,4 +1,4 @@
-import { getContext } from '../utils/render_utils';
+import { getContext } from '../utils/render';
 import BUTTON from '../gameloop/touches';
 import MenuCombat from './MenuCombat';
 import hero from '../../assets/imgs/BackSpritesHero.png';

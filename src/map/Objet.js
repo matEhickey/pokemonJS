@@ -1,3 +1,5 @@
+import { getContext } from '../utils/render';
+
 class Objet {
 	// Pour collision quelquonque dans mode de deplacement
 	constructor(nom, x, y, tX, tY) {
@@ -24,6 +26,18 @@ class Objet {
 			}
 		}
 		return true;
+	}
+
+	showDebug(player) {
+		const { posX, posY } = player.dresseur;
+		const context = getContext();
+
+		context.fillRect(
+			this.coordX * 3 - (posX * 3) + 340,
+			this.coordY * 3 - (posY * 3) + 280,
+			this.tailleX * 3,
+			this.tailleY * 3,
+		);
 	}
 }
 

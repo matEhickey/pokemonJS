@@ -1,5 +1,5 @@
 import Attaque from '../combat/Attaques';
-import { getContext } from '../utils/render_utils';
+import { getContext } from '../utils/render';
 
 import allPokemon from '../../assets/imgs/all-pokemon.png';
 import backSprites from '../../assets/imgs/back_sprites.png';

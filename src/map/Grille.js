@@ -1,4 +1,4 @@
-import { getContext, getCanvas } from '../utils/render_utils';
+import { getContext, getCanvas } from '../utils/render';
 import { CombatContreSauvage } from '../combat/Sauvage';
 
 class Grille {
@@ -240,6 +240,14 @@ class Grille {
 		default:
 			console.warn('Grille.drawMonDresseur switch e: not compatible option');
 		}
+	}
+
+	showColisions() {
+		this.objets.forEach((objet) => {
+			if (objet.nom === 'Collision') {
+				objet.showDebug(this.player);
+			}
+		});
 	}
 
 	checkZonesDresseurs(player) {
