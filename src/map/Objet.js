@@ -20,8 +20,8 @@ class Objet {
 			return true;
 		}
 
-		if (posX > this.coordX && posX < this.coordX + this.tailleX) {
-			if (posY > this.coordY && posY < this.coordY + this.tailleY) {
+		if (posX + 11 > this.coordX && posX < this.coordX + this.tailleX) {
+			if (posY + 8 > this.coordY && posY - 8 < this.coordY + this.tailleY) {
 				return false;
 			}
 		}

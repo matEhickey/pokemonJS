@@ -79,16 +79,16 @@ class Dresseur {
 
 		switch (this.orientation) {
 		case (0):
-			y = this.posY + 1;
+			y += 1;
 			break;
 		case (1):
-			x = this.posX - 1;
+			x -= 1;
 			break;
 		case (2):
-			x = this.posX + 1;
+			x += 1;
 			break;
 		case (3):
-			y = this.posY - 1;
+			y -= 1;
 			break;
 		default:
 			console.warn('Dresseur.calculNextCase: no compatible option');
@@ -216,8 +216,8 @@ class Dresseur {
 	isOnPosition(x, y) {
 		const dresseurCoords = this.getCoordinates();
 
-		if (x > dresseurCoords.x && x < dresseurCoords.x + (dresseurCoords.tailleX / 3)) {
-			if (y > dresseurCoords.y && y < dresseurCoords.y + (dresseurCoords.tailleY / 3)) {
+		if (x + 11 > dresseurCoords.x && x < dresseurCoords.x + (dresseurCoords.tailleX / 3)) {
+			if (y + 14 > dresseurCoords.y && y < dresseurCoords.y + (dresseurCoords.tailleY / 3)) {
 				return true;
 			}
 		}

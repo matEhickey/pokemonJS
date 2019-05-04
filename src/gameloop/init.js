@@ -22,7 +22,7 @@ export default function init() {
 	context.fillText('Chargement', 250, 250);
 	context.restore();
 
-	const player = new PlayerController(new Dresseur('Sacha', 0, 0, 1, 0));
+	const player = new PlayerController(new Dresseur('Sacha', 0, -10, 0, 0));
 
 	const sachaImg = document.createElement('img');
 	sachaImg.src = sacha;

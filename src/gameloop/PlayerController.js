@@ -150,9 +150,9 @@ class PlayerController {
 		return (this.dresseur.getName());
 	}
 
-	isWalkable(x, y) {
-		return (this.dresseur.isWalkable(x, y));
-	}
+	// isWalkable(x, y) {
+	// 	return (this.dresseur.isWalkable(x, y));
+	// }
 
 	soignePokemons() {
 		return this.dresseur.soignePokemons();

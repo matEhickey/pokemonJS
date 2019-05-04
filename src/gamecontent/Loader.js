@@ -11,7 +11,7 @@ import centrePokemon from '../../assets/imgs/centrePokemon.png';
 import dresseurRougeChatain from '../../assets/imgs/dresseurRougeChatain.png';
 
 function loadDataDresseurs(grille) {
-	const dresseur1 = new Dresseur('Mathias', 20, -60, 0, 0, 0);
+	const dresseur1 = new Dresseur('Mathias', 20, -50, 0, 0, 0);
 	const dresseurRougeChatainImg = document.createElement('img');
 	dresseurRougeChatainImg.src = dresseurRougeChatain;
 	dresseur1.setTexture(dresseurRougeChatainImg);
@@ -342,9 +342,9 @@ const chargeObjetsDansGrille0 = (grille, player) => {
 
 	const centrePokemonImg = document.createElement('img');
 	centrePokemonImg.src = centrePokemon;
-	const batiment1 = new Batiment('Centre Pokemon', centrePokemonImg, -102, -40, 120, 100);
+	const batiment1 = new Batiment('Centre Pokemon', centrePokemonImg, -122, -40, 120, 100);
 
-	grille.ajoutePorte(new Porte(-74, 0, 44, 112, 'centreP1', player));
+	grille.ajoutePorte(new Porte(-94, 0, 44, 112, 'centreP1', player));
 	grille.ajouteBatiment(batiment1);
 };
 
