@@ -18,6 +18,7 @@ class Dresseur {
 		this.pokemons = [];
 		this.pcDeLeo = [];
 		this.inventaire = [];
+
 		this.argent = 0;
 		this.badges = 0;
 		this.asPerdu = 0;
@@ -39,10 +40,6 @@ class Dresseur {
 		this.position = 5;
 
 		this.attaqueCanceled = false;
-	}
-
-	isInfirmiere() {
-		return (false);
 	}
 
 	displayName() {
@@ -247,13 +244,14 @@ class Dresseur {
 	}
 
 	echange(pok1, pok2) {
-		this.pokemons.forEach((pokemon1) => {
+		console.log('Dresseur.echange');
+		this.pokemons.forEach((pokemon1, i) => {
 			if (pokemon1 === pok1) {
-				this.pokemons.forEach((pokemon2) => {
-					if (pokemon1 === pok2) {
-						const tamp = pokemon1;
-						pokemon1 = pokemon2;
-						pokemon2 = tamp;
+				this.pokemons.forEach((pokemon2, j) => {
+					if (pokemon2 === pok2) {
+						const tamp = this.pokemons[i];
+						this.pokemons[i] = this.pokemons[j];
+						this.pokemons[j] = tamp;
 					}
 				});
 			}
@@ -315,7 +313,7 @@ class Dresseur {
 		player.setAdv(this);
 
 		player.mode = 1;
-		player.hudMode = 1;
+		player.hud.mode = 1;
 		this.parler(player);
 	}
 

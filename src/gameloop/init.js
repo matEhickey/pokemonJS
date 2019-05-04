@@ -6,7 +6,8 @@ import Dresseur from '../map/Dresseur';
 import Carte, { ChargeCarte } from '../UI/Carte';
 import { animate, getContext } from '../utils/render';
 import Pokemon from '../combat/Pokemon';
-import Menu from '../UI/Menu';
+import HUD from '../UI/HUD';
+
 
 import DevMode from '../modes/DevMode';
 import initInput from './inputs';
@@ -34,7 +35,7 @@ export default function init() {
 	player.carte = new Carte(player);
 	ChargeCarte(player);
 
-	player.menu = new Menu(player);
+	player.hud = new HUD(player);
 
 	player.loadObjects();
 

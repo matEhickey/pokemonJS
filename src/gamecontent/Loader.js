@@ -10,6 +10,18 @@ import PNJ from '../map/PNJ';
 import centrePokemon from '../../assets/imgs/centrePokemon.png';
 import dresseurRougeChatain from '../../assets/imgs/dresseurRougeChatain.png';
 
+const txtInfirmiere = [
+	'Bienvenue au centre pokémon',
+	'Veuillez nous confiez vos pokémons pour que nous puissions les soigner',
+	'1',
+	'1 .. ',
+	'1 .. 2',
+	'1 .. 2 ..',
+	'1 .. 2 .. 3',
+	'1 .. 2 .. 3   TADAM !',
+	'Nous avons soigné vos pokemons',
+];
+
 function loadDataDresseurs(grille) {
 	const dresseur1 = new Dresseur('Mathias', 20, -50, 0, 0, 0);
 	const dresseurRougeChatainImg = document.createElement('img');
@@ -20,7 +32,7 @@ function loadDataDresseurs(grille) {
 	dresseur1.setGTX(3);
 	dresseur1.setGTY(3);
 	dresseur1.addPokemon(GenereUnPokemon(5));
-	// dresseur1.addPokemon(GenereUnPokemon(5));
+	dresseur1.addPokemon(GenereUnPokemon(5));
 	// dresseur1.addPokemon(GenereUnPokemon(5));
 
 	const dresseur6 = new Dresseur('Spyros', -34, 110, 2, 0);
@@ -373,7 +385,7 @@ const chargeObjetsDansGrille2 = (grille, player) => { // premier centre pokemon
 	grille.ajoutePorte(new Porte(40, 123, -72, 12, 'foret1', player));
 
 	// infirmiere
-	grille.ajoutePNJ(new PNJ('Infirmiere Joelle', 36, 48, 54, 54, true));
+	grille.ajoutePNJ(new PNJ('Infirmiere Joelle', 36, 48, 54, 54, txtInfirmiere, () => { console.log('callback infirmiere'); }));
 
 	grille.ajouteObjet(new Objet('Collision', 100, 80, 36, 34));
 	grille.ajouteObjet(new Objet('Collision', -62, 128, 198, 8));
@@ -395,7 +407,7 @@ const chargeObjetsDansGrille3 = (grille, player) => { // centre pokemon argenta
 	grille.ajoutePorte(new Porte(40, 123, 18, 198, 'argenta', player));
 
 	// infirmiere
-	grille.ajoutePNJ(new PNJ('Infirmiere Joelle', 36, 48, 54, 54, true));
+	grille.ajoutePNJ(new PNJ('Infirmiere Joelle', 36, 48, 54, 54, txtInfirmiere, () => { console.log('callback infirmiere'); }));
 
 	grille.ajouteObjet(new Objet('Collision', 100, 80, 36, 34));
 	grille.ajouteObjet(new Objet('Collision', -62, 128, 198, 8));
@@ -414,9 +426,9 @@ const chargeObjetsDansGrille3 = (grille, player) => { // centre pokemon argenta
 };
 
 const chargeObjetsDansGrille4 = (grille, player) => {		// argenta
-	grille.ajoutePorte(new Porte(12, 168, 44, 112, 'centreP2').setLargeur(10), player);
+	grille.ajoutePorte(new Porte(12, 178, 44, 112, 'centreP2').setLargeur(10), player);
 	grille.ajoutePorte(new Porte(190, 52, 10, 42, 'pokeshopArgenta').setLargeur(10), player);
-	grille.ajoutePorte(new Porte(-18, 20, -60, 42, 'areneArgenta').setLargeur(8), player);
+	grille.ajoutePorte(new Porte(-18, 30, -60, 42, 'areneArgenta').setLargeur(8), player);
 
 	grille.ajouteObjet(new Objet('Batiment', -26, 102, 86, 62));
 	grille.ajouteObjet(new Objet('Batiment', 22, 162, 38, 12));
@@ -489,7 +501,7 @@ const chargeObjetsDansGrille5 = (grille, player) => {	// pokeshop argenta
 };
 
 const chargeObjetsDansGrille6 = (grille, player) => {	// arene argenta
-	grille.ajoutePorte(new Porte(-68, 52, -16, 40, 'argenta').setLargeur(12), player);
+	grille.ajoutePorte(new Porte(-68, 45, -16, 40, 'argenta').setLargeur(12), player);
 
 	grille.ajouteObjet(new Objet('Collision', -110, -22, 34, 30));
 	grille.ajouteObjet(new Objet('Collision', -110, -74, 34, 28));

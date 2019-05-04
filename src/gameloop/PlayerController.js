@@ -29,9 +29,8 @@ class PlayerController {
 		this.dresseur.position = 5;
 
 		this.mode = PlayerMode.MAP;
-		this.hudMode = PlayerHudMode.PAUSE;// 0 = pause 1 = discussion 2 = pokedex 3= menupokemon
 
-		this.fps = DevMode.dev ? 30 : 90;
+		this.fps = DevMode.dev ? 10 : 40;
 		this.discussion = false;
 		this.info = false;
 		this.couleurPrefere = '#bbbbbb';
@@ -44,7 +43,6 @@ class PlayerController {
 
 		this.walkable = true;
 
-		this.menu = null;
 		this.combat = null;
 
 		this.grille = null;
@@ -183,11 +181,11 @@ class PlayerController {
 	}
 
 	onLose() {
-		this.dresseur.posX = 0;
-		this.dresseur.posY = 0;
+		// this.dresseur.posX = 0;
+		// this.dresseur.posY = 0;
 
 		this.mode = PlayerMode.HUD;
-		this.hudMode = PlayerHudMode.FAIL;
+		this.hud.setMode(PlayerHudMode.FAIL);
 
 		this.soignePokemons();
 	}
@@ -241,7 +239,8 @@ class PlayerController {
 		}
 
 		if (!(DevMode.getOption('noAgression'))) this.grille.checkZonesDresseurs(this);
-		if (!(DevMode.getOption('noWildPokemon'))) this.grille.checkWalkOnHerbes();
+		// position 5 is player is not moving, need refacto
+		if (this.dresseur.position !== 5 && !(DevMode.getOption('noWildPokemon'))) this.grille.checkWalkOnHerbes();
 		if (!(DevMode.getOption('noTravel'))) this.grille.checkWalkOnPorte();
 	}
 
@@ -255,7 +254,8 @@ class PlayerController {
 			if (touche === BUTTON.PAUSE) {
 				console.log('Mise en pause');
 				this.mode = PlayerMode.HUD;
-				this.hudMode = PlayerHudMode.PAUSE;
+				this.hud.setMode(PlayerHudMode.PAUSE);
+				// this.hud.mode = PlayerHudMode.PAUSE;
 			}
 			if (touche === BUTTON.CONFIRM) {
 				const {
@@ -263,36 +263,35 @@ class PlayerController {
 					y: nextCaseY,
 				} = this.calculNextCase();
 
-				const dress = this.grille.getDresseur(nextCaseX, nextCaseY);
+				const dresseur = this.grille.getDresseur(nextCaseX, nextCaseY);
+				const pnj = this.grille.getPNJ(this.nextCaseX, this.nextCaseY);
 
-				if (dress) {
-					console.log(`Action: Parle avec dresseur ${dress.nom}`);
-					this.setAdv(dress);
+				if (dresseur) console.log(`found dresseur: ${dresseur.nom}`);
+				if (pnj) console.log(`found pnj: ${pnj.nom}`);
+
+				if (dresseur) {
+					this.setAdv(dresseur);
 					this.getAdv().parler(this);
-					this.mode = PlayerMode.HUD;
-					this.hudMode = PlayerHudMode.DISCUSSION;
+				}
+				else if (pnj) {
+					this.discussion = pnj.getDiscuss();
+					pnj.callback(); // this.soignePokemons();
+				}
 
-					// console.log(dress);
-					// if (dress.isInfirmiere()) {
-					// 	const pnj = this.grille.getPNJ(this.nextCaseX, this.nextCaseY);
-					// 	if (pnj) {
-					// 		// if (true){ // a remplacer par utilisation du callback pnj ou dresseur
-					// 		this.soignePokemons();
-					// 		// }
-					// 		this.discussion = pnj.getDiscuss();
-					// 		this.mode = PlayerMode.HUD;
-					// 		this.hudMode = PlayerHudMode.DISCUSSION;
-					// 	}
-					// }
-					// else {
-					// }
+				if (pnj || dresseur) {
+					console.log('set mode to HUD, set HUD to discussion');
+					this.mode = PlayerMode.HUD;
+					this.hud.mode = PlayerHudMode.DISCUSSION;
+				}
+				else {
+					console.log('nothing found');
 				}
 			}
 			this.handleDevMapEvent(touche);
 			break;
 
 		case (PlayerMode.HUD):
-			this.menu.event(touche);
+			this.hud.event(touche);
 			break;
 
 		case (PlayerMode.FIGHT):
@@ -368,7 +367,7 @@ class PlayerController {
 
 	save() {	// old way
 		this.mode = PlayerMode.HUD;
-		this.hudMode = PlayerHudMode.INFO; // mode info
+		this.hud.mode = PlayerHudMode.INFO; // mode info
 		this.info = 'Cette fonctionnalité à été désactivé pour le moment';
 
 		console.log('tryin to save');
@@ -398,10 +397,10 @@ class PlayerController {
 
 	load() {
 		this.mode = PlayerMode.HUD;
-		this.hudMode = PlayerHudMode.INFO;
+		this.hud.mode = PlayerHudMode.INFO;
 		this.info = 'Cette fonctionnalité à été désactivé pour le moment';
 	// this.mode=1;
-	// this.hudMode = PlayerHudMode.WAIT;//attente
+	// this.hud.mode = PlayerHudMode.WAIT;//attente
 	// this.info="Loading Game";
 	//
 	// if (window.XMLHttpRequest) {
@@ -545,7 +544,7 @@ class PlayerController {
 //
 //
 //               	 this.mode = 1;
-// 								 this.hudMode = 10;
+// 								 this.hud.mode = 10;
 // 								 this.info = "Les données ont été chargées avec succès";
 //
 //             	}
@@ -566,7 +565,7 @@ class PlayerController {
 
 // function erreurLoad(){
 //  // this.mode = PlayerMode.HUD;
-//  // this.hudMode = PlayerHudMode.INFO; //mode info
+//  // this.hud.mode = PlayerHudMode.INFO; //mode info
 // 	// this.info = "Il y a eu un probleme avec le chargement, vous pourriez reesayez, au cas ou..";
 // }
 

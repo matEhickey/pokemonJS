@@ -1,31 +1,14 @@
 import Discussion from '../UI/Discussion';
 
 class PNJ {
-	constructor(nom, posX, posY, tailleX, tailleY, isInfirmiere) {
+	constructor(nom, posX, posY, tailleX, tailleY, texte, callback) {
 		this.nom = nom;
 		this.posX = posX;
 		this.posY = posY;
 		this.tailleX = tailleX;
 		this.tailleY = tailleY;
-		this.discussion = ["Je ne suis qu'un pnj"];
-		this.isInfirmiere = isInfirmiere;
-		if (isInfirmiere) {
-			this.discussion = [
-				'Bienvenue au centre pokémon',
-				'Veuillez nous confiez vos pokémons pour que nous puissions les soigner',
-				'1',
-				'1 .. ',
-				'1 .. 2',
-				'1 .. 2 ..',
-				'1 .. 2 .. 3',
-				'1 .. 2 .. 3   TADAM !',
-				'Nous avons soigné vos pokemons',
-			];
-		}
-	}
-
-	isInfirmiere() {
-		return (this.isInfirmiere);
+		this.discussion = texte;
+		this.callback = callback;
 	}
 
 	getDiscuss() {

@@ -3,6 +3,9 @@ import { getContext } from '../utils/render';
 
 import Color from '../utils/Color';
 import CombatMode from '../modes/CombatMode';
+import DevMode from '../modes/DevMode';
+import PlayerHudMode from '../modes/PlayerHudMode';
+import PlayerMode from '../modes/PlayerMode';
 import MenuCombatMode from '../modes/MenuCombatMode';
 
 class MenuCombat {
@@ -43,22 +46,18 @@ class MenuCombat {
 			context.fillRect(380, 290 + (this.selectionAttaque * 70), 280, 70);
 
 			context.fillStyle = Color.Black;
-			context.fillText(
-				this.player.dresseur.getPokemon(0).getAttaqueNum(0).getName(),
-				390, 330, 270,
+			const attNames = this.player.dresseur.getPokemon(0).attaques.map(
+				attaque => attaque.getName(),
 			);
-			context.fillText(
-				this.player.dresseur.getPokemon(0).getAttaqueNum(1).getName(),
-				390, 400, 270,
-			);
-			context.fillText(
-				this.player.dresseur.getPokemon(0).getAttaqueNum(2).getName(),
-				390, 470, 270,
-			);
-			context.fillText(
-				this.player.dresseur.getPokemon(0).getAttaqueNum(3).getName(),
-				390, 540, 270,
-			);
+
+			attNames.forEach((attName, i) => {
+				if (i < 4) {
+					context.fillText(
+						attName,
+						390, 330 + (70 * i), 270,
+					);
+				}
+			});
 
 			context.fillText('Retour', 390, 610, 270);
 			break;
@@ -67,18 +66,31 @@ class MenuCombat {
 			AfficheMenuBackGround(context);
 			AfficheMenuSelection(context, this.player, this.selection);
 
+			const topY = 400 - this.player.dresseur.pokemons.length * 70;
 			context.fillStyle = Color.LightGrey;
-			context.fillRect(360, 280, 320, 70 * (this.player.dresseur.pokemons.length + 1) + 20);
+			// context.fillRect(360, topY, 320, 70 * (this.player.dresseur.pokemons.length + 1) + 20);
+			context.fillRect(360, 220, 320, 70 * (this.player.dresseur.pokemons.length + 1) + 20);
 
 			context.fillStyle = this.player.couleurPrefere;
-			context.fillRect(380, 290 + 70 * this.selectionPokemon, 280, 70);
+			// context.fillRect(380, (topY + 10) + 70 * this.selectionPokemon, 280, 70);
+			context.fillRect(380, 230 + 70 * this.selectionPokemon, 280, 70);
 
 			context.fillStyle = Color.Black;
-			for (let i = 0; i < this.player.dresseur.pokemons.length; i += 1) {
-				context.fillText(this.player.dresseur.getPokemon(i).getName(), 390, 330 + (70 * i), 270);
-			}
+			this.player.dresseur.pokemons.forEach((pokemon, i) => {
+				context.fillText(
+					pokemon.getName(),
+					// 390, (topY + 50) + (70 * i), 270,
+					390, 270 + (70 * i), 270,
+				);
+			});
 
-			context.fillText('Retour', 390, 260 + 70 * (this.player.dresseur.pokemons.length + 1), 270);
+			// context.fillText('Retour',
+			// 	(topY + 50), 200 + 70 * (this.player.dresseur.pokemons.length + 1), 270
+			// );
+			context.fillText(
+				'Retour',
+				390, 200 + 70 * (this.player.dresseur.pokemons.length + 1), 270,
+			);
 			break;
 
 		case (MenuCombatMode.objets):	// menu objet
@@ -209,6 +221,9 @@ class MenuCombat {
 
 	valide() {
 		// console.log("Vous avez cliqué sur "+this.selection);
+		const myPokemon = this.player.dresseur.getPokemon(0);
+		const advPokemon = this.player.getAdv().getPokemon(0);
+
 		switch (this.mode) {
 		case MenuCombatMode.global:
 			switch (this.selection) {
@@ -227,12 +242,15 @@ class MenuCombat {
 						this.combat.finCombat();
 					}
 					else {
+						this.combat.infos.push('Vous n\'avez pas réussi à prendre la fuite');
+
 						this.combat.mode = CombatMode.attaque;
 						this.player.dresseur.attaqueCanceled = true;
 						this.mode = MenuCombatMode.global;
 					}
 				}
 				else {
+					this.combat.infos.push('Vous ne pouvez pas fuir lors d\'un combat contre un dresseur');
 					this.combat.mode = CombatMode.attaque;
 					this.player.dresseur.attaqueCanceled = true;
 					this.mode = MenuCombatMode.global;
@@ -246,16 +264,19 @@ class MenuCombat {
 		case MenuCombatMode.attaques:// menu attaque
 			if (this.selectionAttaque < 4) {
 				this.combat.mode = CombatMode.attaque;
-				this.player.dresseur.getPokemon(0).setSelectAttaque(this.selectionAttaque);
+				myPokemon.setSelectAttaque(this.selectionAttaque);
 			}
 			this.mode = MenuCombatMode.global;
 			break;
 		case MenuCombatMode.pokemons:
-			if (this.selectionPokemon !== this.player.dresseur.pokemons.length) {
+			if (this.selectionPokemon !== this.player.dresseur.pokemons.length
+				&& this.player.dresseur.getPokemon(this.selectionPokemon) !== myPokemon) {
+				const toGet = this.player.dresseur.getPokemon(this.selectionPokemon);
 				this.player.dresseur.echange(
-					this.player.dresseur.getPokemon(this.selectionPokemon),
-					this.player.dresseur.getPokemon(0),
+					toGet,
+					myPokemon,
 				);
+				this.combat.infos.push(`Vous échangez ${myPokemon.getName()} par ${toGet.getName()}`);
 				this.mode = MenuCombatMode.global;
 				this.combat.mode = CombatMode.attaque;
 				this.player.dresseur.attaqueCanceled = true;
@@ -273,23 +294,28 @@ class MenuCombat {
 			case 1: // pokeball
 				this.player.dresseur.attaqueCanceled = true;
 				if (this.player.getAdv().isSauvage()) {
-					if (Math.random() > 0.8) {	// recalculer a partir des pdv et de l agilité
-						this.player.addPokemon(this.player.getAdv().getPokemon(0));
+					if (Math.random() > 0.8 || DevMode.getOption('masterball')) {	// recalculer a partir des pdv et de l agilité
+						console.log('WIN capture pokemon');
+						this.player.addPokemon(advPokemon);
 
-						this.player.mode = MenuCombatMode.attaques;
-						this.player.hudMode = 11;
-						this.player.setPokemonCapture(this.player.getAdv().getPokemon(0));
+						this.player.mode = PlayerMode.HUD;
+						this.player.hud.mode = PlayerHudMode.SUCCESS;
+						this.player.setPokemonCapture(advPokemon);
 					}
 					else {
+						console.log(advPokemon);
+						this.combat.infos.push(`Le ${advPokemon.getName()} à réussi a sortir de la pokéball.`);
 						this.mode = MenuCombatMode.global;
 						this.combat.mode = CombatMode.attaque;
 					}
 				}
 				else {
 					// pokemon sur pokemon non sauvage
+					this.combat.infos.push('Vous ne pouvez pas utiliser de pokéball sur un Pokémon d\'un autre dresseur');
+
 					this.mode = MenuCombatMode.global;
-					this.player.dresseur.attaqueCanceled = true;
 					this.combat.mode = CombatMode.attaque;
+					this.player.dresseur.attaqueCanceled = true;
 				}
 				break;
 			case 2:

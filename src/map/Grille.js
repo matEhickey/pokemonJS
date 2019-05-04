@@ -105,12 +105,7 @@ class Grille {
 	}
 
 	getPNJ(x, y) {
-		this.pnjs.forEach((pnj) => {
-			if (pnj.isOnPosition(x, y)) {
-				return pnj;
-			}
-		});
-		return null;
+		this.pnjs.find(pnj => pnj.isOnPosition(x, y));
 	}
 
 	getBatiment(x, y) {

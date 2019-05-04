@@ -18,7 +18,7 @@ export default function render(player) { // Moteur d affichage
 		break;
 
 	case (PlayerMode.HUD):
-		player.menu.show();
+		player.hud.show();
 		break;
 
 	case (PlayerMode.FIGHT):

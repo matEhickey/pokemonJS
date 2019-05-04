@@ -6,6 +6,8 @@ import hero from '../../assets/imgs/BackSpritesHero.png';
 
 // import CombatTurn from "../modes/CombatTurn";
 import CombatMode from '../modes/CombatMode';
+import PlayerMode from '../modes/PlayerMode';
+import PlayerHudMode from '../modes/PlayerHudMode';
 
 const WaitLimit = {};
 WaitLimit.short = 5;
@@ -36,7 +38,6 @@ class Combat {
 			this.handleAttaque();
 		}
 
-
 		if (this.mode === CombatMode.dresseurs) {
 			this.time += 1;
 			if (this.time > WaitLimit.short) { // affichage des sprites
@@ -54,12 +55,12 @@ class Combat {
 
 		if (this.mode === CombatMode.discussions) {
 			// mode discussion
-			console.log('Combat.runTour: mode discussion');
+			// console.log('Combat.runTour: mode discussion');
 		}
 
 		if (this.mode === CombatMode.menuSelection) {
 			// mode selection
-			console.log('Combat.runTour: mode selection');
+			// console.log('Combat.runTour: mode selection');
 		}
 
 		// console.log("mode  "+this.mode);
@@ -72,23 +73,26 @@ class Combat {
 	}
 
 	handleAttaque() {
-		// recuperer l attaque, et surtout son type
-		if (!(this.joueurs[this.tour] === this.player.dresseur)) {
+		const currentDresseur = this.joueurs[this.tour];
+		const adversaire = this.joueurs[1 - this.tour];
+		console.log(`Combat.handleAttaque : curr : ${currentDresseur.nom} / adv : ${adversaire.nom}`);
+
+		if (!(currentDresseur === this.player.dresseur)) {
+			// recuperer l attaque, et surtout son type
 			const rand = Math.round(Math.random() * 4);
-			// console.log("rand = "+rand);
-			this.joueurs[this.tour].getPokemon(0).setSelectAttaque(rand);
+			currentDresseur.getPokemon(0).setSelectAttaque(rand);
 		}
 
 		if (
-			this.joueurs[this.tour].getPokemon(0).pdv > 0
-			&& this.joueurs[1 - this.tour].getPokemon(0).pdv > 0
+			currentDresseur.getPokemon(0).pdv > 0
+			&& adversaire.getPokemon(0).pdv > 0
 		) {
-			if (this.joueurs[this.tour].attaqueCanceled) {
-				this.joueurs[this.tour].attaqueCanceled = false;
+			if (currentDresseur.attaqueCanceled) {
+				currentDresseur.attaqueCanceled = false;
 			}
 			else {
-				this.joueurs[this.tour].getPokemon(0).attaque(
-					this.joueurs[1 - this.tour].getPokemon(0),
+				currentDresseur.getPokemon(0).attaque(
+					adversaire.getPokemon(0),
 					this,
 				);
 			}
@@ -99,44 +103,46 @@ class Combat {
 				this.mode = CombatMode.discussions;
 			}
 
-			if (this.joueurs[1 - this.tour].getPokemon(0).pdv <= 0) {
-				this.joueurs[1 - this.tour].getPokemon(0).pdv = 0;
-				this.infos.push(`${this.joueurs[1 - this.tour].getPokemon(0).getName()} a epuisé ses pdv`);
+			if (adversaire.getPokemon(0).pdv <= 0) {
+				adversaire.getPokemon(0).pdv = 0;
+				this.infos.push(`${adversaire.getPokemon(0).getName()} a epuisé ses pdv`);
 
 				// calcul experience
 				// lvl adverse^(5) * (rand(15 -> 17)) *5 / lvl
 				const expe = Math.round(
 					(
-						this.joueurs[1 - this.tour].getPokemon(0).lvl
-						* this.joueurs[1 - this.tour].getPokemon(0).lvl
+						adversaire.getPokemon(0).lvl
+						* adversaire.getPokemon(0).lvl
 					)
-					* (Math.random() * 2 + 15) * 2 / this.joueurs[this.tour].getPokemon(0).lvl,
+					* (Math.random() * 2 + 15) * 2 / currentDresseur.getPokemon(0).lvl,
 				);
 				// ajouter a pokemon une variable attaque qui sera choisi avant ce calcul
 
-				this.infos.push(`${this.joueurs[this.tour].getPokemon(0).getName()} gagne ${expe} pts d'experiences`);
-				this.joueurs[this.tour].getPokemon(0).addExperience(expe, this);
+				this.infos.push(`${currentDresseur.getPokemon(0).getName()} gagne ${expe} pts d'experiences`);
+				currentDresseur.getPokemon(0).addExperience(expe, this);
 
-
-				if (this.joueurs[1 - this.tour].pokemonsEnVie().length > 0) {
+				const pokemonsAlive = adversaire.pokemonsEnVie();
+				console.log(`${adversaire.nom} lost a pokemon, remain ${pokemonsAlive.length}`);
+				if (pokemonsAlive.length > 0) {
 					// change pokemon
-					this.infos.push(`${this.joueurs[1 - this.tour].getName()} change de pokemon`);
-
-					const tab = this.joueurs[1 - this.tour].pokemonsEnVie();
+					console.log('Combat.handleAttaque: change pokemon');
+					this.infos.push(`${adversaire.getName()} change de pokemon`);
+					this.mode = CombatMode.discussions;
 
 					// normalement un pokemon sauvage n as pas besoin de cette fonction
-					this.joueurs[1 - this.tour].echange(tab[0], this.joueurs[1 - this.tour].getPokemon(0));
+					adversaire.echange(pokemonsAlive[0], adversaire.getPokemon(0));
 
-					this.tour =	(this.joueurs[0].getPokemon(0).agi - this.joueurs[1].getPokemon(0).agi)
-						> 0 ? 0 : 1;
+					this.tour = 1 - this.tour;
+					// this.tour =	(this.joueurs[0].getPokemon(0).agi - this.joueurs[1].getPokemon(0).agi)
+					// 	> 0 ? 0 : 1;
 				}
 				else {
-					this.joueurs[1 - this.tour].asPerdu = 1;
+					adversaire.asPerdu = 1;
 
-					if (this.joueurs[1 - this.tour] === this.player.dresseur) {
+					if (adversaire === this.player.dresseur) {
 						// console.log("Perdu");
-						this.joueurs[this.tour].soignePokemons();
-						this.joueurs[this.tour].setOriginalOrientation();
+						currentDresseur.soignePokemons();
+						currentDresseur.setOriginalOrientation();
 						this.player.onLose();
 					}
 					else {
@@ -153,6 +159,7 @@ class Combat {
 		context.fillStyle = this.player.couleurPrefere;
 		context.fillRect(50, 50, 800, 550);
 		context.fillStyle = '#000000';
+		// console.log(`Combat.drawCombat: mode ${this.mode}`);
 
 
 		if (this.mode === CombatMode.dresseurs) {
@@ -233,6 +240,10 @@ class Combat {
 			this.menu.afficheToi();
 		}
 
+		if (this.mode === CombatMode.attaque) {
+			// console.log('draw attaque');
+		}
+
 		if (this.mode === CombatMode.discussions_end) {	// copie du 3 mais pour la fin
 			context.font = Font.little;
 			context.fillText(this.player.getAdv().getPokemon(0).getName(), 65, 140);
@@ -258,13 +269,10 @@ class Combat {
 	}
 
 	gestionEvenement(touche) {
-		if (this.mode === CombatMode.menuSelection) { // selection
-			if (touche !== BUTTON.CONFIRM) {
-				this.menu.changeSelection(touche);
-			}
-			else {
-				this.menu.valide();
-			}
+		console.log(`event ${touche}`);
+		if (this.mode === CombatMode.menuSelection) {
+			if (touche === BUTTON.CONFIRM) this.menu.valide();
+			else this.menu.changeSelection(touche);
 		}
 		if (this.mode === CombatMode.discussions) {
 			if (touche === BUTTON.CONFIRM) {
@@ -276,11 +284,12 @@ class Combat {
 			if (touche === BUTTON.CONFIRM) {
 				if (!this.joueurs[1].isSauvage()) { // si c est un dresseur
 					this.joueurs[1].parler(this.player);
-					this.player.mode = 1;
-					this.player.hudMode = 1;
+					console.log('Combat.gestionEvenement : set HUD to discussion');
+					this.player.mode = PlayerMode.HUD;
+					this.player.hud.mode = PlayerHudMode.DISCUSSION;
 				}
 				else { // s'il s agit d un pokemon sauvage
-					this.player.mode = 0;
+					this.player.mode = PlayerMode.MAP;
 				}
 			}
 		}

@@ -1,219 +1,81 @@
-import { getContext, getCanvas } from '../utils/render';
-import Combat from '../combat/Combat';
+import { getContext } from '../utils/render';
 import pokedex from './Pokedex';
 import BUTTON from '../gameloop/touches';
 import PlayerMode from '../modes/PlayerMode';
-import PlayerHudMode from '../modes/PlayerHudMode';
+import MenuMode from '../modes/MenuMode';
 import Font from '../modes/Font';
+import SousMenu from './SousMenu';
 
-class SousMenu {
-	constructor(title, render, validate) {
-		this.title = title;
-		this.render = render;
-		this.validate = validate;
-
-		this.isShown = false;
-	}
-
-	display() {
-		if (this.isShown) {
-			this.render();
-		}
-	}
-
-	toggle() {
-		this.isShown = !this.isShown;
-	}
-}
 
 class Menu {
 	constructor(player) {
 		this.player = player;
+
 		this.options = [];
 		this.selection = 0; // indice permettant de situer le curseur
 
-		this.loadOptions();
-	}
+		this.mode = MenuMode.Global;
 
-	loadOptions() {
-		this.options = [
-			new SousMenu(
-				'Pokedex',
-				() => { this.displayPokedex(); },
-				() => { this.player.hudMode = PlayerHudMode.POKEDEX; },
-			),
-			new SousMenu(
-				'Pokemon',
-				() => { this.displayPokemons(this.player.dresseur.pokemons); },
-				() => { this.player.hudMode = PlayerHudMode.MENUPOKEMON; },
-			),
-			new SousMenu(
-				'Inventaire',
-				() => { this.displayInventaire(); },
-				() => { this.player.hudMode = PlayerHudMode.MENUINVENTAIRE; },
-			),
-			new SousMenu(
-				this.player.getName(),
-				() => { this.displayInfosJoueur(); },
-				() => { this.player.hudMode = PlayerHudMode.MENUDRESSEUR; },
-			),
-			new SousMenu(
-				'Carte',
-				() => { this.displayCarte(); },
-				() => { this.player.hudMode = PlayerHudMode.MENUCARTE; },
-			),
-			new SousMenu(
-				'Sauvegarde',
-				() => { this.displaySauv(); },
-				() => { this.player.hudMode = PlayerHudMode.MENUSAVE; },
-			),
-			new SousMenu(
-				'Options',
-				() => { this.displayOptions(); },
-				() => { this.player.hudMode = PlayerHudMode.MENUOPTIONS; },
-			),
-		];
+		SousMenu.load(this);
 	}
 
 	show() {
-		if (this.lastSeen !== this.player.hudMode) {
-			console.log('-------');
-			console.log(`show, hudmode: ${this.player.hudMode}`);
-
-			this.lastSeen = this.player.hudMode;
+		if (this.lastSeen !== this.mode) {
+			console.log(`Menu.show: mode did change -> ${this.mode}`);
+			this.lastSeen = this.mode;
 		}
 
-		switch (this.player.hudMode) {
-		case 0: // pause
-			this.showMainMenu();
-			break;
-		case 1: // discussion
-			this.showConversation();
-			break;
-		case 9:	// fail
-			this.displayFail();
-			break;
-		case 10:	// informations simples, avec controle pour retour au plateau
-			this.displayInfo();
-			break;
-		case 11:	// affichage bravo vous avez capturer tel pokemon
-			this.displayWinCapture();
-			break;
-		case 12:	// attente + informations simples
-			this.displayInfo();
-			break;
-		default:
-			console.warn(`Menu.show: imcompatible option : ${this.player.hudMode}`);
+		if (this.mode === MenuMode.Global) this.showMainMenu();
+		else {
+			this.options[this.selection].display();
 		}
-
-		// this.options.forEach((option)=>{ option.display(); });
-		this.options[this.selection].display();
 	}
 
 	event(touche) {
-		console.log('-----');
-		console.log(`event HUD : ${touche}`);
-		// console.log(`hudMode : ${this.player.hudMode}`);
+		console.log(`Menu.event(${touche}): mode ${this.mode}`);
 
-
-		switch (this.player.hudMode) {
-		case PlayerHudMode.PAUSE:
-			console.log('mode pause');
+		switch (this.mode) {
+		case MenuMode.Global:
+			console.log('MenuMode.Global');
 			this.handleMainMenuEvent(touche);
 			break;
-		case PlayerHudMode.DISCUSSION:
-			console.log('mode discussion');
-			if (touche === BUTTON.CONFIRM || touche === BUTTON.BACK) {
-				const isDiscussionOver = this.player.discussion.increaseMessage();
-
-				if (isDiscussionOver) {
-					this.player.discussion = null;
-
-					if (this.player.dresseur.adversaire) {
-						const { x, y } = this.player.calculNextCase();
-
-						if (this.player.grille.getDresseur(x, y)) {
-							// on parlait directement au dresseur pour l attaquer
-							if (!this.player.grille.getDresseur(x, y).asPerdu) {
-								this.player.mode = PlayerMode.FIGHT;
-								this.player.adversaire = this.player.grille.getDresseur(x, y);
-
-								this.player.combat = new Combat(this.player);
-							}
-							else {
-								this.player.mode = PlayerMode.MAP;
-							}
-						}
-						else if (this.player.getAdv().asPerdu) {
-							// le dresseur nous attaquait
-							this.player.mode = PlayerMode.MAP;
-						}
-						else {
-							this.player.mode = PlayerMode.FIGHT;
-							this.player.combat = new Combat(this.player);
-						}
-					}
-					else {
-						this.player.mode = PlayerMode.MAP;
-					}
-				}
-			}
-
+		case MenuMode.Pokedex:
+			this.handlePokedexEvent(touche, () => { this.options[this.selection].toggle(); });
 			break;
-		case PlayerHudMode.FAIL:
-			console.log('mode fail');
-			sendDresseurToHealthCenter(this.player);
-			this.player.dresseur.adversaire = null;
-			break;
-		case PlayerHudMode.INFO:
-			console.log('mode infos');
-			this.player.mode = PlayerHudMode.PAUSE;
-			break;
-		case PlayerHudMode.SUCCESS:
-			console.log('mode success');
-			this.player.mode = PlayerHudMode.PAUSE;
-			this.player.dresseur.adversaire = null;
-			break;
-		case PlayerHudMode.WAIT:
-			console.log('mode wait');
-			break;
-		case PlayerHudMode.POKEDEX:
-			handlePokedexEvent(touche, this.player, () => { this.options[this.selection].toggle(); });
-			break;
-		case PlayerHudMode.MENUPOKEMON:
+		case MenuMode.Pokemons:
 			switch (touche) {
 			case BUTTON.BACK:
 				this.options[this.selection].toggle();
-				this.player.hudMode = PlayerHudMode.PAUSE;
+				this.mode = MenuMode.Global;
 				break;
 			default:
 				console.log('Menu.show.menupokemon: option not compatible');
 			}
 			break;
-		case PlayerHudMode.MENUINVENTAIRE:
+		case MenuMode.Inventaire:
 			switch (touche) {
 			case BUTTON.BACK:
 				this.options[this.selection].toggle();
-				this.player.hudMode = PlayerHudMode.PAUSE;
+				this.mode = MenuMode.Global;
 				break;
 			default:
 				console.log('Menu.show.menuinventaire: option not compatible');
 			}
 			break;
-		case PlayerHudMode.MENUDRESSEUR:
+		case MenuMode.Dresseur:
 			switch (touche) {
 			case BUTTON.BACK:
 				this.options[this.selection].toggle();
-				this.player.hudMode = PlayerHudMode.PAUSE;
+				this.mode = MenuMode.Global;
 				break;
 			default:
 				console.warn('Menu.show.menudresseur: option not compatible');
 			}
 			break;
-		case PlayerHudMode.MENUCARTE:
-			handleCarteEvent(touche, this.player, () => { this.options[this.selection].toggle(); });
+		case MenuMode.Carte:
+			this.handleCarteEvent(touche, () => { this.options[this.selection].toggle(); });
 			break;
-		case PlayerHudMode.MENUSAVE:
+		case MenuMode.Sauvegrade:
 			switch (touche) {
 			case BUTTON.CONFIRM:
 				this.options[this.selection].toggle();
@@ -221,20 +83,20 @@ class Menu {
 				break;
 			case BUTTON.BACK:
 				this.options[this.selection].toggle();
-				this.player.hudMode = PlayerHudMode.PAUSE;
+				this.mode = MenuMode.Global;
 				break;
 			default:
 				console.log('Menu.show.menusave: option not compatible');
 			}
 			break;
-		case PlayerHudMode.MENUOPTIONS:
+		case MenuMode.Options:
 			switch (touche) {
 			case BUTTON.CONFIRM:
 				changeColorHUD(this.player);
 				break;
 			case BUTTON.BACK:
 				this.options[this.selection].toggle();
-				this.player.hudMode = PlayerHudMode.PAUSE;
+				this.mode = MenuMode.Global;
 				break;
 			case BUTTON.PAUSE:
 				this.player.couleurPrefere = '#bbbbbb';
@@ -244,7 +106,7 @@ class Menu {
 			}
 			break;
 		default:
-			console.log('event mode not found');
+			console.log('Menu.event: mode not found');
 		}
 	}
 
@@ -265,22 +127,62 @@ class Menu {
 	handleMainMenuEvent(touche) {
 		switch (touche) {
 		case BUTTON.PAUSE:
-			this.player.mode = PlayerHudMode.PAUSE;
+			this.player.mode = PlayerMode.MAP;
 			break;
 		case BUTTON.CONFIRM:
-			this.player.menu.valider();
+			this.valider();
 			break;
 		case BUTTON.BACK:
-			this.player.mode = PlayerHudMode.PAUSE;
+			this.player.mode = PlayerMode.MAP;
 			break;
 		case BUTTON.UP:
-			this.player.menu.selectM();
+			this.selectM();
 			break;
 		case BUTTON.DOWN:
-			this.player.menu.selectP();
+			this.selectP();
 			break;
 		default:
 			console.log('handleMainMenuEvent: option not compatible');
+		}
+	}
+
+	handlePokedexEvent(touche, toggle) {
+		switch (touche) {
+		case BUTTON.BACK:
+			toggle();
+			this.mode = MenuMode.Global;
+			break;
+		case BUTTON.UP:
+			pokedex.getPokeInf();
+			break;
+		case BUTTON.DOWN:
+			pokedex.getPokeSup();
+			break;
+		default:
+			console.warn('Menu.handlePokedexEvent : no option compatible');
+		}
+	}
+
+	handleCarteEvent(touche, toggle) {
+		switch (touche) {
+		case BUTTON.UP:
+			this.player.carte.selectM();
+			break;
+		case BUTTON.DOWN:
+			this.player.carte.selectP();
+			break;
+		case BUTTON.CONFIRM: // valider
+			toggle();
+			this.player.carte.voyage(this.player);
+			this.player.mode = PlayerMode.MAP;
+			this.mode = MenuMode.Global;
+			break;
+		case BUTTON.BACK: // retour
+			toggle();
+			this.mode = MenuMode.Global;
+			break;
+		default:
+			console.warn('handleCarteEvent : no option compatible');
 		}
 	}
 
@@ -306,10 +208,6 @@ class Menu {
 	valider() {
 		this.options[this.selection].validate();
 		this.options[this.selection].toggle();
-	}
-
-	showConversation() {
-		this.player.showCurrentMessage();
 	}
 
 	// {x, y, taileX, tailleY} Portion , {x, y, tailleX, tailleY} Canvas
@@ -397,90 +295,6 @@ class Menu {
 		context.fillStyle = '#000000';
 		context.font = Font.little;
 		context.fillText(`Vous avez ${this.player.dresseur.inventaire.length} objets dans votre inventaire`, 65, 300);
-	}
-
-	displayFail() {
-		const context = getContext();
-		const canvas = getCanvas();
-		context.fillStyle = '#000000';
-		context.fillRect(0, 0, canvas.width, canvas.height);
-		context.fillStyle = this.player.couleurPrefere;
-		context.fillRect(50, 50, 800, 550);
-		context.fillStyle = '#000000';
-		context.font = Font.medium;
-		context.fillText('Vos pokemons sont tous K.O', 65, 250);
-		context.font = Font.little;
-		context.fillText('Vous avez perdu', 65, 300);
-		context.font = '15px Georgia';
-		context.fillText('(Appuyer sur une touche)', 65, 350);
-	}
-
-	displayInfo() {
-		const context = getContext();
-		context.fillStyle = this.player.couleurPrefere;
-		context.fillRect(50, 350, 800, 250);
-		context.fillStyle = '#000000';
-		context.font = Font.little;
-		context.fillText(this.player.info, 60, 380);
-	}
-
-	displayWinCapture() {
-		const context = getContext();
-		context.fillStyle = this.player.couleurPrefere;
-		context.fillRect(50, 350, 800, 250);
-		context.fillStyle = '#000000';
-		context.font = Font.little;
-		context.fillText('Bravo, vous avez capturé un :', 160, 380);
-		context.fillText(this.player.getPokemonCapture().getName(), 200, 430);
-		context.fillText(`Niveau ${this.player.getPokemonCapture().lvl}`, 160, 480);
-		this.player.getPokemonCapture().afficheToiAt(550, 400);
-	}
-}
-
-
-function sendDresseurToHealthCenter(player) {
-	player.mode = PlayerHudMode.PAUSE;
-	player.dresseur.aversaire = null;
-	player.setPosX(-72); // ---> devant centre pokemon
-	player.setPosY(6);
-}
-
-function handlePokedexEvent(touche, player, toggle) {
-	switch (touche) {
-	case BUTTON.BACK:
-		toggle();
-		player.hudMode = PlayerHudMode.PAUSE;
-		break;
-	case BUTTON.UP:
-		pokedex.getPokeInf();
-		break;
-	case BUTTON.DOWN:
-		pokedex.getPokeSup();
-		break;
-	default:
-		console.warn('handlePokedexEvent : no option compatible');
-	}
-}
-
-function handleCarteEvent(touche, player, toggle) {
-	switch (touche) {
-	case BUTTON.UP:
-		player.carte.selectM();
-		break;
-	case BUTTON.DOWN:
-		player.carte.selectP();
-		break;
-	case BUTTON.CONFIRM: // valider
-		toggle();
-		player.carte.voyage(player);
-		player.mode = PlayerMode.MAP;
-		break;
-	case BUTTON.BACK: // retour
-		toggle();
-		player.hudMode = PlayerHudMode.PAUSE;
-		break;
-	default:
-		console.warn('handleCarteEvent : no option compatible');
 	}
 }
 
