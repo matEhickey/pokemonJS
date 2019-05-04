@@ -75,7 +75,7 @@ class Combat {
 	handleAttaque() {
 		const currentDresseur = this.joueurs[this.tour];
 		const adversaire = this.joueurs[1 - this.tour];
-		console.log(`Combat.handleAttaque : curr : ${currentDresseur.nom} / adv : ${adversaire.nom}`);
+		// console.log(`Combat.handleAttaque : curr : ${currentDresseur.nom} / adv : ${adversaire.nom}`);
 
 		if (!(currentDresseur === this.player.dresseur)) {
 			// recuperer l attaque, et surtout son type
@@ -122,10 +122,10 @@ class Combat {
 				currentDresseur.getPokemon(0).addExperience(expe, this);
 
 				const pokemonsAlive = adversaire.pokemonsEnVie();
-				console.log(`${adversaire.nom} lost a pokemon, remain ${pokemonsAlive.length}`);
+				// console.log(`${adversaire.nom} lost a pokemon, remain ${pokemonsAlive.length}`);
 				if (pokemonsAlive.length > 0) {
 					// change pokemon
-					console.log('Combat.handleAttaque: change pokemon');
+					// console.log('Combat.handleAttaque: change pokemon');
 					this.infos.push(`${adversaire.getName()} change de pokemon`);
 					this.mode = CombatMode.discussions;
 
@@ -269,7 +269,7 @@ class Combat {
 	}
 
 	gestionEvenement(touche) {
-		console.log(`event ${touche}`);
+		// console.log(`event ${touche}`);
 		if (this.mode === CombatMode.menuSelection) {
 			if (touche === BUTTON.CONFIRM) this.menu.valide();
 			else this.menu.changeSelection(touche);
@@ -284,7 +284,6 @@ class Combat {
 			if (touche === BUTTON.CONFIRM) {
 				if (!this.joueurs[1].isSauvage()) { // si c est un dresseur
 					this.joueurs[1].parler(this.player);
-					console.log('Combat.gestionEvenement : set HUD to discussion');
 					this.player.mode = PlayerMode.HUD;
 					this.player.hud.mode = PlayerHudMode.DISCUSSION;
 				}

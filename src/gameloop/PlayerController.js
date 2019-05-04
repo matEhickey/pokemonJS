@@ -238,10 +238,10 @@ class PlayerController {
 			}
 		}
 
-		if (!(DevMode.getOption('noAgression'))) this.grille.checkZonesDresseurs(this);
 		// position 5 is player is not moving, need refacto
-		if (this.dresseur.position !== 5 && !(DevMode.getOption('noWildPokemon'))) this.grille.checkWalkOnHerbes();
-		if (!(DevMode.getOption('noTravel'))) this.grille.checkWalkOnPorte();
+		if (this.dresseur.position !== 5) this.grille.checkWalkOnHerbes();
+		this.grille.checkZonesDresseurs(this);
+		this.grille.checkWalkOnPorte();
 	}
 
 	actions(touche) {

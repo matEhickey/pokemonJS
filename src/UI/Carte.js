@@ -56,14 +56,14 @@ function ChargeCarte(player) {
 		'Foret',
 		240,
 		220,
-		new Porte(0, 0, 0, 0, 'foret1', player),
+		new Porte(0, 0, 5, 5, 0, 0, 'foret1', player),
 	));
 
 	player.carte.addEndroit(new EndroitCarte(
 		'Argenta',
 		310,
 		395,
-		new Porte(-102,	30, 18, 198, 'argenta', player),
+		new Porte(-102,	30, 5, 5, 18, 198, 'argenta', player),
 	));
 }
 

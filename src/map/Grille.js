@@ -80,7 +80,10 @@ class Grille {
 	checkWalkOnPorte() {
 		this.portes.forEach((porte) => {
 			if (porte.walkOn(this.player)) {
-				porte.rejoindreDestination(this.player);
+				console.log('Grille.checkWalkOnPorte: porte colision detected');
+				if (!DevMode.getOption('noTravel')) {
+					porte.rejoindreDestination(this.player);
+				}
 			}
 		});
 	}
@@ -88,7 +91,8 @@ class Grille {
 	checkWalkOnHerbes() {
 		this.herbes.forEach((herbe) => {
 			if (herbe.walkOn(this.player)) {
-				if (Math.random() > 0.95) {
+				console.log('Grille.checkWalkOnHerbes: herbe colision detected');
+				if (Math.random() > 0.95 && !DevMode.getOption('noWildPokemon')) {
 					CombatContreSauvage(this.player, herbe.getPuissance());
 				}
 			}
@@ -175,7 +179,8 @@ class Grille {
 	checkZonesDresseurs(player) {
 		this.dresseurs.forEach((dresseur) => {
 			if (dresseur.walkOnZone(player)) {
-				if (!dresseur.asPerdu) {
+				console.log('Grille.checkZonesDresseurs: zone colision detected');
+				if (!dresseur.asPerdu && !(DevMode.getOption('noAgression'))) {
 					dresseur.attaqueJoueur(this.player);
 				}
 			}

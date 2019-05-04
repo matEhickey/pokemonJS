@@ -21,7 +21,7 @@ class Menu {
 
 	show() {
 		if (this.lastSeen !== this.mode) {
-			console.log(`Menu.show: mode did change -> ${this.mode}`);
+			// console.log(`Menu.show: mode did change -> ${this.mode}`);
 			this.lastSeen = this.mode;
 		}
 
@@ -36,7 +36,6 @@ class Menu {
 
 		switch (this.mode) {
 		case MenuMode.Global:
-			console.log('MenuMode.Global');
 			this.handleMainMenuEvent(touche);
 			break;
 		case MenuMode.Pokedex:

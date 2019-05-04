@@ -66,8 +66,11 @@ class ZoneDresseur {
 		const playerCoords = player.dresseur.getCoordinates();
 
 		return (
-			(playerCoords.x + (playerCoords.tailleX / 3) > zoneCoords.x) && (playerCoords.x < zoneCoords.mx)
-			&& (playerCoords.y + (playerCoords.tailleY / 3) > zoneCoords.y) && (playerCoords.y < zoneCoords.my)
+			(playerCoords.x + (playerCoords.tailleX / 3) > zoneCoords.x)
+			&& (playerCoords.x < zoneCoords.mx)
+
+			&& (playerCoords.y + (playerCoords.tailleY / 3) > zoneCoords.y)
+			&& (playerCoords.y < zoneCoords.my)
 		);
 	}
 

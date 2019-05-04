@@ -17,7 +17,7 @@ class HUD {
 
 	show() {
 		if (this.lastSeen !== this.mode) {
-			console.log(`HUD.show: mode did change -> ${this.mode}`);
+			// console.log(`HUD.show: mode did change -> ${this.mode}`);
 			this.lastSeen = this.mode;
 		}
 
@@ -46,15 +46,15 @@ class HUD {
 	}
 
 	event(touche) {
-		console.log(`HUD.event(${touche}): mode ${this.mode}`);
+		// console.log(`HUD.event(${touche}): mode ${this.mode}`);
 
 		switch (this.mode) {
 		case PlayerHudMode.PAUSE:
-			console.log('mode menuglobal');
+			// console.log('mode menuglobal');
 			this.menu.event(touche);
 			break;
 		case PlayerHudMode.DISCUSSION:
-			console.log('mode discussion');
+			// console.log('mode discussion');
 			if (touche === BUTTON.CONFIRM || touche === BUTTON.BACK) {
 				const isDiscussionOver = this.player.discussion.increaseMessage();
 
@@ -92,25 +92,25 @@ class HUD {
 			}
 			break;
 		case PlayerHudMode.FAIL:
-			console.log('mode fail');
+			// console.log('mode fail');
 			this.mode = PlayerHudMode.PAUSE;
 			this.player.mode = PlayerMode.MAP;
 			sendDresseurToHealthCenter(this.player);
 			this.player.dresseur.adversaire = null;
 			break;
 		case PlayerHudMode.INFO:
-			console.log('mode infos');
+			// console.log('mode infos');
 			this.mode = PlayerHudMode.PAUSE;
 			this.player.mode = PlayerMode.MAP;
 			break;
 		case PlayerHudMode.SUCCESS:
-			console.log('mode success');
+			// console.log('mode success');
 			this.mode = PlayerHudMode.PAUSE;
 			this.player.mode = PlayerMode.MAP;
 			this.player.dresseur.adversaire = null;
 			break;
 		case PlayerHudMode.WAIT:
-			console.log('mode wait');
+			// console.log('mode wait');
 			break;
 		default:
 			console.log('HUD.event: mode not found');

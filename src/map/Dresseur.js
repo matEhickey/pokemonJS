@@ -244,7 +244,6 @@ class Dresseur {
 	}
 
 	echange(pok1, pok2) {
-		console.log('Dresseur.echange');
 		this.pokemons.forEach((pokemon1, i) => {
 			if (pokemon1 === pok1) {
 				this.pokemons.forEach((pokemon2, j) => {

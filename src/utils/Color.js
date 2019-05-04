@@ -8,6 +8,7 @@ const Color = {
 const ColorDebug = {
 	ZoneDresseur: 'rgba(226, 217, 0, 0.5)',
 	Dresseur: 'rgba(255, 0, 0, 0.2)',
+	Porte: 'rgba(14, 103, 255, 0.5)',
 };
 
 export { ColorDebug };
