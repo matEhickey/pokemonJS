@@ -2,6 +2,7 @@ import { getContext } from '../utils/render';
 import ZoneDresseur from './ZoneDresseur';
 import Discussion from '../UI/Discussion';
 import DevMode from '../modes/DevMode';
+import { ColorDebug } from '../utils/Color';
 import dresseurVert from '../../assets/imgs/dresseurVert.png';
 
 class Dresseur {
@@ -34,12 +35,8 @@ class Dresseur {
 
 		// anim
 		this.orientationInit = orientation;
-		this.orientation = orientation;// 0 de face, 1 = de gzuche, 2 de droite 3 de derriere
+		this.orientation = orientation;// 0 sud, 1 = ouest, 2 est 3 nord
 		this.position = 5;
-
-		// colisions
-		this.nextCaseX = false;
-		this.nextCaseY = false;
 
 		this.attaqueCanceled = false;
 	}
@@ -77,30 +74,31 @@ class Dresseur {
 	}
 
 	calculNextCase() {
+		let x = this.posX;
+		let y = this.posY;
+
 		switch (this.orientation) {
+		case (0):
+			y = this.posY + 1;
+			break;
 		case (1):
-			this.nextCaseX = this.posX;
-			this.nextCaseY = this.posY + 2;
+			x = this.posX - 1;
 			break;
 		case (2):
-			this.nextCaseX = this.posX - 2;
-			this.nextCaseY = this.posY;
+			x = this.posX + 1;
 			break;
 		case (3):
-			this.nextCaseX = this.posX + 2;
-			this.nextCaseY = this.posY;
-			break;
-		case (4):
-			this.nextCaseX = this.posX;
-			this.nextCaseY = this.posY - 2;
+			y = this.posY - 1;
 			break;
 		default:
 			console.warn('Dresseur.calculNextCase: no compatible option');
 		}
+
+		return ({ x, y });
 	}
 
-	isWalkable(posX, posY) {
-		return (!this.isOnPosition(posX, posY));
+	isWalkable(x, y) {
+		return (!this.isOnPosition(x, y));
 	}
 
 	parler(player) {
@@ -109,8 +107,11 @@ class Dresseur {
 	}
 
 	trouveOrientation(player) {
-		const x = player.getPosX() - this.getPosX();
-		const y = player.getPosY() - this.getPosY();
+		const playerCoords = player.dresseur.getCoordinates();
+		const dresseurCoords = this.getCoordinates();
+
+		const x = playerCoords.x - dresseurCoords.x;
+		const y = playerCoords.y - dresseurCoords.y;
 
 		if (x <= y) {
 			this.setOrientation(x > 0 ? 0 : 1);
@@ -140,45 +141,83 @@ class Dresseur {
 		}
 	}
 
+	getCoordinates() {
+		return {
+			x: this.posX,
+			y: this.posY,
+			tailleX: this.tailleX,
+			tailleY: this.tailleY,
+			mx: this.posX + this.tailleX / 3,
+			my: this.posY + this.tailleY / 3,
+		}; // ------> weird ratio here
+	}
+
 	afficheToi(player) {
 		const context = getContext();
-		const { posX, posY } = player.dresseur;
+		const playerCoords = player.dresseur.getCoordinates();
+		const dresseurCoords = this.getCoordinates();
 
 		if (DevMode.dev && DevMode.getOption('dresseursAsDots')) {
 			this.showDebug(player);
 		}
 
+		// ---- animation personage
+		const xClip = this.position === 5
+			?	0
+			: this.position * 32;
+
+		const yClip = this.orientation * 48;
+
 		context.drawImage(
 			this.texture,
-			0,
-			this.orientation * 48,
-			32,
-			48,
-			this.posX * 3 - (posX * 3) + 340,
-			this.posY * 3 - (posY * 3) + 280,
-			this.tailleX,
-			this.tailleY,
+			xClip,
+			yClip,
+			dresseurCoords.tailleX,
+			dresseurCoords.tailleY,
+			(dresseurCoords.x - playerCoords.x) * 3 + 340,
+			(dresseurCoords.y - playerCoords.y) * 3 + 260,
+			dresseurCoords.tailleX,
+			dresseurCoords.tailleY,
 		);
 	}
 
 	showDebug(player) {
 		const context = getContext();
-		const { posX, posY } = player.dresseur;
+		const playerCoords = player.dresseur.getCoordinates();
+		const dresseurCoords = this.getCoordinates();
 
-		context.fillStyle = 'rgba(255, 0, 0, 0.5)';
+		context.fillStyle = ColorDebug.Dresseur;
 		context.fillRect(
-			this.posX * 3 - (posX * 3) + 340,
-			this.posY * 3 - (posY * 3) + 280,
-			this.tailleX,
-			this.tailleY,
+			(dresseurCoords.x - playerCoords.x) * 3 + 340,
+			(dresseurCoords.y - playerCoords.y) * 3 + 260,
+			dresseurCoords.tailleX,
+			dresseurCoords.tailleY,
 		);
+
+		context.fillStyle = 'black';
+
+		// tryin to show cursor
+		context.fillRect(
+			(dresseurCoords.x - playerCoords.x) * 3 + 340 - 2,
+			(dresseurCoords.y - playerCoords.y) * 3 + 260 - 2,
+			4, 4,
+		);
+
+		context.fillRect(
+			(dresseurCoords.mx - playerCoords.x) * 3 + 340 - 2,
+			(dresseurCoords.my - playerCoords.y) * 3 + 260 - 2,
+			4, 4,
+		);
+
 
 		this.zone.showDebug(player);
 	}
 
-	isOnPosition(posX, posY) {
-		if (posX > this.posX && posX < this.posX + (this.tailleX / 2.5)) {
-			if (posY > this.posY && posY < this.posY + (this.tailleY / 2.5)) {
+	isOnPosition(x, y) {
+		const dresseurCoords = this.getCoordinates();
+
+		if (x > dresseurCoords.x && x < dresseurCoords.x + (dresseurCoords.tailleX / 3)) {
+			if (y > dresseurCoords.y && y < dresseurCoords.y + (dresseurCoords.tailleY / 3)) {
 				return true;
 			}
 		}
@@ -227,9 +266,10 @@ class Dresseur {
 		});
 	}
 
-	peutAvancer() {
-		return this.grille.isWalkable(this.posX, this.posY);
-	}
+	// peutAvancer() {
+	// 	const dresseurCoords = this.getCoordinates();
+	// 	return this.grille.isWalkable(dresseurCoords.x, dresseurCoords.y);
+	// }
 
 	setOrientation(or) {
 		this.orientation = or;
@@ -270,35 +310,13 @@ class Dresseur {
 		return this.pokemons.length;
 	}
 
-	avance(num) {
-		switch (this.orientation) {
-		case 1:
-			this.posY += num;
-			break;
-		case 2:
-			this.posX -= num;
-			break;
-		case 3:
-			this.posX += num;
-			break;
-		case 4:
-			this.posY -= num;
-			break;
-		default:
-			console.warn('Dresseur.avance: no compatible option');
-		}
-
-		// console.log(`avance ${this.posX}:${this.posX}`);
-	}
-
 	attaqueJoueur(player) {
-		if (!this.asPerdu) {
-			console.log(`${this.nom} attaque`);
+		console.log(`${this.nom} attaque`);
+		player.setAdv(this);
 
-			player.mode = 1;
-			player.hudMode = 1;
-			this.parler(player);
-		}
+		player.mode = 1;
+		player.hudMode = 1;
+		this.parler(player);
 	}
 
 	isSauvage() { // pendant un combat, un pokemon sauavge agit + ou - comme un dresseur

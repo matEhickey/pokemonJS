@@ -17,20 +17,20 @@ class Batiment {
 		const { posX, posY } = player.dresseur;
 		this.context.drawImage(
 			this.texture,
-			this.posX * 3 - (posX * 3) + 340,
-			this.posY * 3 - (posY * 3) + 280,
+			(this.posX - posX) * 3 + 340,
+			(this.posY - posY) * 3 + 280,
 			this.tailleX,
 			this.tailleY,
 		);
 	}
 
-	isWalkable(posX, posY) {
-		return (!this.isOnPosition(posX, posY));
+	isWalkable(x, y) {
+		return (!this.isOnPosition(x, y));
 	}
 
-	isOnPosition(posX, posY) {
-		if (posX > this.posX && posX < this.posX + (this.tailleX / 2.7)) {
-			if (posY > this.posY && posY < this.posY + (this.tailleY / 2.5)) {
+	isOnPosition(x, y) {
+		if (x > this.posX && x < this.posX + (this.tailleX / 2.7)) {
+			if (y > this.posY && y < this.posY + (this.tailleY / 2.5)) {
 				return (true);
 			}
 		}

@@ -31,9 +31,7 @@ class PlayerController {
 		this.mode = PlayerMode.MAP;
 		this.hudMode = PlayerHudMode.PAUSE;// 0 = pause 1 = discussion 2 = pokedex 3= menupokemon
 
-		this.nextCaseX = null;
-		this.nextCaseY = null;
-		this.fps = DevMode.dev ? 20 : 90;
+		this.fps = DevMode.dev ? 30 : 90;
 		this.discussion = false;
 		this.info = false;
 		this.couleurPrefere = '#bbbbbb';
@@ -125,9 +123,7 @@ class PlayerController {
 	}
 
 	calculNextCase() {
-		this.dresseur.calculNextCase();
-		this.nextCaseX = this.dresseur.nextCaseX;
-		this.nextCaseY = this.dresseur.nextCaseY;
+		return (this.dresseur.calculNextCase());
 	}
 
 	getPokemonCapture() {
@@ -154,13 +150,8 @@ class PlayerController {
 		return (this.dresseur.getName());
 	}
 
-	isWalkable(posX, posY) {
-		if (posX > this.getPosX() && posX < this.getPosX() + this.getTailleX()) {
-			if (posY > this.getPosY() && posY < this.getPosY() + this.getTailleY()) {
-				return (false);
-			}
-		}
-		return (true);
+	isWalkable(x, y) {
+		return (this.dresseur.isWalkable(x, y));
 	}
 
 	soignePokemons() {
@@ -212,42 +203,46 @@ class PlayerController {
 	}
 
 	avance() {
-		this.calculNextCase();
+		if (this.walkable) {
+			switch (this.getOrientation()) {
+			case (0):
+				if (this.dresseur.position !== 5) {
+					this.setPosY(this.getPosY() + 1);
+				}
+				break;
+			case (1):
+				if (this.dresseur.position !== 5) {
+					this.setPosX(this.getPosX() - 1);
+				}
+				break;
+			case (2):
+				if (this.dresseur.position !== 5) {
+					this.setPosX(this.getPosX() + 1);
+				}
+				break;
+			case (3):
+				if (this.dresseur.position !== 5) {
+					this.setPosY(this.getPosY() - 1);
+				}
+				break;
+			default:
+				console.warn('PlayerController.avance: no corresponding orientation');
+			}
 
-		switch (this.getOrientation()) {
-		case (1):
-			if (this.dresseur.position !== 5 && (this.mode === 0) && this.walkable) {
-				this.setPosY(this.getPosY() + 2);
+			if (this.dresseur.position < 4 && (this.mode === 0)) {
+				this.dresseur.position += 1;
 			}
-			break;
-		case (2):
-			if (this.dresseur.position !== 5 && (this.mode === 0) && this.walkable) {
-				this.setPosX(this.getPosX() - 2);
+			if (this.dresseur.position === 4) { this.dresseur.position = 0; }
+
+			if (DevMode.dev) {
+				document.getElementById('playerControllerX').innerHTML = `X: ${this.getPosX()}`;
+				document.getElementById('playerControllerY').innerHTML = `Y: ${this.getPosY()}`;
 			}
-			break;
-		case (3):
-			if (this.dresseur.position !== 5 && (this.mode === 0) && this.walkable) {
-				this.setPosX(this.getPosX() + 2);
-			}
-			break;
-		case (4):
-			if (this.dresseur.position !== 5 && (this.mode === 0) && this.walkable) {
-				this.setPosY(this.getPosY() - 2);
-			}
-			break;
-		default:
-			console.warn('PlayerController.avance: no corresponding orientation');
 		}
 
-		if (this.dresseur.position < 4 && (this.mode === 0)) {
-			this.dresseur.position += 1;
-		}
-		if (this.dresseur.position === 4) { this.dresseur.position = 0; }
-
-		if (DevMode.dev) {
-			document.getElementById('playerControllerX').innerHTML = `X: ${this.getPosX()}`;
-			document.getElementById('playerControllerY').innerHTML = `Y: ${this.getPosY()}`;
-		}
+		if (!(DevMode.getOption('noAgression'))) this.grille.checkZonesDresseurs(this);
+		if (!(DevMode.getOption('noWildPokemon'))) this.grille.checkWalkOnHerbes();
+		if (!(DevMode.getOption('noTravel'))) this.grille.checkWalkOnPorte();
 	}
 
 	actions(touche) {
@@ -262,9 +257,13 @@ class PlayerController {
 				this.mode = PlayerMode.HUD;
 				this.hudMode = PlayerHudMode.PAUSE;
 			}
-			if (BUTTON.CONFIRM) {
-				this.calculNextCase();
-				const dress = this.grille.getDresseur(this.nextCaseX, this.nextCaseY);
+			if (touche === BUTTON.CONFIRM) {
+				const {
+					x: nextCaseX,
+					y: nextCaseY,
+				} = this.calculNextCase();
+
+				const dress = this.grille.getDresseur(nextCaseX, nextCaseY);
 
 				if (dress) {
 					console.log(`Action: Parle avec dresseur ${dress.nom}`);
@@ -307,34 +306,29 @@ class PlayerController {
 	handleDirectionnalEvent(touche) {
 		switch (touche) {
 		case (BUTTON.DOWN):
-			this.setOrientation(1);
+			this.setOrientation(0);
 			break;
 		case (BUTTON.LEFT):
-			this.setOrientation(2);
+			this.setOrientation(1);
 			break;
 		case (BUTTON.RIGHT):
-			this.setOrientation(3);
+			this.setOrientation(2);
 			break;
 		case (BUTTON.UP):
-			this.setOrientation(4);
+			this.setOrientation(3);
 			break;
 		default:
 			console.warn('PlayerController.handleDirectionnalEvent no compatible option');
 		}
 
-		if (this.dresseur.position >= 5) { this.dresseur.position = 0; }
+		if (this.dresseur.position >= 5) this.dresseur.position = 0;
 	}
 
 	mainLoopEvent() {
-		const walkable = this.grille.isWalkable(this.nextCaseX, this.nextCaseY);
-		if (walkable || (DevMode.dev && DevMode.getOption('noCollision'))) {
+		const { x, y } = this.calculNextCase();
+		this.walkable = this.grille.isWalkable(x, y) || (DevMode.dev && DevMode.getOption('noCollision'));
+		if (this.walkable) {
 			this.avance();
-
-			if (!(DevMode.getOption('noAgression'))) {
-				this.grille.checkZonesDresseurs(this);
-				this.grille.checkWalkOnHerbes();
-			}
-			this.grille.checkWalkOnPorte();
 		}
 	}
 

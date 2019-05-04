@@ -90,9 +90,10 @@ class Menu {
 		case 1: // discussion
 			this.showConversation();
 			break;
+		case 9:	// fail
+			this.displayFail();
+			break;
 		case 10:	// informations simples, avec controle pour retour au plateau
-			// console.log("dislpay info");
-			// console.log(this.player);
 			this.displayInfo();
 			break;
 		case 11:	// affichage bravo vous avez capturer tel pokemon
@@ -102,7 +103,7 @@ class Menu {
 			this.displayInfo();
 			break;
 		default:
-			console.warn('Menu.show: ');
+			console.warn(`Menu.show: imcompatible option : ${this.player.hudMode}`);
 		}
 
 		// this.options.forEach((option)=>{ option.display(); });
@@ -112,7 +113,7 @@ class Menu {
 	event(touche) {
 		console.log('-----');
 		console.log(`event HUD : ${touche}`);
-		console.log(`hudMode : ${this.player.hudMode}`);
+		// console.log(`hudMode : ${this.player.hudMode}`);
 
 
 		switch (this.player.hudMode) {
@@ -129,14 +130,13 @@ class Menu {
 					this.player.discussion = null;
 
 					if (this.player.dresseur.adversaire) {
-						this.player.calculNextCase();
-						const { nextCaseX, nextCaseY } = this.player;
+						const { x, y } = this.player.calculNextCase();
 
-						if (this.player.grille.getDresseur(nextCaseX, nextCaseY)) {
+						if (this.player.grille.getDresseur(x, y)) {
 							// on parlait directement au dresseur pour l attaquer
-							if (!this.player.grille.getDresseur(nextCaseX, nextCaseY).asPerdu) {
+							if (!this.player.grille.getDresseur(x, y).asPerdu) {
 								this.player.mode = PlayerMode.FIGHT;
-								this.player.adversaire = this.player.grille.getDresseur(nextCaseX, nextCaseY);
+								this.player.adversaire = this.player.grille.getDresseur(x, y);
 
 								this.player.combat = new Combat(this.player);
 							}
@@ -161,18 +161,21 @@ class Menu {
 
 			break;
 		case PlayerHudMode.FAIL:
+			console.log('mode fail');
 			sendDresseurToHealthCenter(this.player);
 			this.player.dresseur.adversaire = null;
 			break;
 		case PlayerHudMode.INFO:
-			console.log('event info');
+			console.log('mode infos');
 			this.player.mode = PlayerHudMode.PAUSE;
 			break;
 		case PlayerHudMode.SUCCESS:
+			console.log('mode success');
 			this.player.mode = PlayerHudMode.PAUSE;
 			this.player.dresseur.adversaire = null;
 			break;
 		case PlayerHudMode.WAIT:
+			console.log('mode wait');
 			break;
 		case PlayerHudMode.POKEDEX:
 			handlePokedexEvent(touche, this.player, () => { this.options[this.selection].toggle(); });

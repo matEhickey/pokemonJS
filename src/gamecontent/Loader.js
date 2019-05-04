@@ -11,7 +11,7 @@ import centrePokemon from '../../assets/imgs/centrePokemon.png';
 import dresseurRougeChatain from '../../assets/imgs/dresseurRougeChatain.png';
 
 function loadDataDresseurs(grille) {
-	const dresseur1 = new Dresseur('Mathias', -7, -60, 0, 0, 0);
+	const dresseur1 = new Dresseur('Mathias', 20, -60, 0, 0, 0);
 	const dresseurRougeChatainImg = document.createElement('img');
 	dresseurRougeChatainImg.src = dresseurRougeChatain;
 	dresseur1.setTexture(dresseurRougeChatainImg);

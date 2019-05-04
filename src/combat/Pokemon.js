@@ -126,7 +126,7 @@ class Pokemon {
 		this.exp += expe;
 
 		if (this.exp >= this.expMax) {
-			if (combat) this.monteNiveauCombat();
+			if (combat) this.monteNiveauCombat(combat);
 			else this.monteNiveau();
 		}
 	}

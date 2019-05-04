@@ -95,27 +95,27 @@ class Grille {
 		});
 	}
 
-	getDresseur(posX, posY) {
+	getDresseur(x, y) {
 		return this.dresseurs.find((dresseur) => {
-			if (dresseur.isOnPosition(posX, posY)) {
+			if (dresseur.isOnPosition(x, y)) {
 				return dresseur;
 			}
 			return null;
 		});
 	}
 
-	getPNJ(posX, posY) {
+	getPNJ(x, y) {
 		this.pnjs.forEach((pnj) => {
-			if (pnj.isOnPosition(posX, posY)) {
+			if (pnj.isOnPosition(x, y)) {
 				return pnj;
 			}
 		});
 		return null;
 	}
 
-	getBatiment(posX, posY) {
+	getBatiment(x, y) {
 		this.batiments.forEach((batiment) => {
-			if (batiment.isOnPosition(posX, posY)) {
+			if (batiment.isOnPosition(x, y)) {
 				return batiment;
 			}
 		});
@@ -146,35 +146,7 @@ class Grille {
 	}
 
 	drawMonDresseur() {
-		const context = getContext();
-		if (DevMode.dev && DevMode.getOption('dresseursAsDots')) {
-			context.fillStyle = 'rgba(111, 24, 218, 0.5)';
-			context.fillRect(
-				320,
-				240,
-				32,
-				48,
-			);
-			// tryin to show cursor
-			context.fillRect(
-				320 + (32 / 2) - 5,
-				240 + 48 - 10,
-				10,
-				10,
-			);
-		}
-
-		// {x, y, taileX, tailleY} Portion , {x, y, tailleX, tailleY} Canvas
-
-		const xClip = this.player.dresseur.position === 5
-			?	0
-			: this.player.dresseur.position * 32;
-
-		// -1 because orientation is 1 to 4 normally
-		const orientation = this.player.getOrientation() - 1;
-		const yClip = orientation * 48;
-
-		context.drawImage(this.player.dresseur.texture, xClip, yClip, 32, 48, 320, 240, 32, 48);
+		this.player.dresseur.afficheToi(this.player);
 	}
 
 	showDebug() {
@@ -209,7 +181,6 @@ class Grille {
 		this.dresseurs.forEach((dresseur) => {
 			if (dresseur.walkOnZone(player)) {
 				if (!dresseur.asPerdu) {
-					this.player.setAdv(dresseur);
 					dresseur.attaqueJoueur(this.player);
 				}
 			}

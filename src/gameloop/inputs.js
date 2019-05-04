@@ -10,7 +10,6 @@ function releaseKey(player) {
 
 function initInput(player) {
 	window.addEventListener('keydown', (e) => {
-		// space and arrow keys
 		if (
 			[BUTTON.UP,
 				BUTTON.DOWN,
@@ -21,7 +20,7 @@ function initInput(player) {
 				BUTTON.BACK,
 				BUTTON.C,
 				BUTTON.H].indexOf(e.keyCode) > -1) {
-			e.preventDefault();		// enlever comportement par default
+			e.preventDefault();
 			keyPress(player, e);
 		}
 	}, false);

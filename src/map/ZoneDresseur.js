@@ -1,92 +1,88 @@
 import { getContext } from '../utils/render';
+import { ColorDebug } from '../utils/Color';
+
+const Orientation = {
+	South: 0,
+	West: 1,
+	East: 2,
+	North: 3,
+};
 
 class ZoneDresseur {
 	constructor(dresseur) {
-		this.taille = 40;
+		this.taille = 20;
 		this.dresseur = dresseur;
 	}
 
-	isWalkOn(player) {
-		const x = player.getPosX();
-		const y = player.getPosY();
+	getCoordinates() {
+		const dresseurCoords = this.dresseur.getCoordinates();
+		const addTailleCoords = {
+			x: 0,
+			y: 0,
+			tailleX: 0,
+			tailleY: 0,
+		};
 
-		const orientation = this.dresseur.getOrientation();
-
-		switch (orientation) {
-		case (0): // de face seul Y+
-			if (
-				(x > (this.dresseur.getPosX()))
-				&& (x < (this.dresseur.getPosX() + this.dresseur.tailleX / 3))
-				&& (y > (this.dresseur.getPosY() + this.dresseur.tailleY / 3))
-				&& (y < (this.dresseur.getPosY() + this.dresseur.tailleY / 3 + this.taille))
-			) {
-				return true;
-			}
+		switch (this.dresseur.getOrientation()) {
+		case (Orientation.South): // de face seul Y+
+			addTailleCoords.y += this.taille - 5;
+			addTailleCoords.tailleY += this.taille;
 			break;
-		case (1): // de gauche seul X-
-			if (
-				(x > (this.dresseur.getPosX() + this.dresseur.tailleX / 3 - this.taille))
-				&& (x < (this.dresseur.getPosX() + this.dresseur.tailleX / 3))
-				&& (y > (this.dresseur.getPosY()))
-				&& (y < (this.dresseur.getPosY() + this.dresseur.tailleY / 3))
-			) {
-				return true;
-			}
+		case (Orientation.West): // de gauche seul X-
+			addTailleCoords.x -= this.taille;
+			addTailleCoords.tailleX += this.taille;
 			break;
-		case (2): // de droite seul X+
-			if (
-				(x > (this.dresseur.getPosX() + this.dresseur.tailleX / 3))
-			&& (x < (this.dresseur.getPosX() + this.dresseur.tailleX / 3 + this.taille))
-			&& (y > (this.dresseur.getPosY()))
-			&& (y < (this.dresseur.getPosY() + this.dresseur.tailleY / 3))
-			) {
-				return true;
-			}
+		case (Orientation.East): // de droite seul X+
+			addTailleCoords.x += this.taille - 5;
+			addTailleCoords.tailleX += this.taille;
 			break;
-		case (3): // de derriere seul Y-
-			if ((x > (this.dresseur.getPosX() + this.dresseur.tailleX / 3))
-			&& (x < (this.dresseur.getPosX() + this.dresseur.tailleX / 3 + this.taille))
-			&& (y > (this.dresseur.getPosY() + this.dresseur.tailleY / 3 - this.taille))
-			&& (y < (this.dresseur.getPosY() + this.dresseur.tailleY / 3))) {
-				return true;
-			}
+		case (Orientation.North): // de derriere seul Y-
+			addTailleCoords.y -= this.taille;
+			addTailleCoords.tailleY += this.taille;
 			break;
 		default:
-			console.warn('ZoneDresseur.isWalkon: no orientation option');
+			console.warn('ZoneDresseur.showDebug: no orientation option');
 		}
-		return false;
+
+		const { x, y, tailleX, tailleY } = {
+			x: dresseurCoords.x + addTailleCoords.x,
+			y: dresseurCoords.y + addTailleCoords.y,
+			tailleX: dresseurCoords.tailleX / 3 + addTailleCoords.tailleX,
+			tailleY: dresseurCoords.tailleY / 3 + addTailleCoords.tailleY,
+		};
+
+		return {
+			x,
+			y,
+			tailleX,
+			tailleY,
+			mx: x + tailleX,
+			my: y + tailleY,
+		};
+	}
+
+	isWalkOn(player) {
+		const zoneCoords = this.getCoordinates();
+		const playerCoords = player.dresseur.getCoordinates();
+
+		return (
+			(playerCoords.x + (playerCoords.tailleX / 3) > zoneCoords.x) && (playerCoords.x < zoneCoords.mx)
+			&& (playerCoords.y + (playerCoords.tailleY / 3) > zoneCoords.y) && (playerCoords.y < zoneCoords.my)
+		);
 	}
 
 	showDebug(player) {
-		const { posX, posY } = player.dresseur;
 		const context = getContext();
+		context.fillStyle = ColorDebug.ZoneDresseur;
 
-		context.fillStyle = 'rgba(226, 217, 0, 0.5)';
-
-		let tailles = {};
-		switch (this.dresseur.getOrientation()) {
-		case (0): // de face seul Y+
-			tailles = { x: 0, y: this.taille };
-			break;
-		case (1): // de gauche seul X-
-			tailles = { x: -this.taille, y: 0 };
-			break;
-		case (2): // de droite seul X+
-			tailles = { x: this.taille, y: 0 };
-			break;
-		case (3): // de derriere seul Y-
-			tailles = { x: 0, y: -this.taille };
-			break;
-		default:
-			console.warn('ZoneDresseur.showDebug: no compatible options');
-		}
-
+		const playerCoords = player.dresseur.getCoordinates();
+		const zoneCoords = this.getCoordinates();
 
 		context.fillRect(
-			this.dresseur.posX * 3 - (posX * 3) + 340,
-			this.dresseur.posY * 3 - (posY * 3) + 280,
-			this.dresseur.tailleX + tailles.x,
-			this.dresseur.tailleY + tailles.y,
+			(zoneCoords.x - playerCoords.x) * 3 + 340,
+			(zoneCoords.y - playerCoords.y) * 3 + 260,
+			zoneCoords.tailleX * 3,
+			zoneCoords.tailleY * 3,
 		);
 	}
 }
