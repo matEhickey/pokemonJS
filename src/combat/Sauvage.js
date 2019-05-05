@@ -1,4 +1,5 @@
 import Combat from './Combat';
+import PlayerMode from '../types/PlayerMode';
 import { GenereUnPokemon } from './Pokemon';
 
 
@@ -41,7 +42,7 @@ function CombatContreSauvage(player, zone) {
 	// alert("combat niv: "+zone+"  contre un "+poke.getName());
 	const sauvage = new PokemonSauvage(poke);
 	player.setAdv(sauvage);
-	player.mode = 2;
+	player.mode = PlayerMode.FIGHT;
 	player.combat = new Combat(player);
 }
 

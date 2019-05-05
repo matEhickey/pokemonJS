@@ -1,6 +1,6 @@
 import Porte from '../map/Porte';
 import EndroitCarte from './EndroitCarte';
-import Font from '../modes/Font';
+import Font from '../types/Font';
 
 import { getContext } from '../utils/render';
 import ImageLoader from '../utils/ImageLoader';

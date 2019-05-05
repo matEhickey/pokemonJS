@@ -1,10 +1,10 @@
-import PlayerHudMode from '../modes/PlayerHudMode';
-import PlayerMode from '../modes/PlayerMode';
+import PlayerHudMode from '../types/PlayerHudMode';
+import PlayerMode from '../types/PlayerMode';
 import { getContext, getCanvas } from '../utils/render';
 import Combat from '../combat/Combat';
 import BUTTON from '../gameloop/touches';
 import Menu from './Menu';
-import Font from '../modes/Font';
+import Font from '../types/Font';
 
 
 class HUD {

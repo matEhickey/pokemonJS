@@ -7,7 +7,7 @@ import Carte, { ChargeCarte } from '../UI/Carte';
 import Person from '../map/Person';
 import Pokemon from '../combat/Pokemon';
 
-import DevMode from '../modes/DevMode';
+import DevMode from '../utils/DevMode';
 import initInput from './inputs';
 
 import { animate, getContext } from '../utils/render';

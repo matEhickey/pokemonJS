@@ -1,6 +1,6 @@
 import { getContext, getCanvas } from '../utils/render';
 import { CombatContreSauvage } from '../combat/Sauvage';
-import DevMode from '../modes/DevMode';
+import DevMode from '../utils/DevMode';
 
 class Grille {
 	constructor(player, terrain) {

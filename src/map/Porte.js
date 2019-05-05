@@ -52,25 +52,25 @@ class Porte {
 		console.log(`Voyage to: '${this.destination}'`);
 
 		switch (this.destination) {
-		case ('foret1'):
+		case 'foret1':
 			player.setGrille(0);
 			break;
-		case ('ville2'):
+		case 'ville2':
 			player.setGrille(1);
 			break;
-		case ('centreP1'):	// foret1
+		case 'centreP1':	// foret1
 			player.setGrille(2);
 			break;
-		case ('centreP2'):	// argenta
+		case 'centreP2':	// argenta
 			player.setGrille(3);
 			break;
-		case ('argenta'):
+		case 'argenta':
 			player.setGrille(4);
 			break;
-		case ('pokeshopArgenta'):
+		case 'pokeshopArgenta':
 			player.setGrille(5);
 			break;
-		case ('areneArgenta'):
+		case 'areneArgenta':
 			player.setGrille(6);
 			break;
 		default:

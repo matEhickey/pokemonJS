@@ -1,7 +1,10 @@
 import { getContext } from '../utils/render';
 import ZonePerson from './ZonePerson';
 import Discussion from '../UI/Discussion';
-import DevMode from '../modes/DevMode';
+import DevMode from '../utils/DevMode';
+import PlayerMode from '../types/PlayerMode';
+import Orientation from '../types/Orientation';
+import PlayerHudMode from '../types/PlayerHudMode';
 import ImageLoader from '../utils/ImageLoader';
 import { ColorDebug } from '../utils/Color';
 import dresseurVert from '../../assets/imgs/dresseurVert.png';
@@ -76,16 +79,16 @@ class Person {
 		let y = this.posY;
 
 		switch (this.orientation) {
-		case (0):
+		case Orientation.South:
 			y += 1;
 			break;
-		case (1):
+		case Orientation.West:
 			x -= 1;
 			break;
-		case (2):
+		case Orientation.East:
 			x += 1;
 			break;
-		case (3):
+		case Orientation.North:
 			y -= 1;
 			break;
 		default:
@@ -165,11 +168,7 @@ class Person {
 			: this.animationPosition * 32;
 		const yClip = this.orientation * 48;
 
-		// if (this.idle) {
-		// 	console.log('dlei');
-		// }
-		// else {
-		// 	// ---- animation personage
+
 		context.drawImage(
 			this.texture,
 			xClip,
@@ -309,8 +308,8 @@ class Person {
 		console.log(`${this.nom} attaque`);
 		player.setAdv(this);
 
-		player.mode = 1;
-		player.hud.mode = 1;
+		player.mode = PlayerMode.HUD;
+		player.hud.mode = PlayerHudMode.DISCUSSION;
 		this.parler(player);
 	}
 

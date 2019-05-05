@@ -1,5 +1,5 @@
 import { getContext } from '../utils/render';
-import Font from '../modes/Font';
+import Font from '../types/Font';
 
 class Discussion {
 	constructor(nom, messages) {

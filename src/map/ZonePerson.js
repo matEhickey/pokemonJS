@@ -1,6 +1,6 @@
 import { getContext } from '../utils/render';
 import { ColorDebug } from '../utils/Color';
-import Orientation from '../modes/Orientation';
+import Orientation from '../types/Orientation';
 
 class ZonePerson {
 	constructor(dresseur) {
@@ -18,19 +18,19 @@ class ZonePerson {
 		};
 
 		switch (this.dresseur.getOrientation()) {
-		case (Orientation.South): // de face seul Y+
+		case Orientation.South:
 			addTailleCoords.y += this.taille - 5;
 			addTailleCoords.tailleY += this.taille;
 			break;
-		case (Orientation.West): // de gauche seul X-
+		case Orientation.West:
 			addTailleCoords.x -= this.taille;
 			addTailleCoords.tailleX += this.taille;
 			break;
-		case (Orientation.East): // de droite seul X+
+		case Orientation.East:
 			addTailleCoords.x += this.taille - 5;
 			addTailleCoords.tailleX += this.taille;
 			break;
-		case (Orientation.North): // de derriere seul Y-
+		case Orientation.North:
 			addTailleCoords.y -= this.taille;
 			addTailleCoords.tailleY += this.taille;
 			break;
