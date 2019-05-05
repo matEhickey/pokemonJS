@@ -5,7 +5,7 @@ function keyPress(player, event) {
 }
 
 function releaseKey(player) {
-	player.dresseur.position = 5;
+	player.dresseur.idle = true;
 }
 
 function initInput(player) {

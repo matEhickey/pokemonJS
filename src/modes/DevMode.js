@@ -27,6 +27,45 @@ class _DevMode {
 			hideUnframed();
 		}
 	}
+
+	addCollisionDev(x, y) {
+		addCollisionDev(x, y);
+	}
+
+	addHerbeDev(x, y) {
+		addHerbeDev(x, y);
+	}
+}
+
+function addCollisionDev(x, y) {
+	if (!window.boolPressC) {
+		window.Cx1 = x;
+		window.Cy1 = y;
+	}
+	else {
+		// x2,y2 representent la taille de l objet et non sa coordonnee
+		window.Cx2 = x - window.Cx1;
+		window.Cy2 = y - window.Cy1;
+
+		const chaine = `grille.ajouteObjet(new Objet("Collision",${window.Cx1}, ${window.Cy1}, ${window.Cx2},${window.Cy2}));<br>`;
+		document.getElementById('loaderOutput').innerHTML += chaine;
+	}
+	window.boolPressC = !window.boolPressC;
+}
+
+function addHerbeDev(x, y) {
+	if (!window.boolPressH) {
+		window.Hx1 = x;
+		window.Hy1 = y;
+	}
+	else {
+		// x2,y2 representent la taille de l objet et non sa coordonnee
+		window.Hx2 = x - window.Hx1;
+		window.Hy2 = x - window.Hy1;
+		const chaine = `this.grille.ajouteHerbe(new Herbe(${window.Hx1}, ${window.Hy1}, ${window.Hx2}, ${window.Hy2}, 5));<br>`;
+		document.getElementById('loaderOutput').innerHTML += chaine;
+	}
+	window.boolPressH = !window.boolPressH;
 }
 
 function hideIfDevMode() {
@@ -51,5 +90,4 @@ function hideAllFromClass(className) {
 }
 
 const DevMode = new _DevMode();
-
 export default DevMode;

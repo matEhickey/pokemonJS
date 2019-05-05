@@ -40,7 +40,7 @@ SousMenu.load = (menu) => {
 		new SousMenu(
 			menu.player.getName(),
 			() => { menu.displayInfosJoueur(); },
-			() => { menu.mode = MenuMode.Dresseur; },
+			() => { menu.mode = MenuMode.Person; },
 		),
 		new SousMenu(
 			'Carte',

@@ -13,7 +13,7 @@ export default function render(player) { // Moteur d affichage
 
 	switch (player.mode) {
 	case (PlayerMode.MAP):
-		player.mainLoopEvent();
+		player.update();
 		if (DevMode.dev) { player.grille.showDebug();	}
 		break;
 

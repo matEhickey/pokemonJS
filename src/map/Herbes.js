@@ -14,8 +14,8 @@ class Herbe {
 	}
 
 	walkOn(player) {
-		if (player.getPosX() > this.posX && player.getPosX() < this.posX + this.tailleX) {
-			if (player.getPosY() > this.posY && player.getPosY() < this.posY + this.tailleY) {
+		if (player.dresseur.posX > this.posX && player.dresseur.posX < this.posX + this.tailleX) {
+			if (player.dresseur.posY > this.posY && player.dresseur.posY < this.posY + this.tailleY) {
 				return true;
 			}
 		}

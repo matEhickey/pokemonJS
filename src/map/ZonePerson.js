@@ -1,14 +1,8 @@
 import { getContext } from '../utils/render';
 import { ColorDebug } from '../utils/Color';
+import Orientation from '../modes/Orientation';
 
-const Orientation = {
-	South: 0,
-	West: 1,
-	East: 2,
-	North: 3,
-};
-
-class ZoneDresseur {
+class ZonePerson {
 	constructor(dresseur) {
 		this.taille = 20;
 		this.dresseur = dresseur;
@@ -41,7 +35,7 @@ class ZoneDresseur {
 			addTailleCoords.tailleY += this.taille;
 			break;
 		default:
-			console.warn('ZoneDresseur.showDebug: no orientation option');
+			console.warn('ZonePerson.showDebug: no orientation option');
 		}
 
 		const { x, y, tailleX, tailleY } = {
@@ -76,7 +70,7 @@ class ZoneDresseur {
 
 	showDebug(player) {
 		const context = getContext();
-		context.fillStyle = ColorDebug.ZoneDresseur;
+		context.fillStyle = ColorDebug.ZonePerson;
 
 		const playerCoords = player.dresseur.getCoordinates();
 		const zoneCoords = this.getCoordinates();
@@ -90,4 +84,4 @@ class ZoneDresseur {
 	}
 }
 
-export default ZoneDresseur;
+export default ZonePerson;

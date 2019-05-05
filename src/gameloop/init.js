@@ -1,7 +1,7 @@
 // global location
 
 import PlayerController from './PlayerController';
-import Dresseur from '../map/Dresseur';
+import Person from '../map/Person';
 
 import Carte, { ChargeCarte } from '../UI/Carte';
 import { animate, getContext } from '../utils/render';
@@ -23,7 +23,7 @@ export default function init() {
 	context.fillText('Chargement', 250, 250);
 	context.restore();
 
-	const player = new PlayerController(new Dresseur('Sacha', 0, -10, 0, 0));
+	const player = new PlayerController(new Person('Sacha', 0, -10, 0));
 
 	const sachaImg = document.createElement('img');
 	sachaImg.src = sacha;

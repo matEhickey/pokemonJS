@@ -1,10 +1,9 @@
 import { GenereUnPokemon } from '../combat/Pokemon';
-import Dresseur from '../map/Dresseur';
+import Person from '../map/Person';
 import Herbe from '../map/Herbes';
 import Batiment from '../map/Batiment';
 import Objet from '../map/Objet';
 import Porte from '../map/Porte';
-import PNJ from '../map/PNJ';
 
 
 import centrePokemon from '../../assets/imgs/centrePokemon.png';
@@ -13,17 +12,12 @@ import dresseurRougeChatain from '../../assets/imgs/dresseurRougeChatain.png';
 const txtInfirmiere = [
 	'Bienvenue au centre pokémon',
 	'Veuillez nous confiez vos pokémons pour que nous puissions les soigner',
-	'1',
-	'1 .. ',
-	'1 .. 2',
-	'1 .. 2 ..',
-	'1 .. 2 .. 3',
-	'1 .. 2 .. 3   TADAM !',
+	'1', '1 .. ', '1 .. 2', '1 .. 2 ..', '1 .. 2 .. 3',	'1 .. 2 .. 3   TADAM !',
 	'Nous avons soigné vos pokemons',
 ];
 
 function loadDataDresseurs(grille) {
-	const dresseur1 = new Dresseur('Mathias', 20, -50, 0, 0, 0);
+	const dresseur1 = new Person('Mathias', 20, -50, 0, 0, 0);
 	const dresseurRougeChatainImg = document.createElement('img');
 	dresseurRougeChatainImg.src = dresseurRougeChatain;
 	dresseur1.setTexture(dresseurRougeChatainImg);
@@ -35,7 +29,7 @@ function loadDataDresseurs(grille) {
 	dresseur1.addPokemon(GenereUnPokemon(5));
 	// dresseur1.addPokemon(GenereUnPokemon(5));
 
-	const dresseur6 = new Dresseur('Spyros', -34, 110, 2, 0);
+	const dresseur6 = new Person('Spyros', -34, 110, 2);
 	// dresseur6.setTexture(document.getElementById('dresseurRougeChatain'));
 	dresseur6.setTexte(['La Team Rocket a apparement encore sévit.. Un combat?']);
 	dresseur6.setTexteLooser(['Bien joué, \nla prochaine fois je serais le vainqueur !', 'Je file au centre pokémon', 'à cause de toi\nmes pokémons sont mal en point..']);
@@ -44,7 +38,7 @@ function loadDataDresseurs(grille) {
 	dresseur6.addPokemon(GenereUnPokemon(5));
 	dresseur6.addPokemon(GenereUnPokemon(7));
 
-	const dresseur2 = new Dresseur('Quentin', 225, -22, 1, 0);
+	const dresseur2 = new Person('Quentin', 225, -22, 1);
 	dresseur2.setTexture(dresseurRougeChatainImg);
 	// dresseur2.setTexture(document.getElementById('dresseurRougeBrun'));
 	dresseur2.setTexte(['Tu as entendu parler des disparitions de Pokemon ?', 'C\'est forcement un coup de la Team Rocket!', 'Un petit entrainement ?']);
@@ -54,7 +48,7 @@ function loadDataDresseurs(grille) {
 	dresseur2.addPokemon(GenereUnPokemon(5));
 	dresseur2.addPokemon(GenereUnPokemon(7));
 
-	const dresseur3 = new Dresseur('Billy', 196, 172, 2, 0);
+	const dresseur3 = new Person('Billy', 196, 172, 2);
 	dresseur3.setTexture(dresseurRougeChatainImg);
 	// dresseur3.setTexture(document.getElementById('dresseurRougeChatain'));
 	dresseur3.setTexte(['Si tu ne peux pas me battre, \ntu vas te faire massacrer par la Team Rocket']);
@@ -65,7 +59,7 @@ function loadDataDresseurs(grille) {
 	dresseur3.addPokemon(GenereUnPokemon(7));
 	dresseur3.addPokemon(GenereUnPokemon(9));
 
-	const dresseur4 = new Dresseur('Theo', 350, 18, 0, 0);
+	const dresseur4 = new Person('Theo', 350, 18, 0);
 	// dresseur4.setTexture(document.getElementById('dresseurRougeBrun'));
 	dresseur4.setTexte(['J\'avais un pokemon vraiment très fort, ', '...mais il s\'est fait capturer par la Team Rocket..']);
 	dresseur4.setTexteLooser(['Je ne me serais pas fait voler mon pokémon, \nje t\'aurai battu très facilement..']);
@@ -73,7 +67,7 @@ function loadDataDresseurs(grille) {
 	dresseur4.setGTY(0);
 	dresseur4.addPokemon(GenereUnPokemon(13));
 
-	const dresseur5 = new Dresseur('Leo', 650, 194, 0, 0);
+	const dresseur5 = new Person('Leo', 650, 194, 0);
 	// dresseur5.setTexture(document.getElementById('dresseurRougeBlond'));
 	dresseur5.setTexte(['Attention!, la Team Rocket est toute proche !', 'Je les ai vu embarqué un Pokémon volé\n Surement celui de Théo']);
 	dresseur5.setTexteLooser(['Tu m\'as l\'air bien préparé', 'Bon courage!']);
@@ -90,7 +84,7 @@ function loadDataDresseurs(grille) {
 }
 
 function loadDataTeamrocket(grille) {
-	const teamR1 = new Dresseur('Bad Guy1', 686, 34, 0, 0);
+	const teamR1 = new Person('Bad Guy1', 686, 34, 0);
 	// teamR1.setTexture(document.getElementById('teamRocketBasic'));
 	teamR1.setTexte(['Tiens toi! Donnes moi tes pokémons!']);
 	teamR1.setTexteLooser(['La Team Rocket va t\'anneantir!']);
@@ -98,7 +92,7 @@ function loadDataTeamrocket(grille) {
 	teamR1.addPokemon(GenereUnPokemon(10));
 	teamR1.addPokemon(GenereUnPokemon(10));
 
-	const teamR2 = new Dresseur('Bad Guy2', 740, 20, 3, 0);
+	const teamR2 = new Person('Bad Guy2', 740, 20, 3);
 	// teamR2.setTexture(document.getElementById('teamRocketBasic'));
 	teamR2.setTexte(['Hey toi, tu vas voir!']);
 	teamR2.setTexteLooser('Tu m\'as battu, mais attend toi au pire!');
@@ -106,13 +100,13 @@ function loadDataTeamrocket(grille) {
 	teamR2.addPokemon(GenereUnPokemon(12));
 
 
-	const teamR3 = new Dresseur('Bad Guy3', 844, 76, 2, 0);
+	const teamR3 = new Person('Bad Guy3', 844, 76, 2);
 	// teamR3.setTexture(document.getElementById('teamRocketBasic'));
 	teamR3.setTexte(['Pas si vite, mes plutot ces pokemons dans mon sac!']);
 	teamR3.setTexteLooser(['Ouais c\'est facile aussi comme ca, tricheur..']);
 	teamR3.addPokemon(GenereUnPokemon(17));
 
-	const teamR4 = new Dresseur('Bad Guy4', 1008, 54, 3, 0);
+	const teamR4 = new Person('Bad Guy4', 1008, 54, 3);
 	// teamR4.setTexture(document.getElementById('teamRocketBasic'));
 	teamR4.setTexte(['Tu ne pourras meme pas approcher notre chef!']);
 	teamR4.setTexteLooser(['Notre chef va me venger!']);
@@ -121,7 +115,7 @@ function loadDataTeamrocket(grille) {
 	teamR4.addPokemon(GenereUnPokemon(15));
 
 
-	const teamR5 = new Dresseur('Capitaine Rocket', 1076, 24, 1, 0);
+	const teamR5 = new Person('Capitaine Rocket', 1076, 24, 1);
 	// teamR5.setTexture(document.getElementById('teamRocketBasic'));
 	teamR5.setTexte(['Et oui c\'est moi qui retiens tout les pokemons! Mouhahaha']);
 	teamR5.setTexteLooser(['Bravo, je vais redonner les pokemons a leurs proprietaires!']);
@@ -193,7 +187,7 @@ function loadDataHerbe(grille) {
 function loadDataColisisonsScene1(grille) {
 // All the data where generated using the 'z' or 'h' shortcut while playing,
 // and copy-pasted here as it
-// (this tool define where objects are based on the player position)
+// (this tool define where objects are based on the player pos)
 
 	grille.ajouteObjet(new Objet('Collision', 1230, -106, 14, 356));
 	grille.ajouteObjet(new Objet('Collision', 1070, 218, 168, 18));
@@ -385,7 +379,14 @@ const chargeObjetsDansGrille2 = (grille, player) => { // premier centre pokemon
 	grille.ajoutePorte(new Porte(20, 120, 35, 20, -72, 12, 'foret1', player));
 
 	// infirmiere
-	grille.ajoutePNJ(new PNJ('Infirmiere Joelle', 36, 48, 54, 54, txtInfirmiere, () => { console.log('callback infirmiere'); }));
+	const infirmiere = new Person('Infirmiere', 36, 48, 2);
+	// infirmiere.setTexture(dresseurRougeChatainImg);
+	// dresseur3.setTexture(document.getElementById('dresseurRougeChatain'));
+	infirmiere.asPerdu = true;
+	infirmiere.setTexteLooser(txtInfirmiere);
+	infirmiere.setGTX(3);
+	infirmiere.setGTY(4);
+	grille.ajouteDresseur(infirmiere);
 
 	grille.ajouteObjet(new Objet('Collision', 100, 80, 36, 34));
 	grille.ajouteObjet(new Objet('Collision', -62, 128, 198, 8));
@@ -407,7 +408,7 @@ const chargeObjetsDansGrille3 = (grille, player) => { // centre pokemon argenta
 	grille.ajoutePorte(new Porte(20, 120, 35, 20, 18, 198, 'argenta', player));
 
 	// infirmiere
-	grille.ajoutePNJ(new PNJ('Infirmiere Joelle', 36, 48, 54, 54, txtInfirmiere, () => { console.log('callback infirmiere'); }));
+	// grille.ajoutePNJ(new PNJ('Infirmiere Joelle', 36, 48, 54, 54, txtInfirmiere, () => { console.log('callback infirmiere'); }));
 
 	grille.ajouteObjet(new Objet('Collision', 100, 80, 36, 34));
 	grille.ajouteObjet(new Objet('Collision', -62, 128, 198, 8));

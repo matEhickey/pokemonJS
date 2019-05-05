@@ -3,7 +3,7 @@ const MenuMode = {
 	Pokedex: 1,
 	Pokemons: 2,
 	Inventaire: 3,
-	Dresseur: 4,
+	Person: 4,
 	Carte: 5,
 	Sauvegrade: 6,
 	Options: 7,

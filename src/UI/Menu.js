@@ -61,7 +61,7 @@ class Menu {
 				console.log('Menu.show.menuinventaire: option not compatible');
 			}
 			break;
-		case MenuMode.Dresseur:
+		case MenuMode.Person:
 			switch (touche) {
 			case BUTTON.BACK:
 				this.options[this.selection].toggle();

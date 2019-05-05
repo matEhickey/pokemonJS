@@ -26,7 +26,7 @@ class HUD {
 			this.menu.show();
 			break;
 		case PlayerHudMode.DISCUSSION:
-			this.player.showCurrentMessage();
+			this.player.discussion.showCurrentMessage(this.player);
 			break;
 		case PlayerHudMode.FAIL:
 			this.displayFail();
@@ -162,8 +162,8 @@ class HUD {
 function sendDresseurToHealthCenter(player) {
 	// console.log('sendDresseurToHealthCenter : should set hud mode to pause');
 	player.dresseur.aversaire = null;
-	player.setPosX(-72); // ---> devant centre pokemon
-	player.setPosY(6);
+	player.dresseur.posY = -72; // ---> devant centre pokemon
+	player.dresseur.posY = 6;
 }
 
 export default HUD;

@@ -7,7 +7,8 @@ class Porte {
 		this.posY = posY;
 		this.tailleX = tailleX;
 		this.tailleY = tailleY;
-		this.joueurX = joueurX; // nouvelles position a la fin du voyage
+
+		this.joueurX = joueurX; // where the player is after teleportation
 		this.joueurY = joueurY;
 		this.destination = destination;
 	}
@@ -33,9 +34,9 @@ class Porte {
 
 			&& (playerCoords.y + (playerCoords.tailleY / 3) > porteCoords.y)
 			&& (playerCoords.y < porteCoords.my)
+			// if ((player.dresseur.posX >= this.posX) && (player.dresseur.posX <= (this.posX + this.tailleX))) {
+			// 	if ((player.dresseur.posY >= this.posY) && (player.dresseur.posY <= (this.posY + this.tailleY))) {
 		);
-		// if ((player.getPosX() >= this.posX) && (player.getPosX() <= (this.posX + this.tailleX))) {
-		// 	if ((player.getPosY() >= this.posY) && (player.getPosY() <= (this.posY + this.tailleY))) {
 		// 		return true;
 		// 	}
 		// }
@@ -75,8 +76,8 @@ class Porte {
 		default:
 			console.warn('rejoindreDestination: no compatible option');
 		}
-		player.setPosX(this.joueurX);
-		player.setPosY(this.joueurY);
+		player.dresseur.posX = this.joueurX;
+		player.dresseur.posY = this.joueurY;
 	}
 
 	showDebug(player) {

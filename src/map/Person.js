@@ -1,14 +1,13 @@
 import { getContext } from '../utils/render';
-import ZoneDresseur from './ZoneDresseur';
+import ZonePerson from './ZonePerson';
 import Discussion from '../UI/Discussion';
 import DevMode from '../modes/DevMode';
 import { ColorDebug } from '../utils/Color';
 import dresseurVert from '../../assets/imgs/dresseurVert.png';
 
-class Dresseur {
-	constructor(nom, posX, posY, orientation, grille) {
+class Person {
+	constructor(nom, posX, posY, orientation) {
 		this.nom = nom;
-		this.grille = grille;
 		this.posX = posX;
 		this.posY = posY;
 		this.tailleX = 32;
@@ -22,10 +21,12 @@ class Dresseur {
 		this.argent = 0;
 		this.badges = 0;
 		this.asPerdu = 0;
-		this.zone = new ZoneDresseur(this);
+		this.zone = new ZonePerson(this);
 
-		this.num = Dresseur.nbDresseur;
-		Dresseur.nbDresseur += 1;
+		this.idle = true;
+
+		this.num = Person.nbDresseur;
+		Person.nbDresseur += 1;
 
 		const dresseurVertImg = document.createElement('img');
 		dresseurVertImg.src = dresseurVert;
@@ -37,13 +38,13 @@ class Dresseur {
 		// anim
 		this.orientationInit = orientation;
 		this.orientation = orientation;// 0 sud, 1 = ouest, 2 est 3 nord
-		this.position = 5;
+		this.animationPosition = 5;
 
 		this.attaqueCanceled = false;
 	}
 
 	displayName() {
-		console.log(`Dresseur:${this.nom}`);
+		console.log(`Person:${this.nom}`);
 	}
 
 	getName() {
@@ -88,7 +89,7 @@ class Dresseur {
 			y -= 1;
 			break;
 		default:
-			console.warn('Dresseur.calculNextCase: no compatible option');
+			console.warn('Person.calculNextCase: no compatible option');
 		}
 
 		return ({ x, y });
@@ -159,12 +160,16 @@ class Dresseur {
 		}
 
 		// ---- animation personage
-		const xClip = this.position === 5
+		const xClip = this.idle
 			?	0
-			: this.position * 32;
-
+			: this.animationPosition * 32;
 		const yClip = this.orientation * 48;
 
+		// if (this.idle) {
+		// 	console.log('dlei');
+		// }
+		// else {
+		// 	// ---- animation personage
 		context.drawImage(
 			this.texture,
 			xClip,
@@ -176,6 +181,7 @@ class Dresseur {
 			dresseurCoords.tailleX,
 			dresseurCoords.tailleY,
 		);
+		// }
 	}
 
 	showDebug(player) {
@@ -183,7 +189,7 @@ class Dresseur {
 		const playerCoords = player.dresseur.getCoordinates();
 		const dresseurCoords = this.getCoordinates();
 
-		context.fillStyle = ColorDebug.Dresseur;
+		context.fillStyle = ColorDebug.Person;
 		context.fillRect(
 			(dresseurCoords.x - playerCoords.x) * 3 + 340,
 			(dresseurCoords.y - playerCoords.y) * 3 + 260,
@@ -265,7 +271,7 @@ class Dresseur {
 
 	// peutAvancer() {
 	// 	const dresseurCoords = this.getCoordinates();
-	// 	return this.grille.isWalkable(dresseurCoords.x, dresseurCoords.y);
+	// 	return this.player.grille.isWalkable(dresseurCoords.x, dresseurCoords.y);
 	// }
 
 	setOrientation(or) {
@@ -280,20 +286,12 @@ class Dresseur {
 		return this.orientation;
 	}
 
-	getPosX() {
-		return this.posX;
-	}
-
-	getPosY() {
-		return this.posY;
-	}
-
 	walkOnZone(player) {
 		return this.zone.isWalkOn(player);
 	}
 
 	getDistance() {
-		console.warn('Dresseur.getDistance: wip');
+		console.warn('Person.getDistance: wip');
 		// if (this.orientation === 0) {
 		//
 		// }
@@ -399,7 +397,7 @@ class Dresseur {
 		//                var def=  document.getElementsByClassName('def');
 		//                var agi=  document.getElementsByClassName('agi');
 		//
-		//               var dresseur = player.getDresseurByNum(
+		//               var dresseur = player.grille.getDresseurByNum(
 		//										parseInt(document.getElementById('dressNum').innerHTML)
 		//									);
 		//
@@ -446,16 +444,16 @@ class Dresseur {
 	}
 }
 
-Dresseur.nbDresseur = 0;
+Person.nbDresseur = 0;
 
-// Dresseur.prototype.calculDistanceAParcourir= function(player){
+// Person.prototype.calculDistanceAParcourir= function(player){
 // 	if(this.orientation==1 || this.orientation ==4  ){//Y
 // 		return(Math.abs(this.getPosY()-player.getPosY()));
 // 	}
 // 	else{//X
-// 		return(Math.abs(this.getPosX()-player.getPosX()));
+// 		return(Math.abs(this.dresseur.posX-player.dresseur.posX));
 // 	}
 // }
 
 
-export default Dresseur;
+export default Person;

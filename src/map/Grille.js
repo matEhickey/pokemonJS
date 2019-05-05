@@ -38,9 +38,9 @@ class Grille {
 		this.objets.push(objet);
 	}
 
-	ajoutePNJ(objet) {
-		this.pnjs.push(objet);
-	}
+	// ajoutePNJ(objet) {
+	// 	this.pnjs.push(objet);
+	// }
 
 	ajoutePorte(porte) {
 		this.portes.push(porte);
@@ -133,8 +133,8 @@ class Grille {
 
 		context.drawImage(
 			this.terrain,
-			this.player.getPosX() + 250,
-			this.player.getPosY() + 250,
+			this.player.dresseur.posX + 250,
+			this.player.dresseur.posY + 250,
 			canvas.width / 3,
 			canvas.height / 3,
 			0,
@@ -149,6 +149,11 @@ class Grille {
 	}
 
 	showDebug() {
+		if (DevMode.dev) {
+			document.getElementById('playerControllerX').innerHTML = `X: ${this.player.dresseur.posX}`;
+			document.getElementById('playerControllerY').innerHTML = `Y: ${this.player.dresseur.posY}`;
+		}
+
 		if (DevMode.getOption('showCollision')) {
 			this.objets.forEach((objet) => {
 				if (['Collision', 'Batiment'].includes(objet.nom)) {
