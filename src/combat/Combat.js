@@ -3,16 +3,16 @@
 import { getContext } from '../utils/render';
 import ImageLoader from '../utils/ImageLoader';
 import BUTTON from '../gameloop/touches';
-import Font from '../modes/Font';
+import Font from '../types/Font';
 import MenuCombat from './MenuCombat';
 import hero from '../../assets/imgs/BackSpritesHero.png';
 import PlayerController from '../gameloop/PlayerController';
 import Person from '../map/Person';
 
-import DevMode from '../modes/DevMode';
-import CombatMode from '../modes/CombatMode';
-import PlayerMode from '../modes/PlayerMode';
-import PlayerHudMode from '../modes/PlayerHudMode';
+import DevMode from '../utils/DevMode';
+import CombatMode from '../types/CombatMode';
+import PlayerMode from '../types/PlayerMode';
+import PlayerHudMode from '../types/PlayerHudMode';
 
 const WaitLimit = {};
 WaitLimit.short = 5;

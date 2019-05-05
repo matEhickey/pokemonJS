@@ -1,4 +1,4 @@
-import MenuMode from '../modes/MenuMode';
+import MenuMode from '../types/MenuMode';
 
 class SousMenu {
 	constructor(title, render, validate) {

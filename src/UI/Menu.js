@@ -1,9 +1,9 @@
 import { getContext } from '../utils/render';
 import pokedex from './Pokedex';
 import BUTTON from '../gameloop/touches';
-import PlayerMode from '../modes/PlayerMode';
-import MenuMode from '../modes/MenuMode';
-import Font from '../modes/Font';
+import PlayerMode from '../types/PlayerMode';
+import MenuMode from '../types/MenuMode';
+import Font from '../types/Font';
 import SousMenu from './SousMenu';
 
 
@@ -32,7 +32,7 @@ class Menu {
 	}
 
 	event(touche) {
-		console.log(`Menu.event(${touche}): mode ${this.mode}`);
+		console.log(`Menu.event(${touche}): mode ${this.mode.toString()}`);
 
 		switch (this.mode) {
 		case MenuMode.Global:

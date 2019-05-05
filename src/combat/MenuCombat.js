@@ -2,11 +2,11 @@ import BUTTON from '../gameloop/touches';
 import { getContext } from '../utils/render';
 
 import Color from '../utils/Color';
-import CombatMode from '../modes/CombatMode';
-import DevMode from '../modes/DevMode';
-import PlayerHudMode from '../modes/PlayerHudMode';
-import PlayerMode from '../modes/PlayerMode';
-import MenuCombatMode from '../modes/MenuCombatMode';
+import CombatMode from '../types/CombatMode';
+import DevMode from '../utils/DevMode';
+import PlayerHudMode from '../types/PlayerHudMode';
+import PlayerMode from '../types/PlayerMode';
+import MenuCombatMode from '../types/MenuCombatMode';
 
 class MenuCombat {
 	constructor(player, combat) {
@@ -35,7 +35,7 @@ class MenuCombat {
 			AfficheMenuSelection(context, this.player, this.selection);
 			break;
 
-		case (1):	// menu attaque
+		case (MenuCombatMode.attaques):	// menu attaque
 			AfficheMenuBackGround(context);
 			AfficheMenuSelection(context, this.player, this.selection);
 

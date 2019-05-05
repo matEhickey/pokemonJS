@@ -1,6 +1,6 @@
 import { getCanvas, getContext } from '../utils/render';
-import DevMode from '../modes/DevMode';
-import PlayerMode from '../modes/PlayerMode';
+import DevMode from '../utils/DevMode';
+import PlayerMode from '../types/PlayerMode';
 
 export default function render(player) { // Moteur d affichage
 	const canvas = getCanvas();

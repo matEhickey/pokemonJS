@@ -1,6 +1,6 @@
 import { getContext } from '../utils/render';
 import { ColorDebug } from '../utils/Color';
-import Orientation from '../modes/Orientation';
+import Orientation from '../types/Orientation';
 
 class ZonePerson {
 	constructor(dresseur) {

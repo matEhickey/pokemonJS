@@ -3,11 +3,13 @@
 import { chargeObjetsDansGrille0, chargeObjetsDansGrille1, chargeObjetsDansGrille2, chargeObjetsDansGrille3, chargeObjetsDansGrille4, chargeObjetsDansGrille5, chargeObjetsDansGrille6 } from '../gamecontent/Loader';
 import Grille from '../map/Grille';
 
-import PlayerMode from '../modes/PlayerMode';
+import PlayerMode from '../types/PlayerMode';
 import ImageLoader from '../utils/ImageLoader';
-import PlayerHudMode from '../modes/PlayerHudMode';
+import PlayerHudMode from '../types/PlayerHudMode';
 import BUTTON from './touches';
-import Orientation from '../modes/Orientation';
+import Orientation from '../types/Orientation';
+import Discussion from '../UI/Discussion';
+import Combat from '../combat/Combat';
 
 import Person from '../map/Person';
 import Pokemon from '../combat/Pokemon';
@@ -21,7 +23,7 @@ import pokeshopInside from '../../assets/imgs/pokeshopInside.png';
 import areneArgenta from '../../assets/imgs/areneArgenta.png';
 import dresseurs from '../../assets/imgs/dresseurs.png';
 
-import DevMode from '../modes/DevMode';
+import DevMode from '../utils/DevMode';
 
 
 // for making colision press 'z' twice
@@ -31,12 +33,23 @@ window.boolPressH = false; // si touche deja appuye, car genere au bout du deuxi
 
 class PlayerController {
 	dresseur: Person;
-	fps: number;
-	mode: number;
+
 	grilles: Array<Grille>;
 	grille: Grille;
+
+	mode: number;
 	info: string;
 	hud: HUD;
+	discussion: Discussion;
+	combat: Combat;
+
+	fps: number;
+	couleurPrefere: string;
+	charSprites: Image;
+
+	pokemonCapture: Pokemon;
+	adversaire: Person;
+	walkable: bool;
 
 	constructor(dresseur: Person) {
 		this.fps = DevMode.dev ? 10 : 40;
@@ -44,10 +57,6 @@ class PlayerController {
 		this.mode = PlayerMode.MAP;
 		this.grilles = [];
 		this.grille = null;
-
-		this.combat = null;
-		this.discussion = false;
-		this.info = null;
 
 		this.couleurPrefere = '#bbbbbb';
 
@@ -95,11 +104,11 @@ class PlayerController {
 		return (this.grille);
 	}
 
-	setTexture(texture) {
+	setTexture(texture: Image) {
 		this.dresseur.setTexture(texture);
 	}
 
-	setGrille(num) {
+	setGrille(num: number) {
 		this.grille = this.grilles[num];
 		this.dresseur.grille = num;
 	}
@@ -192,7 +201,7 @@ class PlayerController {
 			else if (orientation === Orientation.East) this.dresseur.posX += 1;
 			else if (orientation === Orientation.North) this.dresseur.posY -= 1;
 
-			if (this.dresseur.animationPosition < 4 && (this.mode === 0)) {
+			if (this.dresseur.animationPosition < 4 && (this.mode === PlayerMode.MAP)) {
 				this.dresseur.animationPosition += 1;
 			}
 			if (this.dresseur.animationPosition === 4) { this.dresseur.animationPosition = 0; }
