@@ -2,6 +2,7 @@ import { chargeObjetsDansGrille0, chargeObjetsDansGrille1, chargeObjetsDansGrill
 import Grille from '../map/Grille';
 
 import PlayerMode from '../modes/PlayerMode';
+import ImageLoader from '../utils/ImageLoader';
 import PlayerHudMode from '../modes/PlayerHudMode';
 import BUTTON from './touches';
 import Orientation from '../modes/Orientation';
@@ -31,10 +32,8 @@ class PlayerController {
 
 		this.dresseur.animationPosition = 0;
 
-		const dresseursImg = document.createElement('img');
-		dresseursImg.src = dresseurs;
+		const dresseursImg = ImageLoader.load(dresseurs);
 		this.charSprites = dresseursImg;
-
 
 		this.fps = DevMode.dev ? 10 : 40;
 
@@ -57,23 +56,12 @@ class PlayerController {
 	}
 
 	loadGrilles() {
-		const terrainImg = document.createElement('img');
-		terrainImg.src = terrain;
-
-		const ville2Img = document.createElement('img');
-		ville2Img.src = ville2;
-
-		const centrePinterieurImg = document.createElement('img');
-		centrePinterieurImg.src = centrePinterieur;
-
-		const argentaImg = document.createElement('img');
-		argentaImg.src = argenta;
-
-		const pokeshopInsideImg = document.createElement('img');
-		pokeshopInsideImg.src = pokeshopInside;
-
-		const areneArgentaImg = document.createElement('img');
-		areneArgentaImg.src = areneArgenta;
+		const terrainImg = ImageLoader.load(terrain);
+		const ville2Img = ImageLoader.load(ville2);
+		const centrePinterieurImg = ImageLoader.load(centrePinterieur);
+		const argentaImg = ImageLoader.load(argenta);
+		const pokeshopInsideImg = ImageLoader.load(pokeshopInside);
+		const areneArgentaImg = ImageLoader.load(areneArgenta);
 
 
 		this.grilles.push(new Grille(this, terrainImg));

@@ -1,10 +1,11 @@
 import { getContext } from '../utils/render';
+import ImageLoader from '../utils/ImageLoader';
 import BUTTON from '../gameloop/touches';
 import Font from '../modes/Font';
 import MenuCombat from './MenuCombat';
 import hero from '../../assets/imgs/BackSpritesHero.png';
 
-// import CombatTurn from "../modes/CombatTurn";
+import DevMode from '../modes/DevMode';
 import CombatMode from '../modes/CombatMode';
 import PlayerMode from '../modes/PlayerMode';
 import PlayerHudMode from '../modes/PlayerHudMode';
@@ -74,26 +75,37 @@ class Combat {
 
 	handleAttaque() {
 		const currentDresseur = this.joueurs[this.tour];
+		const currentPokemon = currentDresseur.getPokemon(0);
+
 		const adversaire = this.joueurs[1 - this.tour];
-		// console.log(`Combat.handleAttaque : curr : ${currentDresseur.nom} / adv : ${adversaire.nom}`);
+		const advPokemon = adversaire.getPokemon(0);
+		// console.log(`Combat.handleAttaque: ${currentDresseur.nom} / ${adversaire.nom}`);
 
 		if (!(currentDresseur === this.player.dresseur)) {
 			// recuperer l attaque, et surtout son type
 			const rand = Math.round(Math.random() * 4);
-			currentDresseur.getPokemon(0).setSelectAttaque(rand);
+			currentPokemon.setSelectAttaque(rand);
 		}
 
 		if (
-			currentDresseur.getPokemon(0).pdv > 0
-			&& adversaire.getPokemon(0).pdv > 0
+			currentPokemon.pdv > 0
+			&& advPokemon.pdv > 0
 		) {
 			if (currentDresseur.attaqueCanceled) {
 				currentDresseur.attaqueCanceled = false;
 			}
 			else {
-				currentDresseur.getPokemon(0).attaque(
-					adversaire.getPokemon(0),
-					this,
+				const noDamages = DevMode.getOption('invincible') && adversaire === this.player.dresseur;
+				const damages = currentPokemon.attaque(
+					advPokemon,
+					noDamages,
+				);
+
+				this.infos.push(
+					`
+${currentPokemon.getName()} attaque
+${currentPokemon.getSelectAttaque().getName()}
+et inflige ${damages} dégats`,
 				);
 			}
 
@@ -103,23 +115,23 @@ class Combat {
 				this.mode = CombatMode.discussions;
 			}
 
-			if (adversaire.getPokemon(0).pdv <= 0) {
-				adversaire.getPokemon(0).pdv = 0;
-				this.infos.push(`${adversaire.getPokemon(0).getName()} a epuisé ses pdv`);
+			if (advPokemon.pdv <= 0) {
+				advPokemon.pdv = 0;
+				this.infos.push(`${advPokemon.getName()} a epuisé ses pdv`);
 
 				// calcul experience
 				// lvl adverse^(5) * (rand(15 -> 17)) *5 / lvl
 				const expe = Math.round(
 					(
-						adversaire.getPokemon(0).lvl
-						* adversaire.getPokemon(0).lvl
+						advPokemon.lvl
+						* advPokemon.lvl
 					)
-					* (Math.random() * 2 + 15) * 2 / currentDresseur.getPokemon(0).lvl,
+					* (Math.random() * 2 + 15) * 2 / currentPokemon.lvl,
 				);
 				// ajouter a pokemon une variable attaque qui sera choisi avant ce calcul
 
-				this.infos.push(`${currentDresseur.getPokemon(0).getName()} gagne ${expe} pts d'experiences`);
-				currentDresseur.getPokemon(0).addExperience(expe, this);
+				this.infos.push(`${currentPokemon.getName()} gagne ${expe} pts d'experiences`);
+				currentPokemon.addExperience(expe, this);
 
 				const pokemonsAlive = adversaire.pokemonsEnVie();
 				// console.log(`${adversaire.nom} lost a pokemon, remain ${pokemonsAlive.length}`);
@@ -130,7 +142,7 @@ class Combat {
 					this.mode = CombatMode.discussions;
 
 					// normalement un pokemon sauvage n as pas besoin de cette fonction
-					adversaire.echange(pokemonsAlive[0], adversaire.getPokemon(0));
+					adversaire.echange(pokemonsAlive[0], advPokemon);
 
 					this.tour = 1 - this.tour;
 					// this.tour =	(this.joueurs[0].getPokemon(0).agi - this.joueurs[1].getPokemon(0).agi)
@@ -177,8 +189,7 @@ class Combat {
 
 			context.font = Font.medium;
 			context.fillText(`Adversaire : ${this.player.getAdv().getName()}`, 65, 100);
-			const heroImg = document.createElement('img');
-			heroImg.src = hero;
+			const heroImg = ImageLoader.load(hero);
 			context.drawImage(heroImg, 0, 0, 70, 75, 50, 250, 400, 400);
 			context.font = Font.medium;
 			context.fillText('Combat!!', 365, 300);

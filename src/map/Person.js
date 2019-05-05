@@ -2,6 +2,7 @@ import { getContext } from '../utils/render';
 import ZonePerson from './ZonePerson';
 import Discussion from '../UI/Discussion';
 import DevMode from '../modes/DevMode';
+import ImageLoader from '../utils/ImageLoader';
 import { ColorDebug } from '../utils/Color';
 import dresseurVert from '../../assets/imgs/dresseurVert.png';
 
@@ -28,8 +29,7 @@ class Person {
 		this.num = Person.nbDresseur;
 		Person.nbDresseur += 1;
 
-		const dresseurVertImg = document.createElement('img');
-		dresseurVertImg.src = dresseurVert;
+		const dresseurVertImg = ImageLoader.load(dresseurVert);
 		this.texture = dresseurVertImg;
 
 		this.grandeTextureX = 7; // pour les combats

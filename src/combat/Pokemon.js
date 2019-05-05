@@ -100,26 +100,26 @@ class Pokemon {
 		return (this.selectAttaque);
 	}
 
-	attaque(oth, combat) { // oth est un pokemon
-		let rand; let total;
-		if (this.pdv > 0) {
-			rand = Math.random();
+	attaque(oth, noDamages) { // oth est un pokemon
+		if (this.pdv <= 0) console.warn('Pokemon.attaque but life is <= 0');
+		if (this.pdv <= 0) console.warn('Pokemon.attaque but life is <= 0');
 
-			// console.log("Atq :"+this.att+" Def Adverse:"+oth.def+" Rand:"+rand);
-			total = Math.round(
-				(
-					(this.att * this.getSelectAttaque().puissance / 10)
-				)
-				- (
-					(oth.def) + rand * (oth.def)
-				),
-			);
+		let total = 0;
+		const rand = Math.random();
+		// console.log("Atq :"+this.att+" Def Adverse:"+oth.def+" Rand:"+rand);
+		total = Math.round(
+			(
+				(this.att * this.getSelectAttaque().puissance / 10)
+			)
+			- (
+				(oth.def) + rand * (oth.def)
+			),
+		);
 
-			if (total < 0) { total = 0; }
+		if (total < 0 || noDamages) { total = 0; }
 
-			combat.infos.push(`${this.getName()} attaque : ${this.getSelectAttaque().getName()}  et inflige ${total} dommages`);
-			oth.pdv -= total;
-		}
+		oth.pdv -= total;
+		return (total);
 	}
 
 	addExperience(expe, combat = null) {

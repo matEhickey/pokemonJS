@@ -1,5 +1,6 @@
 import Attaque from '../combat/Attaques';
 import { getContext } from '../utils/render';
+import ImageLoader from '../utils/ImageLoader';
 import Font from '../modes/Font';
 
 import allPokemon from '../../assets/imgs/all-pokemon.png';
@@ -80,8 +81,7 @@ class PokedexPokemon {
 		context.fillText(`Type : ${this.type}`, 65, 300);
 		context.fillText(`Descr : ${this.description}`, 65, 330, 750);
 
-		const allPokemonImg = document.createElement('img');
-		allPokemonImg.src = allPokemon;
+		const allPokemonImg = ImageLoader.load(allPokemon);
 
 		context.drawImage(
 			allPokemonImg,
@@ -93,8 +93,7 @@ class PokedexPokemon {
 
 	afficheToiCombat() {
 		const context = getContext();
-		const allPokemonImg = document.createElement('img');
-		allPokemonImg.src = allPokemon;
+		const allPokemonImg = ImageLoader.load(allPokemon);
 
 		context.drawImage(
 			allPokemonImg,
@@ -106,8 +105,7 @@ class PokedexPokemon {
 
 	afficheToiAt(x, y) {
 		const context = getContext();
-		const allPokemonImg = document.createElement('img');
-		allPokemonImg.src = allPokemon;
+		const allPokemonImg = ImageLoader.load(allPokemon);
 
 		context.drawImage(
 			allPokemonImg,
@@ -119,8 +117,7 @@ class PokedexPokemon {
 
 	getBackSprite() {
 		const context = getContext();
-		const backSpritesImg = document.createElement('img');
-		backSpritesImg.src = backSprites;
+		const backSpritesImg = ImageLoader.load(backSprites);
 
 		context.drawImage(
 			backSpritesImg,

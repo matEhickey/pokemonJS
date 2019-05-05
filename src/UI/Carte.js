@@ -1,8 +1,10 @@
 import Porte from '../map/Porte';
-import { getContext } from '../utils/render';
 import EndroitCarte from './EndroitCarte';
-import pokeworldmap from '../../assets/imgs/pokeworldmap.png';
 import Font from '../modes/Font';
+
+import { getContext } from '../utils/render';
+import ImageLoader from '../utils/ImageLoader';
+import pokeworldmap from '../../assets/imgs/pokeworldmap.png';
 
 class Carte {
 	constructor(player) {
@@ -19,8 +21,7 @@ class Carte {
 		context.fillStyle = '#000000';
 		context.font = Font.little;
 
-		const pokeworldmapImg = document.createElement('img');
-		pokeworldmapImg.src = pokeworldmap;
+		const pokeworldmapImg = ImageLoader.load(pokeworldmap);
 		context.drawImage(pokeworldmapImg, 0, 0, 240, 160, 70, 70, 760, 510);
 
 		if (this.endroits.length > 0) {
