@@ -1,4 +1,4 @@
-var MenuCombatMode = {}
+const MenuCombatMode = {};
 MenuCombatMode.global = 0;
 MenuCombatMode.attaques = 1;
 MenuCombatMode.pokemons = 2;

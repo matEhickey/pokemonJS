@@ -8,47 +8,87 @@
 	</head>
 
 	<body>
-		<div>
-			<h2 class="hideIfIframed">My Pocket Monster Fan Art</h2>
+		<h2 class="hideIfDevMode hideIfIframed">My Pocket Monster Fan Art</h2>
 
-			<canvas id="ecran" width="900" height="680" ></canvas>
+		<canvas id="ecran" width="900" height="680" ></canvas>
 
-			<div class="hideIfIframed">
-				<h3>Commandes</h3>
+		<div class="hideIfDevMode hideIfIframed">
+			<h3>Commandes</h3>
+			<hr />
+			<ul>
+				<li>Flèches directionnelles = se déplacer</li>
+				<li>a = Action (parler, lire, valider, ..)</li>
+				<li>b = Retour</li>
+				<li>p = Pause/Menu </li>
+				<li><button onclick="window.stopMusique()" id="buttonMusique">Musique ON</button></li>
+			</ul>
+
+			<hr />
+		</div>
+
+		<div class="grid-container hideIfNotDevMode">
+			<div class="grid-item">
+				<strong>PlayerController</strong>
 				<hr />
-				<ul>
-					<li>Flèches directionnelles = se déplacer</li>
-					<li>a = Action (parler, lire, valider, ..)</li>
-					<li>b = Retour</li>
-					<li>p = Pause/Menu </li>
-					<li><button onclick="window.stopMusique()" id="buttonMusique">Musique ON</button></li>
-				</ul>
-
-				<hr />
-
-				<strong>Position</strong>
-				<p id="posX"></p>
-				<p id="posY"></p>
-
+				<p id="playerControllerX"></p>
+				<p id="playerControllerY"></p>
 			</div>
 
-			<div id="debug">
-				<p id="ajoutCollision"><p>
+			<div class="grid-item">
+				<strong>Cheats</strong>
+				<hr />
+				<input
+					id="input_dev_noCollision"
+					type="checkbox"
+				/> No collisions <br />
+				<input
+					id="input_dev_noAgression"
+					type="checkbox"
+				/> No agressions <br />
+				<input
+					id="input_dev_noWildPokemon"
+					type="checkbox"
+				/> No wild pokemons <br />
+				<input
+					id="input_dev_noTravel"
+					type="checkbox"
+				/> No travels <br />
+				<input
+					id="input_dev_masterball"
+					type="checkbox"
+				/> Masterball <br />
+				<input
+					id="input_dev_invincible"
+					type="checkbox"
+				/> Invincible <br />
 			</div>
 
+			<div class="grid-item">
+				<strong>Display</strong>
+				<hr />
+				<input
+					id="input_dev_dresseursAsDots"
+					type="checkbox"
+				/> Dresseurs <br />
+				<input
+					id="input_dev_showCollision"
+					type="checkbox"
+				/> Collisions <br />
+				<input
+					id="input_dev_showPortes"
+					type="checkbox"
+				/> Portes <br />
+				<input
+					id="input_dev_showHerbes"
+					type="checkbox"
+				/> Herbes <br />
+				<input
+					id="input_dev_showBatiments"
+					type="checkbox"
+				/> Batiments
+			</div>
+
+			<p id="loaderOutput"><p>
 		</div>
 	</body>
-
-	<script>
-		if(location.search === "?framed"){
-			// hide all but the canvas
-			var hideElements = document.getElementsByClassName("hideIfIframed");
-			for (let elem of hideElements) {
-				elem.disabled = true;
-			}
-
-			// remove the 8px margin of many browsers
-			document.getElementsByTagName("body")[0].style.margin = "0px";
-		}
-	</script>
 </html>

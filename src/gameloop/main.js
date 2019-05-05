@@ -1,49 +1,33 @@
-import {getCanvas, getContext} from '../utils/render_utils';
+import { getCanvas, getContext } from '../utils/render';
+import DevMode from '../modes/DevMode';
+import PlayerMode from '../modes/PlayerMode';
 
-export default function render(player){	//Moteur d affichage
-
-	var canvas = getCanvas();
-	var context = getContext();
+export default function render(player) { // Moteur d affichage
+	const canvas = getCanvas();
+	const context = getContext();
 
 	context.save();
 	context.clearRect(0, 0, canvas.width, canvas.height);
 
-	player.grille.drawTerrain();
+	player.grille.show();
 
-	player.grille.afficheBatiments(player.dresseur.posX,player.dresseur.posY);
+	switch (player.mode) {
+	case (PlayerMode.MAP):
+		player.update();
+		if (DevMode.dev) { player.grille.showDebug();	}
+		break;
 
+	case (PlayerMode.HUD):
+		player.hud.show();
+		break;
 
-	player.grille.drawDresseur(player.dresseur.posX,player.dresseur.posY);// Dessines tout les dresseurs   posXY sont les coord du controller
+	case (PlayerMode.FIGHT):
+		player.combat.drawCombat();
+		player.combat.runTour();
+		break;
 
-
-			if(player.mode != 2){ //si on est pas en combat
-
-					//test colision nextCase
-					player.calculNextCase();
-					var nextCaseX = player.nextCaseX;
-					var nextCaseY = player.nextCaseY;
-					player.walkable = player.grille.isWalkable(nextCaseX,nextCaseY);
-
-          player.goToNextPosition()
-					//dessine joueur
-					player.grille.drawMonDresseur();
-
-			}//fin si mode != combat
-
-		switch(player.mode){ //--------------------------------------------------Affichage
-			case(0):// map
-				player.grille.checkZonesDresseurs(player);
-				player.grille.checkWalkOnPorte();
-
-			break;
-			case(1)://hud
-				player.menu.show();
-			break;//mode hud
-
-			case(2)://combat
-				player.combat.drawCombat();
-				player.combat.runTour();
-			break;
+	default:
+		console.error(`main.render: no compatible option ${player.mode}`);
 	}
 
 	context.restore();

@@ -1,10 +1,17 @@
-import {chargeObjetsDansGrille0, chargeObjetsDansGrille1, chargeObjetsDansGrille2, chargeObjetsDansGrille3, chargeObjetsDansGrille4, chargeObjetsDansGrille5, chargeObjetsDansGrille6} from '../gamecontent/Loader';
+// @flow
+
+import { chargeObjetsDansGrille0, chargeObjetsDansGrille1, chargeObjetsDansGrille2, chargeObjetsDansGrille3, chargeObjetsDansGrille4, chargeObjetsDansGrille5, chargeObjetsDansGrille6 } from '../gamecontent/Loader';
 import Grille from '../map/Grille';
-import applyHUD_event from '../UI/hud_events';
 
 import PlayerMode from '../modes/PlayerMode';
+import ImageLoader from '../utils/ImageLoader';
 import PlayerHudMode from '../modes/PlayerHudMode';
-import BUTTON from '../gameloop/touches';
+import BUTTON from './touches';
+import Orientation from '../modes/Orientation';
+
+import Person from '../map/Person';
+import Pokemon from '../combat/Pokemon';
+import HUD from '../UI/HUD';
 
 import terrain from '../../assets/imgs/terrrainTest2.png';
 import ville2 from '../../assets/imgs/ville2.png';
@@ -14,413 +21,326 @@ import pokeshopInside from '../../assets/imgs/pokeshopInside.png';
 import areneArgenta from '../../assets/imgs/areneArgenta.png';
 import dresseurs from '../../assets/imgs/dresseurs.png';
 
-
-var PlayerController = function(dresseur,grille){
-
-	this.dresseur = dresseur;
-	this.dresseur.grandeTextureX = 1;
-	this.dresseur.grandeTextureY= 9;
-	this.dresseur.position = 5;
-
-	this.mode=PlayerMode.MAP;
-	this.hudMode=PlayerHudMode.PAUSE;// 0 = pause 1 = discussion 2 = pokedex 3= menupokemon
-
-	this.nextCaseX;
-	this.nextCaseY;
-	this.fps = 90;
-	this.discussion = false;
-	this.info = false;
-	this.couleurPrefere = "#bbbbbb";
-	this.pokemonCapture = false;
-	this.adversaire;
-
-	var dresseurs_img = document.createElement("img");
-	dresseurs_img.src = dresseurs;
-	this.charSprites = dresseurs_img;
-
-	this.walkable = true
-
-	this.menu = null;
-	this.combat = null;
-
-	this.grille;
-	this.grilles=[];
+import DevMode from '../modes/DevMode';
 
 
-	var terrain_img = document.createElement("img");
-	terrain_img.src = terrain;
+// for making colision press 'z' twice
+window.boolPressC = false; // si touche deja appuye, car genere au bout du deuxieme appui
+// for making colision press 'z' twice
+window.boolPressH = false; // si touche deja appuye, car genere au bout du deuxieme appui
 
-	var ville2_img = document.createElement("img");
-	ville2_img.src = ville2;
+class PlayerController {
+	dresseur: Person;
+	fps: number;
+	mode: number;
+	grilles: Array<Grille>;
+	grille: Grille;
+	info: string;
+	hud: HUD;
 
-	var centrePinterieur_img = document.createElement("img");
-	centrePinterieur_img.src = centrePinterieur;
+	constructor(dresseur: Person) {
+		this.fps = DevMode.dev ? 10 : 40;
 
-	var argenta_img = document.createElement("img");
-	argenta_img.src = argenta;
+		this.mode = PlayerMode.MAP;
+		this.grilles = [];
+		this.grille = null;
 
-	var pokeshopInside_img = document.createElement("img");
-	pokeshopInside_img.src = pokeshopInside;
+		this.combat = null;
+		this.discussion = false;
+		this.info = null;
 
-	var areneArgenta_img = document.createElement("img");
-	areneArgenta_img.src = areneArgenta;
+		this.couleurPrefere = '#bbbbbb';
+
+		// to refacto
+		this.pokemonCapture = null;
+		this.adversaire = null;
+		this.walkable = true;
+
+		this.initDresseur(dresseur);
+
+		this.loadGrilles();
+	}
+
+	initDresseur(dresseur: Person) {
+		this.dresseur = dresseur;
+
+		this.dresseur.grandeTextureX = 1;
+		this.dresseur.grandeTextureY = 9;
+
+		this.dresseur.animationPosition = 0;
+
+		const dresseursImg = ImageLoader.load(dresseurs);
+		this.charSprites = dresseursImg;
+	}
+
+	loadGrilles() {
+		const terrainImg = ImageLoader.load(terrain);
+		const ville2Img = ImageLoader.load(ville2);
+		const centrePinterieurImg = ImageLoader.load(centrePinterieur);
+		const argentaImg = ImageLoader.load(argenta);
+		const pokeshopInsideImg = ImageLoader.load(pokeshopInside);
+		const areneArgentaImg = ImageLoader.load(areneArgenta);
 
 
-	this.grilles.push(new Grille(this, terrain_img));
-	this.grilles.push(new Grille(this, ville2_img));
-	this.grilles.push(new Grille(this, centrePinterieur_img));
-	this.grilles.push(new Grille(this, centrePinterieur_img));
-	this.grilles.push(new Grille(this, argenta_img));
-	this.grilles.push(new Grille(this, pokeshopInside_img));
-	this.grilles.push(new Grille(this, areneArgenta_img));
+		this.grilles.push(new Grille(this, terrainImg));
+		this.grilles.push(new Grille(this, ville2Img));
+		this.grilles.push(new Grille(this, centrePinterieurImg));
+		this.grilles.push(new Grille(this, centrePinterieurImg));
+		this.grilles.push(new Grille(this, argentaImg));
+		this.grilles.push(new Grille(this, pokeshopInsideImg));
+		this.grilles.push(new Grille(this, areneArgentaImg));
+	}
 
-}
+	getGrille() {
+		return (this.grille);
+	}
 
-PlayerController.prototype.loadObjects = function(num){
-	chargeObjetsDansGrille0(this.grilles[0], this);//collisions, dresseur, pnj porte etc
-	chargeObjetsDansGrille1(this.grilles[1], this);
-	chargeObjetsDansGrille2(this.grilles[2], this);
-	chargeObjetsDansGrille3(this.grilles[3], this);
-	chargeObjetsDansGrille4(this.grilles[4], this);
-	chargeObjetsDansGrille5(this.grilles[5], this);
-	chargeObjetsDansGrille6(this.grilles[6], this);
-}
+	setTexture(texture) {
+		this.dresseur.setTexture(texture);
+	}
 
-PlayerController.prototype.setGrille= function(num){
-	this.grille = this.grilles[num];
-	this.dresseur.grille = num;
-}
+	setGrille(num) {
+		this.grille = this.grilles[num];
+		this.dresseur.grille = num;
+	}
 
-PlayerController.prototype.getGrille= function(num){
-	return(this.grille);
-}
+	loadObjects() {
+		chargeObjetsDansGrille0(this.grilles[0], this); // collisions, dresseur, pnj porte etc
+		chargeObjetsDansGrille1(this.grilles[1], this);
+		chargeObjetsDansGrille2(this.grilles[2], this);
+		chargeObjetsDansGrille3(this.grilles[3], this);
+		chargeObjetsDansGrille4(this.grilles[4], this);
+		chargeObjetsDansGrille5(this.grilles[5], this);
+		chargeObjetsDansGrille6(this.grilles[6], this);
+	}
 
-PlayerController.prototype.addPokemon= function(pokemon){
-	this.dresseur.addPokemon(pokemon);
-}
+	addPokemon(pokemon: Pokemon) {
+		this.dresseur.addPokemon(pokemon);
+	}
 
-PlayerController.prototype.getTailleX = function(){
-	return(this.dresseur.tailleX);
-}
+	getTailleX() {
+		return (this.dresseur.tailleX);
+	}
 
-PlayerController.prototype.getGTX = function(){
-	return(this.dresseur.grandeTextureX);
-}
+	getGTX() {
+		return (this.dresseur.grandeTextureX);
+	}
 
-PlayerController.prototype.getGTY = function(){
-	return(this.dresseur.grandeTextureY);
-}
+	getGTY() {
+		return (this.dresseur.grandeTextureY);
+	}
 
-PlayerController.prototype.setPokemonCapture = function(poke){
-	this.pokemonCapture = poke;
-}
+	setPokemonCapture(pokemon: Pokemon) {
+		this.pokemonCapture = pokemon;
+	}
 
-PlayerController.prototype.getPokemonCapture = function(){
-	return(this.pokemonCapture);
-}
+	calculNextCase() {
+		return (this.dresseur.calculNextCase());
+	}
 
-PlayerController.prototype.getTailleY = function(){
-	return(this.dresseur.tailleY);
-}
+	getPokemonCapture() {
+		return (this.pokemonCapture);
+	}
 
-PlayerController.prototype.getAdv = function(){
-	return(this.dresseur.adversaire);
-}
+	getTailleY() {
+		return (this.dresseur.tailleY);
+	}
 
-PlayerController.prototype.setAdv = function(adv){
-	this.dresseur.adversaire = adv;
-}
+	getAdv() {
+		return (this.dresseur.adversaire);
+	}
 
-PlayerController.prototype.calculNextCase= function(){
-	this.dresseur.calculNextCase();
-	this.nextCaseX = this.dresseur.nextCaseX;
-	this.nextCaseY = this.dresseur.nextCaseY;
-}
+	setAdv(adv: Person) {
+		this.dresseur.adversaire = adv;
+	}
 
-PlayerController.prototype.setTexture= function(texture){
-	this.dresseur.setTexture(texture);
-}
+	getTexture() {
+		return (this.dresseur.texture);
+	}
 
-PlayerController.prototype.getTexture= function(){
-	return(this.dresseur.texture);
-}
+	getName() {
+		return (this.dresseur.getName());
+	}
 
-PlayerController.prototype.getName= function(){
-	return(this.dresseur.getName());
-}
+	soignePokemons() {
+		return this.dresseur.soignePokemons();
+	}
 
-PlayerController.prototype.isWalkable = function(posX,posY){
-	var retour = true;
+	setOrientation(orientation: number) {
+		this.dresseur.setOrientation(orientation);
+	}
 
-	if(posX>this.getPosX()-20 && posX < this.getPosX()+this.getTailleX()+20){
-		if(posY>this.getPosY()-20 && posY < this.getPosY()+this.getTailleY()+20){
-			retour = false;
+	getOrientation() {
+		return this.dresseur.orientation;
+	}
+
+	onLose() {
+		this.dresseur.posX = -72;
+		this.dresseur.posY = 12;
+
+		this.mode = PlayerMode.HUD;
+		this.hud.setMode(PlayerHudMode.FAIL);
+
+		this.soignePokemons();
+	}
+
+	avance() {
+		if (this.walkable && !this.dresseur.idle) {
+			const orientation = this.getOrientation();
+			if (orientation === Orientation.South) this.dresseur.posY += 1;
+			else if (orientation === Orientation.West) this.dresseur.posX -= 1;
+			else if (orientation === Orientation.East) this.dresseur.posX += 1;
+			else if (orientation === Orientation.North) this.dresseur.posY -= 1;
+
+			if (this.dresseur.animationPosition < 4 && (this.mode === 0)) {
+				this.dresseur.animationPosition += 1;
+			}
+			if (this.dresseur.animationPosition === 4) { this.dresseur.animationPosition = 0; }
+		}
+
+		if (!this.dresseur.idle) this.grille.checkWalkOnHerbes();
+		this.grille.checkZonesDresseurs(this);
+		this.grille.checkWalkOnPorte();
+	}
+
+	actions(touche: number) {
+		switch (this.mode) {
+		case (PlayerMode.MAP):	// deplacement
+			this.handleMapEvent(touche);
+			break;
+
+		case (PlayerMode.HUD):
+			this.hud.event(touche);
+			break;
+
+		case (PlayerMode.FIGHT):
+			this.combat.gestionEvenement(touche);
+			break;
+		default:
+			console.warn('No corresponding PlayerMode');
 		}
 	}
 
+	handleDirectionnalEvent(touche: number) {
+		this.dresseur.idle = false;
 
-	return(retour);
-}
-
-PlayerController.prototype.soignePokemons= function(){
-	this.dresseur.soignePokemons();
-}
-
-PlayerController.prototype.setOrientation= function(or){
-	this.dresseur.setOrientation(or);
-}
-
-PlayerController.prototype.getOrientation= function(){
-	return(this.dresseur.orientation);
-}
-
-PlayerController.prototype.getPosX= function(){
-	return(this.dresseur.posX);
-}
-
-PlayerController.prototype.setPosX= function(value){
-	this.dresseur.posX = value;
-}
-
-PlayerController.prototype.getPosY= function(){
-	return(this.dresseur.posY);
-}
-
-PlayerController.prototype.setPosY= function(value){
-	this.dresseur.posY = value;
-}
-
-PlayerController.prototype.onLose= function(){
-	this.dresseur.posX = 0;
-	this.dresseur.posY = 0;
-
-	this.mode = PlayerMode.HUD;
-	this.hudMode = PlayerHudMode.FAIL;
-
-	this.soignePokemons();
-}
-
-PlayerController.prototype.showCurrentMessage = function(){
-	this.discussion.showCurrentMessage(this);
-}
-PlayerController.prototype.getDresseurByNum= function(num){
-	var retour = false;
-	for(var i = 0;i<this.grilles.length;i++){
-		retour = this.grilles[i].getDresseurByNum(num);
-		if(retour!=false){
-			return(retour);
+		switch (touche) {
+		case (BUTTON.DOWN):
+			this.setOrientation(0);
+			break;
+		case (BUTTON.LEFT):
+			this.setOrientation(1);
+			break;
+		case (BUTTON.RIGHT):
+			this.setOrientation(2);
+			break;
+		case (BUTTON.UP):
+			this.setOrientation(3);
+			break;
+		default:
+			console.warn('PlayerController.handleDirectionnalEvent no compatible option');
 		}
 	}
-	return(retour);
-}
 
-PlayerController.prototype.goToNextPosition = function(){
-	switch(this.getOrientation()){
-		case(1):
-			if(this.dresseur.position != 5 && (this.mode == 0) && this.walkable){
-				this.setPosY(this.getPosY()+2);
-			}
-			break;
-		case(2):
-			if(this.dresseur.position != 5 && (this.mode == 0) && this.walkable){
-				this.setPosX(this.getPosX()-2);
-			}
-			break;
-		case(3):
-			if(this.dresseur.position != 5 && (this.mode == 0) && this.walkable){
-				this.setPosX(this.getPosX()+2);
-			}
-			break;
-		case(4):
-			if(this.dresseur.position != 5 && (this.mode == 0) && this.walkable){
-				this.setPosY(this.getPosY()-2);
-			}
-			break;
-	}
-
-
-	if(this.dresseur.position < 4 && (this.mode == 0)){
-		this.dresseur.position ++;
-	}
-	if(this.dresseur.position == 4){this.dresseur.position = 0;}
-
-	document.getElementById('posX').innerHTML = "X:"+this.getPosX();
-	document.getElementById('posY').innerHTML = "Y:"+this.getPosY();
-
-}
-
-//for making colision press 'z' twice
-var Cx1,Cy1;
-var Cx2,Cy2;
-var boolPressC = false;//si touche deja appuye, car genere au bout du deuxieme appui
-
-//for making colision press 'z' twice
-var Hx1,Hy1;
-var Hx2,Hy2;
-var boolPressH = false;//si touche deja appuye, car genere au bout du deuxieme appui
-
-
-PlayerController.prototype.actions = function(touche){
-	switch(this.mode){
-			case(PlayerMode.MAP):									//deplacement
-				   switch(touche){
-				   	case(BUTTON.DOWN):
-				   		this.setOrientation(1);
-				   		if(this.dresseur.position >= 5){this.dresseur.position = 0;}
-				   		this.grille.checkWalkOnHerbes();
-				   	break;
-				   	case(BUTTON.UP):
-				   		this.setOrientation(4);
-				   		if(this.dresseur.position >= 5){this.dresseur.position = 0;}
-				   		this.grille.checkWalkOnHerbes();
-				   	break;
-				   	case(BUTTON.LEFT):
-				   		this.setOrientation(2);
-				   		if(this.dresseur.position >= 5){this.dresseur.position = 0;}
-				   		this.grille.checkWalkOnHerbes();
-				   	break;
-				   	case(BUTTON.RIGHT):
-				   		this.setOrientation(3);
-				   		if(this.dresseur.position >= 5){this.dresseur.position = 0;}
-				   		this.grille.checkWalkOnHerbes();
-				   	break;
-				   	case(BUTTON.PAUSE):
-				   		console.log("Mise en pause");
-				   		this.mode = PlayerMode.HUD;
-				   		this.hudMode = PlayerHudMode.PAUSE;
-				   		break;
-				   	case(BUTTON.CONFIRM):
-				   		this.calculNextCase();
-				   		var dress = this.grille.getDresseur(this.nextCaseX,this.nextCaseY);
-				   		//boolean si autre que dresseurs
-
-				   		if(typeof(dress)=="object"){
-				   			if(!dress.isInfirmiere()){
-									console.log("Action: Parle avec dresseur")
-					   			this.setAdv(dress);
-						   		this.getAdv().parler(this.player);
-						   		this.mode = PlayerMode.HUD;
-						   		this.hudMode = PlayerHudMode.DISCUSSION;
-						   	}
-				   		}
-				   		else{
-				   			var pnj = this.grille.getPNJ(this.nextCaseX,this.nextCaseY);
-				   			if(typeof(pnj)=="object"){
-				   				//console.log(pnj);
-					   			if(true){	//a remplacer par utilisation du callback pnj ou dresseur
-								   	this.soignePokemons();
-							   	}
-							   	this.discussion = pnj.getDiscuss();
-									this.mode = PlayerMode.HUD;
-									this.hudMode = PlayerHudMode.DISCUSSION;
-								}
-				   		}
-				   		break;
-
-				   	case(BUTTON.C)://z -> recupere message de collisions
-				   		if(!boolPressC){
-				   			Cx1 = this.getPosX();
-				   			Cy1 = this.getPosY();
-				   		}
-				   		else{
-				   			Cx2 = this.getPosX() - Cx1;	//x2,y2 representent la taille de l objet et non sa coordonnee
-				   			Cy2 = this.getPosY() - Cy1;
-				   			var chaine =  "grille.ajouteObjet(new Objet(\"Collision\","+Cx1+","+Cy1+","+Cx2+","+Cy2+"));<br>"
-				   			document.getElementById("ajoutCollision").innerHTML += chaine;
-				   		}
-				   		boolPressC = !boolPressC;
-				   		break;
-
-				   	case(BUTTON.H)://h -> recupere message d herbes
-
-				   		if(!boolPressH){
-				   			Hx1 = this.getPosX();
-				   			Hy1 = this.getPosY();
-
-				   		}
-				   		else{
-				   			Hx2 = this.getPosX() - Hx1;	//x2,y2 representent la taille de l objet et non sa coordonnee
-				   			Hy2 = this.getPosY() - Hy1;
-				   			var chaine = "this.grille.ajouteHerbe(new Herbe("+Hx1+","+Hy1+","+Hx2+","+Hy2+",5));<br>"
-				   			document.getElementById("ajoutCollision").innerHTML += chaine;
-				   		}
-				   		boolPressH = !boolPressH;
-				   		break;
-
-				   }//fin switch touche
-
-				   break;
-
-				case(PlayerMode.HUD):
-					applyHUD_event(touche, this);
-				  break;
-
-				case(PlayerMode.FIGHT):
-					  this.combat.gestionEvenement(touche);
-				 		break;
-
-		}
-}
-
-PlayerController.prototype.getDresseurByNum=function(num){
-	var retour = false;
-	var test = false
-	for(var i=0;i<this.grilles.length;i++){
-		test = this.grilles[i].getDresseurByNum(num);
-		if(test != false){
-			retour = test;
+	update() {
+		const { x, y } = this.calculNextCase();
+		this.walkable = this.grille.isWalkable(x, y) || (DevMode.dev && DevMode.getOption('noCollision'));
+		if (this.walkable) {
+			this.avance();
 		}
 	}
-	return(retour);
-}
 
-PlayerController.prototype.save = function(){		//old way
-	this.mode = PlayerMode.HUD;
-	this.hudMode = PlayerHudMode.INFO; //mode info
-	this.info = "Cette fonctionnalité à été désactivé pour le moment";
-	// new SauvegardeController(this.getPosX(),this.getPosY(),this.couleurPrefere,this.dresseur.badges,this.dresseur.argent,this.grille.num);
-	// //gere toute les sauvegardes a la suite, et pas en meme temps
+	handleMapEvent(touche: number) {
+		if ([BUTTON.DOWN, BUTTON.UP, BUTTON.LEFT, BUTTON.RIGHT].includes(touche)) {
+			this.handleDirectionnalEvent(touche);
+		}
 
-}
+		if (touche === BUTTON.PAUSE) {
+			console.log('Mise en pause');
+			this.mode = PlayerMode.HUD;
+			this.hud.mode = PlayerHudMode.PAUSE;
+		}
+		if (touche === BUTTON.CONFIRM) {
+			const { x, y } = this.calculNextCase();
+			const dresseur = this.grille.getDresseur(x, y);
 
-PlayerController.prototype.saveDresseurs = function(){
-	// var chaine = "";
-	// for(var i = 0;i<this.grilles.length;i++){
-	// 	 chaine += this.grilles[i].saveDresseurs();
-	// }
-	// return(chaine);
-}
+			if (dresseur) {
+				console.log(`found dresseur: ${dresseur.nom}`);
+				this.mode = PlayerMode.HUD;
+				this.hud.mode = PlayerHudMode.DISCUSSION;
 
-PlayerController.prototype.savePokemons = function(){
-	// var chaine = getDresseurPokemons(this.dresseur);
-	// return(chaine);
-}
+				this.setAdv(dresseur);
+				this.getAdv().parler(this);
+			}
+			else {
+				console.log('nothing found');
+			}
+		}
+		this.handleDevMapEvent(touche);
+	}
 
-PlayerController.prototype.load = function(){
-	this.mode = PlayerMode.HUD;
-	this.hudMode = PlayerHudMode.INFO;
-	this.info = "Cette fonctionnalité à été désactivé pour le moment";
+	handleDevMapEvent(touche: number) {
+		if (DevMode.dev) {
+			if (touche === BUTTON.C) DevMode.addCollisionDev(this.dresseur.posX, this.dresseur.posY);
+			else if (touche === BUTTON.H) DevMode.addHerbeDev(this.dresseur.posX, this.dresseur.posY);
+		}
+	}
+
+	save() {	// old way
+		this.mode = PlayerMode.HUD;
+		this.hud.mode = PlayerHudMode.INFO; // mode info
+		this.info = 'Cette fonctionnalité à été désactivé pour le moment';
+
+		console.log('tryin to save');
+		// SauvegardeController(
+		// 	this.dresseur.posX,
+		// 	this.dresseur.posY,
+		// 	this.couleurPrefere,
+		// 	this.dresseur.badges,
+		// 	this.dresseur.argent,
+		// 	this.grille.num
+		// );
+		// //gere toute les sauvegardes a la suite, et pas en meme temps
+	}
+
+	saveDresseurs() {
+		// var chaine = "";
+		// for(var i = 0;i<this.grilles.length;i++){
+		// 	 chaine += this.grilles[i].saveDresseurs();
+		// }
+		// return(chaine);
+	}
+
+	savePokemons() {
+		// var chaine = getDresseurPokemons(this.dresseur);
+		// return(chaine);
+	}
+
+	load() {
+		this.mode = PlayerMode.HUD;
+		this.hud.mode = PlayerHudMode.INFO;
+		this.info = 'Cette fonctionnalité à été désactivé pour le moment';
 	// this.mode=1;
-  // this.hudMode = PlayerHudMode.WAIT;//attente
-  // this.info="Loading Game";
+	// this.hud.mode = PlayerHudMode.WAIT;//attente
+	// this.info="Loading Game";
 	//
 	// if (window.XMLHttpRequest) {
-  //           // code for IE7+, Firefox, Chrome, Opera, Safari
-  //           xmlhttp = new XMLHttpRequest();
-  //       } else {
-  //           // code for IE6, IE5
-  //           xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-  //       }
-  //       var controller_id;
-  //       xmlhttp.onreadystatechange = function() {
-  //           if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-  //               document.getElementById("debugAjax").innerHTML = xmlhttp.responseText;
-  //               var fonctionne =   parseInt(document.getElementById("fonctionne").innerHTML);
-  //               if(!fonctionne){
-  //               	alert("probleme sauvegarde des infos joueur");
-  //               	erreurLoad();
-  //               }
-  //               else{
+	//           // code for IE7+, Firefox, Chrome, Opera, Safari
+	//           xmlhttp = new XMLHttpRequest();
+	//       } else {
+	//           // code for IE6, IE5
+	//           xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	//       }
+	//       var controller_id;
+	//       xmlhttp.onreadystatechange = function() {
+	//           if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+	//               document.getElementById("debugAjax").innerHTML = xmlhttp.responseText;
+	//               var fonctionne =   parseInt(document.getElementById("fonctionne").innerHTML);
+	//               if(!fonctionne){
+	//               	alert("probleme sauvegarde des infos joueur");
+	//               	erreurLoad();
+	//               }
+	//               else{
 	//                 this.setPosX(parseInt(document.getElementById("x").innerHTML));
 	//                 this.setPosY(parseInt(document.getElementById("y").innerHTML));
 	//                 this.setGrille(parseInt(document.getElementById("grille").innerHTML));
@@ -428,127 +348,145 @@ PlayerController.prototype.load = function(){
 	//
 	//                 loadDresseurs();//ci dessous
 	//         }
-  //           }
+	//           }
 	//
-  //           else{
-  //           	if(xmlhttp.readyState==4 && xmlhttp.status!=200){
-  //           		console.log("Ca marche pas: \nreadyState ="+xmlhttp.readyState+"\n status ="+xmlhttp.status);
-  //           	}
-  //           }
-  //       }
-  //       xmlhttp.open("GET","pokemon/getController.php",true);
+	//           else{
+	//           	if(xmlhttp.readyState==4 && xmlhttp.status!=200){
+	//           		console.log(
+	// 								"Ca marche pas: \nreadyState ="+xmlhttp.readyState+"\n status ="+xmlhttp.status
+	// 							);
+	//           	}
+	//           }
+	//       }
+	//       xmlhttp.open("GET","pokemon/getController.php",true);
 	// xmlhttp.send();
+	}
 }
 
-function loadDresseurs(){
-	// if (window.XMLHttpRequest) {
-  //           // code for IE7+, Firefox, Chrome, Opera, Safari
-  //           xmlhttp = new XMLHttpRequest();
-  //       } else {
-  //           // code for IE6, IE5
-  //           xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-  //       }
-  //       var controller_id;
-  //       xmlhttp.onreadystatechange = function() {
-  //           if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-  //               document.getElementById("debugAjax").innerHTML = xmlhttp.responseText;
-  //             	var dressNum = document.getElementsByClassName("num");
-  //               var dressAsPerdu = document.getElementsByClassName("asPerdu");
-  //               var fonctionne =   parseInt(document.getElementById("fonctionne").innerHTML);
-  //               if(dressNum.length!=dressAsPerdu.length){
-  //               	alert("Il y a eu un probleme sur la sauvegarde");
-  //               	erreurLoad();
-  //               }
-  //               if(!fonctionne){
-  //               	alert("probleme sauvegarde des dresseurs");
-  //               	erreurLoad();
-  //               }
-  //               else{
-	//
-	//                 var dresseur;
-	//                 for(var i=0;i<dressNum.length;i++){
-	//                 	//console.log("test trouve dresseur num "+dressNum[i].innerHTML);
-	//                 	dresseur = this.getDresseurByNum(parseInt(dressNum[i].innerHTML));
-	//                 	//console.log(dresseur.getName()+ " asPerdu:  "+ dresseur.asPerdu+ "  mais en fait :"+dressAsPerdu[i].innerHTML);
-	//                 	dresseur.asPerdu = parseInt(dressAsPerdu[i].innerHTML);
-	//                 }
-	//
-	//                 loadPokemons();//ci dessous
-	//         }
-	//
-	//
-  //           }
-	//
-  //           else{
-  //           	if(xmlhttp.readyState==4 && xmlhttp.status!=200){
-  //           		console.log("Ca marche pas: \nreadyState ="+xmlhttp.readyState+"\n status ="+xmlhttp.status);
-  //           		erreurLoad();
-  //           	}
-  //           }
-  //       }
-  //       xmlhttp.open("GET","pokemon/getDresseur.php",true);
-	// xmlhttp.send();
-}
+// function loadDresseurs() {
+// if (window.XMLHttpRequest) {
+//           // code for IE7+, Firefox, Chrome, Opera, Safari
+//           xmlhttp = new XMLHttpRequest();
+//       } else {
+//           // code for IE6, IE5
+//           xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+//       }
+//       var controller_id;
+//       xmlhttp.onreadystatechange = function() {
+//           if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+//               document.getElementById("debugAjax").innerHTML = xmlhttp.responseText;
+//             	var dressNum = document.getElementsByClassName("num");
+//               var dressAsPerdu = document.getElementsByClassName("isAgressive");
+//               var fonctionne =   parseInt(document.getElementById("fonctionne").innerHTML);
+//               if(dressNum.length!=dressAsPerdu.length){
+//               	alert("Il y a eu un probleme sur la sauvegarde");
+//               	erreurLoad();
+//               }
+//               if(!fonctionne){
+//               	alert("probleme sauvegarde des dresseurs");
+//               	erreurLoad();
+//               }
+//               else{
+//
+//                 var dresseur;
+//                 for(var i=0;i<dressNum.length;i++){
+//                 	//console.log("test trouve dresseur num "+dressNum[i].innerHTML);
+//                 	dresseur = this.grille.getDresseurByNum(parseInt(dressNum[i].innerHTML));
+//                 	//console.log(
+// 									//	dresseur.getName()+ " isAgressive:  "+
+// 									//	dresseur.isAgressive+ "  mais en fait :"+dressAsPerdu[i].innerHTML
+// 									// );
+//                 	dresseur.isAgressive = parseInt(dressAsPerdu[i].innerHTML);
+//                 }
+//
+//                 loadPokemons();//ci dessous
+//         }
+//
+//
+//           }
+//
+//           else{
+//           	if(xmlhttp.readyState==4 && xmlhttp.status!=200){
+//           		console.log(
+//								"Ca marche pas: \nreadyState ="+xmlhttp.readyState+"\n status ="+xmlhttp.status
+// 							);
+//           		erreurLoad();
+//           	}
+//           }
+//       }
+//       xmlhttp.open("GET","pokemon/getDresseur.php",true);
+// xmlhttp.send();
+// }
 
-function loadPokemons(){
-	// if (window.XMLHttpRequest) {
-  //           // code for IE7+, Firefox, Chrome, Opera, Safari
-  //           xmlhttp = new XMLHttpRequest();
-  //       } else {
-  //           // code for IE6, IE5
-  //           xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-  //       }
-  //       var controller_id;
-  //       xmlhttp.onreadystatechange = function() {
-  //           if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-  //               document.getElementById("debugAjax").innerHTML = xmlhttp.responseText;
-  //               var fonctionne =   parseInt(document.getElementById("fonctionne").innerHTML);
-	//
-  //               if(!fonctionne){
-  //               	alert("probleme sauvegarde des pokemons");
-  //               	erreurLoad();
-  //               }
-  //               else{
-  //               	var num = document.getElementsByClassName('num');
-	//                 var lvl = document.getElementsByClassName('lvl');
-	//                 var pdv = document.getElementsByClassName('pdv');
-	//                 var pdvMax = document.getElementsByClassName('pdvMax');
-	//                 var exp = document.getElementsByClassName('exp');
-	//                 var expMax = document.getElementsByClassName('expMax');//useless
-	//                 var att = document.getElementsByClassName('att');
-	//                 var def = document.getElementsByClassName('def');
-	//                 var agi = document.getElementsByClassName('agi');
-	//
-	//               	this.dresseur.pokemons = [];
-	//
-	//               	for(var i = 0;i<num.length;i++){
-	//               		var poke = new Pokemon(parseInt(num[i].innerHTML),parseInt(lvl[i].innerHTML),parseInt(exp[i].innerHTML),parseInt(pdvMax[i].innerHTML),parseInt(att[i].innerHTML),parseInt(def[i].innerHTML),parseInt(agi[i]).innerHTML);
-	//               		poke.pdv = parseInt(pdv[i].innerHTML);
-	//               		this.dresseur.addPokemon(poke);
-	//               	}
-	//
-	//
-	//               	 this.mode = 1;
-	// 								 this.hudMode = 10;
-	// 								 this.info = "Les données ont été chargées avec succès";
-	//
-  //             	}
-  //           }
-	//
-  //           else{
-  //           	if(xmlhttp.readyState==4 && xmlhttp.status!=200){
-  //           		console.log("Ca marche pas: \nreadyState ="+xmlhttp.readyState+"\n status ="+xmlhttp.status);
-  //           		erreurLoad();
-  //           	}
-  //           }
-  //       }
-  //       xmlhttp.open("GET","pokemon/getPokemon.php",true);
-	// xmlhttp.send();
-}
+// function loadPokemons() {
+// if (window.XMLHttpRequest) {
+//           // code for IE7+, Firefox, Chrome, Opera, Safari
+//           xmlhttp = new XMLHttpRequest();
+//       } else {
+//           // code for IE6, IE5
+//           xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+//       }
+//       var controller_id;
+//       xmlhttp.onreadystatechange = function() {
+//           if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+//               document.getElementById("debugAjax").innerHTML = xmlhttp.responseText;
+//               var fonctionne =   parseInt(document.getElementById("fonctionne").innerHTML);
+//
+//               if(!fonctionne){
+//               	alert("probleme sauvegarde des pokemons");
+//               	erreurLoad();
+//               }
+//               else{
+//               	var num = document.getElementsByClassName('num');
+//                 var lvl = document.getElementsByClassName('lvl');
+//                 var pdv = document.getElementsByClassName('pdv');
+//                 var pdvMax = document.getElementsByClassName('pdvMax');
+//                 var exp = document.getElementsByClassName('exp');
+//                 var expMax = document.getElementsByClassName('expMax');//useless
+//                 var att = document.getElementsByClassName('att');
+//                 var def = document.getElementsByClassName('def');
+//                 var agi = document.getElementsByClassName('agi');
+//
+//               	this.dresseur.pokemons = [];
+//
+//               	for(var i = 0;i<num.length;i++){
+//               		var poke = new Pokemon(
+// 										parseInt(num[i].innerHTML),
+// 										parseInt(lvl[i].innerHTML),
+// 										parseInt(exp[i].innerHTML),
+// 										parseInt(pdvMax[i].innerHTML),
+// 										parseInt(att[i].innerHTML),
+// 										parseInt(def[i].innerHTML),
+// 										parseInt(agi[i].innerHTML)
+// 									);
+//               		poke.pdv = parseInt(pdv[i].innerHTML);
+//               		this.dresseur.addPokemon(poke);
+//               	}
+//
+//
+//               	 this.mode = 1;
+// 								 this.hud.mode = 10;
+// 								 this.info = "Les données ont été chargées avec succès";
+//
+//             	}
+//           }
+//
+//           else{
+//           	if(xmlhttp.readyState==4 && xmlhttp.status!=200){
+//           		console.log(
+// 								"Ca marche pas: \nreadyState ="+xmlhttp.readyState+"\n status ="+xmlhttp.status
+// 							);
+//           		erreurLoad();
+//           	}
+//           }
+//       }
+//       xmlhttp.open("GET","pokemon/getPokemon.php",true);
+// xmlhttp.send();
+// }
 
 // function erreurLoad(){
 //  // this.mode = PlayerMode.HUD;
-//  // this.hudMode = PlayerHudMode.INFO; //mode info
+//  // this.hud.mode = PlayerHudMode.INFO; //mode info
 // 	// this.info = "Il y a eu un probleme avec le chargement, vous pourriez reesayez, au cas ou..";
 // }
 
