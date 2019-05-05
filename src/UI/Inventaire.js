@@ -1,15 +1,15 @@
 class Inventaire {
-	constructor() {
-		this.objects = [];
-	}
+  constructor() {
+    this.objects = [];
+  }
 
-	addObject(obj) {
-		this.objects.push(obj);
-	}
+  addObject(obj) {
+    this.objects.push(obj);
+  }
 
-	getObject(i) {
-		return this.objects[i];
-	}
+  getObject(i) {
+    return this.objects[i];
+  }
 }
 
 export default Inventaire;

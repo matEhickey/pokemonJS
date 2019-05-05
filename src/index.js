@@ -4,5 +4,5 @@ import '../assets/styles/global.css';
 import './UI/music';
 
 document.addEventListener('DOMContentLoaded', () => {
-	init();
+  init();
 }, false);
