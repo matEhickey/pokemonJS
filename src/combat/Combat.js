@@ -1,3 +1,5 @@
+// @flow
+
 import { getContext } from '../utils/render';
 import ImageLoader from '../utils/ImageLoader';
 import BUTTON from '../gameloop/touches';
@@ -14,6 +16,13 @@ const WaitLimit = {};
 WaitLimit.short = 5;
 WaitLimit.middle = 10;
 WaitLimit.long = 20;
+
+function concat(a: string, b: string) {
+  return a + b;
+}
+
+console.log(concat("A", "B")); // Works!
+// concat(1, 2); // Error!
 
 class Combat {
 	constructor(player) {

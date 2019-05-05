@@ -18,6 +18,11 @@ module.exports = {
 				test: /\.css$/,
 				use: ['style-loader', 'css-loader'],
 			},
+			// Process JS with Babel.
+			{
+				test: /\.(js|jsx|mjs)$/,
+				use: ['babel-loader'],
+			},
 		],
 	},
 	devServer: {
