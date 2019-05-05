@@ -8,7 +8,7 @@ class Pokemon {
 		this.pdv = pdv;
 		this.pdvMax = pdv;
 		this.exp = exp;
-		this.expMax = lvl * lvl * lvl * 10;
+		this.expMax = lvl * lvl * 10;
 		this.att = att;
 		this.def = def;
 		this.agi = agi;

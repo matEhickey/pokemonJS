@@ -74,11 +74,9 @@ class Combat {
 	}
 
 	handleAttaque() {
-		const currentDresseur = this.joueurs[this.tour];
-		const currentPokemon = currentDresseur.getPokemon(0);
+		const { currentDresseur, currentPokemon, currentPokemonName } = this.initAttaqueAgressor();
+		const { adversaire, advPokemon, advPokemonName } = this.initAttaqueDefensor();
 
-		const adversaire = this.joueurs[1 - this.tour];
-		const advPokemon = adversaire.getPokemon(0);
 		// console.log(`Combat.handleAttaque: ${currentDresseur.nom} / ${adversaire.nom}`);
 
 		if (!(currentDresseur === this.player.dresseur)) {
@@ -102,8 +100,7 @@ class Combat {
 				);
 
 				this.infos.push(
-					`
-${currentPokemon.getName()} attaque
+					`${currentPokemonName} attaque
 ${currentPokemon.getSelectAttaque().getName()}
 et inflige ${damages} dégats`,
 				);
@@ -117,20 +114,18 @@ et inflige ${damages} dégats`,
 
 			if (advPokemon.pdv <= 0) {
 				advPokemon.pdv = 0;
-				this.infos.push(`${advPokemon.getName()} a epuisé ses pdv`);
+				this.infos.push(`${advPokemonName} a epuisé ses pdv`);
 
 				// calcul experience
-				// lvl adverse^(5) * (rand(15 -> 17)) *5 / lvl
+				// lvl adverse^(2) * rand() * 50 / lvl
 				const expe = Math.round(
-					(
-						advPokemon.lvl
-						* advPokemon.lvl
-					)
-					* (Math.random() * 2 + 15) * 2 / currentPokemon.lvl,
+					(advPokemon.lvl ** 2)
+					* 50
+					* (Math.random() + 0.5)
+					/ currentPokemon.lvl,
 				);
-				// ajouter a pokemon une variable attaque qui sera choisi avant ce calcul
 
-				this.infos.push(`${currentPokemon.getName()} gagne ${expe} pts d'experiences`);
+				this.infos.push(`${currentPokemonName} gagne ${expe} pts d'experiences`);
 				currentPokemon.addExperience(expe, this);
 
 				const pokemonsAlive = adversaire.pokemonsEnVie();
@@ -164,6 +159,24 @@ et inflige ${damages} dégats`,
 			}
 		}
 		this.tour = 1 - this.tour;
+	}
+
+	initAttaqueAgressor() {
+		const currentDresseur = this.joueurs[this.tour];
+		const currentPokemon = currentDresseur.getPokemon(0);
+		const currentPokemonName = currentPokemon.getName();
+
+		return (
+			{ currentDresseur, currentPokemon, currentPokemonName }
+		);
+	}
+
+	initAttaqueDefensor() {
+		const adversaire = this.joueurs[1 - this.tour];
+		const advPokemon = adversaire.getPokemon(0);
+		const advPokemonName = advPokemon.getName();
+
+		return ({ adversaire, advPokemon, advPokemonName });
 	}
 
 	drawCombat() {
