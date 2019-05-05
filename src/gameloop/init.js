@@ -1,3 +1,5 @@
+// @flow
+
 import PlayerController from './PlayerController';
 import HUD from '../UI/HUD';
 import Carte, { ChargeCarte } from '../UI/Carte';

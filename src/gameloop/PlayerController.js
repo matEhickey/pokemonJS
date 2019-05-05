@@ -37,18 +37,17 @@ class PlayerController {
   grilles: Array<Grille>;
   grille: Grille;
 
-  mode: number;
-  info: string;
+  mode: Symbol;
+  info: ?string;
   hud: HUD;
-  discussion: Discussion;
-  combat: Combat;
+  discussion: ?Discussion;
+  combat: ?Combat;
 
   fps: number;
   couleurPrefere: string;
-  charSprites: Image;
+  charSprites: HTMLElement;
 
   pokemonCapture: ?Pokemon;
-  adversaire: Person;
   walkable: bool;
 
   constructor(dresseur: Person) {
@@ -56,14 +55,8 @@ class PlayerController {
 
     this.mode = PlayerMode.MAP;
     this.grilles = [];
-    this.grille = null;
 
     this.couleurPrefere = '#bbbbbb';
-
-    // to refacto
-    this.pokemonCapture = null;
-    this.adversaire = null;
-    this.walkable = true;
 
     this.initDresseur(dresseur);
 
@@ -110,7 +103,6 @@ class PlayerController {
 
   setGrille(num: number) {
     this.grille = this.grilles[num];
-    this.dresseur.grille = num;
   }
 
   loadObjects() {

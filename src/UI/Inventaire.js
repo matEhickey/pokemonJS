@@ -1,13 +1,19 @@
+// @flow
+
+class InventaireObjet {}
+
 class Inventaire {
+  objects: Array<InventaireObjet>;
+
   constructor() {
     this.objects = [];
   }
 
-  addObject(obj) {
+  addObject(obj: InventaireObjet) {
     this.objects.push(obj);
   }
 
-  getObject(i) {
+  getObject(i: number) {
     return this.objects[i];
   }
 }

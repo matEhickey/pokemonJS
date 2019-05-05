@@ -1,3 +1,5 @@
+// @flow
+
 import { getContext } from '../utils/render';
 
 class Objet {

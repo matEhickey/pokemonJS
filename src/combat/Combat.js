@@ -23,7 +23,7 @@ class Combat {
   player: PlayerController;
   joueurs: Array<Person>;
   tour: number;
-  mode: number;
+  mode: Symbol;
   menu: MenuCombat;
   time: number;
   infos: Array<string>
@@ -32,7 +32,7 @@ class Combat {
   constructor(player: PlayerController) {
     this.player = player;
 
-    this.joueurs = [this.player.dresseur, this.player.getAdv()];
+    this.joueurs = [this.player.dresseur, this.player.dresseur.adversaire];
     this.tour = this.joueurs[0].getPokemon(0).agi - this.joueurs[1].getPokemon(0).agi > 0 ? 0 : 1;
 
     this.checkTourComplete = 0;
@@ -157,7 +157,7 @@ et inflige ${damages} dégats`,
           // > 0 ? 0 : 1;
         }
         else {
-          adversaire.isAgressive = 1;
+          adversaire.isAgressive = true;
 
           if (adversaire === this.player.dresseur) {
             // console.log("Perdu");
@@ -198,7 +198,6 @@ et inflige ${damages} dégats`,
     context.fillRect(50, 50, 800, 550);
     context.fillStyle = '#000000';
     // console.log(`Combat.drawCombat: mode ${this.mode}`);
-
 
     if (this.mode === CombatMode.dresseurs) {
       if (this.player.getAdv().isSauvage()) {

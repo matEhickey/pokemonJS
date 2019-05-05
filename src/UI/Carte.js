@@ -1,3 +1,5 @@
+// @flow
+
 import Porte from '../map/Porte';
 import EndroitCarte from './EndroitCarte';
 import Font from '../types/Font';

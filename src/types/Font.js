@@ -1,3 +1,5 @@
+// @flow
+
 const Font = {
   little: '20px Georgia',
   medium: '25px Georgia',

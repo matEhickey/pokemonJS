@@ -1,3 +1,5 @@
+// @flow
+
 import init from './gameloop/init';
 
 import '../assets/styles/global.css';

@@ -1,3 +1,5 @@
+// @flow
+
 import { getContext } from '../utils/render';
 import ZonePerson from './ZonePerson';
 import Discussion from '../UI/Discussion';
@@ -6,11 +8,40 @@ import PlayerMode from '../types/PlayerMode';
 import Orientation from '../types/Orientation';
 import PlayerHudMode from '../types/PlayerHudMode';
 import ImageLoader from '../utils/ImageLoader';
+import PlayerController from '../gameloop/PlayerController';
+import Pokemon from '../combat/Pokemon';
+import Inventaire from '../UI/Inventaire';
 import { ColorDebug } from '../utils/Color';
 import dresseurVert from '../../assets/imgs/dresseurVert.png';
 
 class Person {
-  constructor(nom, posX, posY, orientation) {
+  nom: string;
+  posX: number;
+  posY: number;
+  tailleX: number;
+  tailleY: number;
+  texte: Array<string>;
+  texteLooser: Array<string>;
+  pokemons: Array<Pokemon>;
+  pcDeLeo: Array<Pokemon>;
+  adversaire: ?Person;
+  inventaire: Inventaire;
+  argent: number;
+  badges: number;
+  isAgressive: bool;
+  zone: ZonePerson;
+  idle: bool;
+  num: number;
+  static nbDresseur: number;
+  texture: HTMLElement;
+  grandeTextureX: number;
+  grandeTextureY: number;
+  orientationInit: number;
+  orientation: number;
+  animationPosition: number;
+  attaqueCanceled: bool;
+
+  constructor(nom: string, posX: number, posY: number, orientation: number) {
     this.nom = nom;
     this.posX = posX;
     this.posY = posY;
@@ -20,11 +51,11 @@ class Person {
     this.texteLooser = ['J\'ai perdu ..'];
     this.pokemons = [];
     this.pcDeLeo = [];
-    this.inventaire = [];
+    this.inventaire = new Inventaire();
 
     this.argent = 0;
     this.badges = 0;
-    this.isAgressive = 0;
+    this.isAgressive = false;
     this.zone = new ZonePerson(this);
 
     this.idle = true;
@@ -66,11 +97,11 @@ class Person {
     return (this.grandeTextureY);
   }
 
-  setGTX(val) {
+  setGTX(val: number) {
     this.grandeTextureX = val;
   }
 
-  setGTY(val) {
+  setGTY(val: number) {
     this.grandeTextureY = val;
   }
 
@@ -98,16 +129,16 @@ class Person {
     return ({ x, y });
   }
 
-  isWalkable(x, y) {
+  isWalkable(x: number, y: number) {
     return (!this.isOnPosition(x, y));
   }
 
-  parler(player) {
+  parler(player: PlayerController) {
     this.trouveOrientation(player);
     player.discussion = new Discussion(this.nom, this.isAgressive ? this.texteLooser : this.texte);
   }
 
-  trouveOrientation(player) {
+  trouveOrientation(player: PlayerController) {
     const playerCoords = player.dresseur.getCoordinates();
     const dresseurCoords = this.getCoordinates();
 
@@ -132,7 +163,7 @@ class Person {
     return this.texture;
   }
 
-  addPokemon(poke) {
+  addPokemon(poke: Pokemon) {
     if (this.pokemons.length < 6) {
       this.pokemons.push(poke);
     }
@@ -153,7 +184,7 @@ class Person {
     }; // ------> weird ratio here
   }
 
-  afficheToi(player) {
+  afficheToi(player: PlayerController) {
     const context = getContext();
     const playerCoords = player.dresseur.getCoordinates();
     const dresseurCoords = this.getCoordinates();
@@ -183,7 +214,7 @@ class Person {
     // }
   }
 
-  showDebug(player) {
+  showDebug(player: PlayerController) {
     const context = getContext();
     const playerCoords = player.dresseur.getCoordinates();
     const dresseurCoords = this.getCoordinates();
@@ -215,7 +246,7 @@ class Person {
     this.zone.showDebug(player);
   }
 
-  isOnPosition(x, y) {
+  isOnPosition(x: number, y: number) {
     const dresseurCoords = this.getCoordinates();
 
     if (x + 11 > dresseurCoords.x && x < dresseurCoords.x + (dresseurCoords.tailleX / 3)) {
@@ -226,15 +257,15 @@ class Person {
     return false;
   }
 
-  setTexture(texture) {
+  setTexture(texture: HTMLElement) {
     this.texture = texture;
   }
 
-  setTexte(texte) {
+  setTexte(texte: Array<string>) {
     this.texte = texte;
   }
 
-  setTexteLooser(texte) {
+  setTexteLooser(texte: Array<string>) {
     this.texteLooser = texte;
   }
 
@@ -248,7 +279,7 @@ class Person {
     return tab;
   }
 
-  echange(pok1, pok2) {
+  echange(pok1: Pokemon, pok2: Pokemon) {
     this.pokemons.forEach((pokemon1, i) => {
       if (pokemon1 === pok1) {
         this.pokemons.forEach((pokemon2, j) => {
@@ -273,7 +304,7 @@ class Person {
   //  return this.player.grille.isWalkable(dresseurCoords.x, dresseurCoords.y);
   // }
 
-  setOrientation(or) {
+  setOrientation(or: number) {
     this.orientation = or;
   }
 
@@ -285,7 +316,7 @@ class Person {
     return this.orientation;
   }
 
-  walkOnZone(player) {
+  walkOnZone(player: PlayerController) {
     return this.zone.isWalkOn(player);
   }
 
@@ -296,7 +327,7 @@ class Person {
     // }
   }
 
-  getPokemon(place) {
+  getPokemon(place: number) {
     return this.pokemons[place];
   }
 
@@ -304,7 +335,7 @@ class Person {
     return this.pokemons.length;
   }
 
-  attaqueJoueur(player) {
+  attaqueJoueur(player: PlayerController) {
     console.log(`${this.nom} attaque`);
     player.setAdv(this);
 

@@ -1,3 +1,5 @@
+// @flow
+
 import { getCanvas, getContext } from '../utils/render';
 import DevMode from '../utils/DevMode';
 import PlayerMode from '../types/PlayerMode';

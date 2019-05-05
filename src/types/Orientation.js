@@ -1,3 +1,5 @@
+// @flow
+
 const Orientation = {
   South: 0,
   West: 1,

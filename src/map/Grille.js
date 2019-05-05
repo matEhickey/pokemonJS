@@ -1,3 +1,5 @@
+// @flow
+
 import { getContext, getCanvas } from '../utils/render';
 import { CombatContreSauvage } from '../combat/Sauvage';
 import DevMode from '../utils/DevMode';

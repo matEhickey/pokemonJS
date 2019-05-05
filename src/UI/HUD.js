@@ -1,14 +1,23 @@
+// @flow
+
 import PlayerHudMode from '../types/PlayerHudMode';
 import PlayerMode from '../types/PlayerMode';
 import { getContext, getCanvas } from '../utils/render';
 import Combat from '../combat/Combat';
 import BUTTON from '../gameloop/touches';
+import PlayerController from '../gameloop/PlayerController';
 import Menu from './Menu';
 import Font from '../types/Font';
 
 
 class HUD {
-  constructor(player) {
+  player: PlayerController;
+  mode: Symbol;
+  menu: Menu;
+
+  lastSeen: Symbol;
+
+  constructor(player: PlayerController) {
     this.player = player;
     this.mode = PlayerHudMode.PAUSE;
 
@@ -26,7 +35,9 @@ class HUD {
         this.menu.show();
         break;
       case PlayerHudMode.DISCUSSION:
-        this.player.discussion.showCurrentMessage(this.player);
+        if (this.player.discussion) {
+          this.player.discussion.showCurrentMessage(this.player);
+        }
         break;
       case PlayerHudMode.FAIL:
         this.displayFail();
@@ -41,11 +52,11 @@ class HUD {
         this.displayInfo();
         break;
       default:
-        console.warn(`Hud.show: imcompatible option : ${this.mode}`);
+        console.warn(`Hud.show: imcompatible option : ${this.mode.toString()}`);
     }
   }
 
-  event(touche) {
+  event(touche: number) {
     // console.log(`HUD.event(${touche}): mode ${this.mode}`);
 
     switch (this.mode) {
@@ -56,19 +67,21 @@ class HUD {
       case PlayerHudMode.DISCUSSION:
         // console.log('mode discussion');
         if (touche === BUTTON.CONFIRM || touche === BUTTON.BACK) {
-          const isDiscussionOver = this.player.discussion.increaseMessage();
+          const isDiscussionOver = this.player.discussion
+            && this.player.discussion.increaseMessage();
 
           if (isDiscussionOver) {
             this.player.discussion = null;
 
             if (this.player.dresseur.adversaire) {
               const { x, y } = this.player.calculNextCase();
+              const adversaire = this.player.getAdv(); // si un dresseur nous attaquait
 
               if (this.player.grille.getDresseur(x, y)) {
                 // on parlait directement au dresseur pour l attaquer
                 if (!this.player.grille.getDresseur(x, y).isAgressive) {
                   this.player.mode = PlayerMode.FIGHT;
-                  this.player.adversaire = this.player.grille.getDresseur(x, y);
+                  this.player.dresseur.adversaire = this.player.grille.getDresseur(x, y);
 
                   this.player.combat = new Combat(this.player);
                 }
@@ -76,7 +89,7 @@ class HUD {
                   this.player.mode = PlayerMode.MAP;
                 }
               }
-              else if (this.player.getAdv().isAgressive) {
+              else if (adversaire && adversaire.isAgressive) {
                 // le dresseur nous attaquait
                 this.player.mode = PlayerMode.MAP;
               }
@@ -144,24 +157,29 @@ class HUD {
 
   displayWinCapture() {
     const context = getContext();
-    context.fillStyle = this.player.couleurPrefere;
-    context.fillRect(50, 350, 800, 250);
-    context.fillStyle = '#000000';
-    context.font = Font.little;
-    context.fillText('Bravo, vous avez capturé un :', 160, 380);
-    context.fillText(this.player.getPokemonCapture().getName(), 200, 430);
-    context.fillText(`Niveau ${this.player.getPokemonCapture().lvl}`, 160, 480);
-    this.player.getPokemonCapture().afficheToiAt(550, 400);
+    const pokemonCapture = this.player.getPokemonCapture();
+
+    if (pokemonCapture) {
+      context.fillStyle = this.player.couleurPrefere;
+      context.fillRect(50, 350, 800, 250);
+      context.fillStyle = '#000000';
+      context.font = Font.little;
+      context.fillText('Bravo, vous avez capturé un :', 160, 380);
+      context.fillText(pokemonCapture.getName(), 200, 430);
+      context.fillText(`Niveau ${pokemonCapture.lvl}`, 160, 480);
+
+      pokemonCapture.afficheToiAt(550, 400);
+    }
   }
 
-  setMode(mode) {
+  setMode(mode: Symbol) {
     this.mode = mode;
   }
 }
 
 function sendDresseurToHealthCenter(player) {
   // console.log('sendDresseurToHealthCenter : should set hud mode to pause');
-  player.dresseur.aversaire = null;
+  player.dresseur.adversaire = null;
   player.dresseur.posY = -72; // ---> devant centre pokemon
   player.dresseur.posY = 6;
 }

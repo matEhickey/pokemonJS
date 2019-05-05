@@ -1,14 +1,23 @@
+// @flow
+
 import { getContext } from '../utils/render';
+import Porte from '../map/Porte';
+import PlayerController from '../gameloop/PlayerController';
 
 class EndroitCarte {
-  constructor(nom, x, y, porte) {
+  nom: string;
+  x: number;
+  y: number;
+  porte: Porte;
+
+  constructor(nom: string, x: number, y: number, porte: Porte) {
     this.nom = nom;
     this.x = x; // positions d affichage sur la carte
     this.y = y;
     this.porte = porte; // porte qui n a pas de coordonnées sur la grille
   }
 
-  rejoindreDestination(player) {
+  rejoindreDestination(player: PlayerController) {
     this.porte.rejoindreDestination(player);
   }
 

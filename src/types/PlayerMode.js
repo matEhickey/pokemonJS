@@ -1,3 +1,5 @@
+// @flow
+
 const PlayerMode = {
   MAP: Symbol('PlayerMode.MAP'),
   HUD: Symbol('PlayerMode.HUD'),

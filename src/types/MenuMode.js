@@ -1,3 +1,5 @@
+// @flow
+
 const MenuMode = {
   Global: Symbol('MenuMode.Global'),
   Pokedex: Symbol('MenuMode.Pokedex'),

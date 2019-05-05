@@ -112,14 +112,14 @@ class Pokemon {
     return (this.selectAttaque);
   }
 
-  attaque(oth: Pokemon, noDamages: number) {
+  attaque(oth: Pokemon, noDamages: bool) {
     if (this.pdv <= 0) console.warn('Pokemon.attaque but life is <= 0');
     if (this.pdv <= 0) console.warn('Pokemon.attaque but life is <= 0');
 
     const selectedAttaque = this.getSelectAttaque();
     if (!selectedAttaque) {
       console.error('Pokemon have no attaque from getSelectAttaque');
-      return;
+      return 0;
     }
 
     let total = 0;

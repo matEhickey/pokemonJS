@@ -1,3 +1,5 @@
+// @flow
+
 import { getContext } from '../utils/render';
 import pokedex from './Pokedex';
 import BUTTON from '../gameloop/touches';

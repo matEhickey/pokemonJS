@@ -1,3 +1,5 @@
+// @flow
+
 import { getContext } from '../utils/render';
 import { ColorDebug } from '../utils/Color';
 import Orientation from '../types/Orientation';

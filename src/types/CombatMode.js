@@ -1,3 +1,5 @@
+// @flow
+
 const CombatMode = {
   dresseurs: Symbol('CombatMode.dresseurs'), // juste les dresseurs,
   pokemons: Symbol('CombatMode.pokemons'), // juste les pokemons,

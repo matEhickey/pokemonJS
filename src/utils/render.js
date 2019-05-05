@@ -1,13 +1,18 @@
+// @flow
+
 import render from '../gameloop/main';
+import PlayerController from '../gameloop/PlayerController';
 
 function getCanvas() {
-  return document.getElementById('ecran');
-}
-function getContext() {
-  return document.getElementById('ecran').getContext('2d');
+  const context = document.getElementById('ecran');
+  if (context) return context;
 }
 
-function animate(player) {
+function getContext() {
+  return getCanvas().getContext('2d');
+}
+
+function animate(player: PlayerController) {
   const renderFunction = () => { render(player); };
   setInterval(renderFunction, player.fps);
 }

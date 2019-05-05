@@ -1,3 +1,5 @@
+// @flow
+
 import { getContext } from '../utils/render';
 import Font from '../types/Font';
 

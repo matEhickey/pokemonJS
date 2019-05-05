@@ -1,10 +1,17 @@
+// @flow
+
 import Combat from './Combat';
 import PlayerMode from '../types/PlayerMode';
-import { GenereUnPokemon } from './Pokemon';
+import PlayerController from '../gameloop/PlayerController';
+import ZonePerson from '../map/ZonePerson';
+import Pokemon, { GenereUnPokemon } from './Pokemon';
 
 
 class PokemonSauvage {
-  constructor(pokemon) {
+  pokemon: Pokemon;
+  isAgressive: bool;
+
+  constructor(pokemon: Pokemon) {
     this.pokemon = pokemon;
     this.isAgressive = false;
     // inutile, mais l objet pokemonSauvage doit correspondre a un dresseur (pendant un combat)
@@ -37,7 +44,7 @@ class PokemonSauvage {
 }
 
 
-function CombatContreSauvage(player, zone) {
+function CombatContreSauvage(player: PlayerController, zone: ZonePerson) {
   const poke = GenereUnPokemon(zone);
   // alert("combat niv: "+zone+"  contre un "+poke.getName());
   const sauvage = new PokemonSauvage(poke);
