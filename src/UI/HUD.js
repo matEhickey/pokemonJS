@@ -66,7 +66,7 @@ class HUD {
 
 						if (this.player.grille.getDresseur(x, y)) {
 							// on parlait directement au dresseur pour l attaquer
-							if (!this.player.grille.getDresseur(x, y).asPerdu) {
+							if (!this.player.grille.getDresseur(x, y).isAgressive) {
 								this.player.mode = PlayerMode.FIGHT;
 								this.player.adversaire = this.player.grille.getDresseur(x, y);
 
@@ -76,7 +76,7 @@ class HUD {
 								this.player.mode = PlayerMode.MAP;
 							}
 						}
-						else if (this.player.getAdv().asPerdu) {
+						else if (this.player.getAdv().isAgressive) {
 							// le dresseur nous attaquait
 							this.player.mode = PlayerMode.MAP;
 						}

@@ -5,7 +5,7 @@ import { GenereUnPokemon } from './Pokemon';
 class PokemonSauvage {
 	constructor(pokemon) {
 		this.pokemon = pokemon;
-		this.asPerdu = false;
+		this.isAgressive = false;
 		// inutile, mais l objet pokemonSauvage doit correspondre a un dresseur (pendant un combat)
 	}
 

@@ -379,7 +379,7 @@ const chargeObjetsDansGrille2 = (grille, player) => { // premier centre pokemon
 	const infirmiere = new Person('Infirmiere', 36, 48, 2);
 	// infirmiere.setTexture(dresseurRougeChatainImg);
 	// dresseur3.setTexture(document.getElementById('dresseurRougeChatain'));
-	infirmiere.asPerdu = true;
+	infirmiere.isAgressive = true;
 	infirmiere.setTexteLooser(txtInfirmiere);
 	infirmiere.setGTX(3);
 	infirmiere.setGTY(4);

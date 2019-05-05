@@ -358,7 +358,7 @@ class PlayerController {
 //           if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 //               document.getElementById("debugAjax").innerHTML = xmlhttp.responseText;
 //             	var dressNum = document.getElementsByClassName("num");
-//               var dressAsPerdu = document.getElementsByClassName("asPerdu");
+//               var dressAsPerdu = document.getElementsByClassName("isAgressive");
 //               var fonctionne =   parseInt(document.getElementById("fonctionne").innerHTML);
 //               if(dressNum.length!=dressAsPerdu.length){
 //               	alert("Il y a eu un probleme sur la sauvegarde");
@@ -375,10 +375,10 @@ class PlayerController {
 //                 	//console.log("test trouve dresseur num "+dressNum[i].innerHTML);
 //                 	dresseur = this.grille.getDresseurByNum(parseInt(dressNum[i].innerHTML));
 //                 	//console.log(
-// 									//	dresseur.getName()+ " asPerdu:  "+
-// 									//	dresseur.asPerdu+ "  mais en fait :"+dressAsPerdu[i].innerHTML
+// 									//	dresseur.getName()+ " isAgressive:  "+
+// 									//	dresseur.isAgressive+ "  mais en fait :"+dressAsPerdu[i].innerHTML
 // 									// );
-//                 	dresseur.asPerdu = parseInt(dressAsPerdu[i].innerHTML);
+//                 	dresseur.isAgressive = parseInt(dressAsPerdu[i].innerHTML);
 //                 }
 //
 //                 loadPokemons();//ci dessous

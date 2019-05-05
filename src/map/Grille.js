@@ -185,7 +185,7 @@ class Grille {
 		this.dresseurs.forEach((dresseur) => {
 			if (dresseur.walkOnZone(player)) {
 				console.log('Grille.checkZonesDresseurs: zone colision detected');
-				if (!dresseur.asPerdu && !(DevMode.getOption('noAgression'))) {
+				if (!dresseur.isAgressive && !(DevMode.getOption('noAgression'))) {
 					dresseur.attaqueJoueur(this.player);
 				}
 			}

@@ -21,7 +21,7 @@ class Person {
 
 		this.argent = 0;
 		this.badges = 0;
-		this.asPerdu = 0;
+		this.isAgressive = 0;
 		this.zone = new ZonePerson(this);
 
 		this.idle = true;
@@ -101,7 +101,7 @@ class Person {
 
 	parler(player) {
 		this.trouveOrientation(player);
-		player.discussion = new Discussion(this.nom, this.asPerdu ? this.texteLooser : this.texte);
+		player.discussion = new Discussion(this.nom, this.isAgressive ? this.texteLooser : this.texte);
 	}
 
 	trouveOrientation(player) {
@@ -335,17 +335,17 @@ class Person {
 		//
 		//
 		//               var name = document.getElementById("name").innerHTML;
-		//               var asPerdu = document.getElementById("asPerdu").innerHTML;
+		//               var isAgressive = document.getElementById("isAgressive").innerHTML;
 		//               var isController = document.getElementById("isController").innerHTML;
 		//
 		//
 		//
 		// 	console.log("name: "+name );
-		// 	console.log("asPerdu: "+asPerdu );
+		// 	console.log("isAgressive: "+isAgressive );
 		//
 		// 	var dresseur = player.getGrille(parseInt(document.getElementById("grille").innerHTML))
 		// 		.getDresseurByName(name);
-		// 	dresseur.asPerdu = (asPerdu == 0)?false:true;
+		// 	dresseur.isAgressive = (isAgressive == 0)?false:true;
 		//
 		// 	dresseur.loadPokemons();
 		//

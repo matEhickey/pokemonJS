@@ -144,7 +144,7 @@ et inflige ${damages} dégats`,
 					// 	> 0 ? 0 : 1;
 				}
 				else {
-					adversaire.asPerdu = 1;
+					adversaire.isAgressive = 1;
 
 					if (adversaire === this.player.dresseur) {
 						// console.log("Perdu");
