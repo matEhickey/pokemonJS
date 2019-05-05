@@ -1,4 +1,8 @@
 module.exports = {
+		"parser": "babel-eslint",
+		"plugins": [
+			"flowtype"
+		],
     "env": {
         "browser": true,
         "es6": true
@@ -15,9 +19,6 @@ module.exports = {
       ecmaVersion: 2018,
       sourceType: 'module',
     },
-		"plugins": [
-	    "flowtype"
-	  ],
     "rules": {
       "no-tabs": "off",
       "indent": [2, "tab"],
@@ -25,6 +26,7 @@ module.exports = {
       "object-curly-newline": "off",
       "class-methods-use-this": "off",
       "consistent-return": "off",
+      "lines-between-class-members": "off",
 
       "no-alert": "off",
       "no-console": "off",

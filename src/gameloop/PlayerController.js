@@ -1,3 +1,5 @@
+// @flow
+
 import { chargeObjetsDansGrille0, chargeObjetsDansGrille1, chargeObjetsDansGrille2, chargeObjetsDansGrille3, chargeObjetsDansGrille4, chargeObjetsDansGrille5, chargeObjetsDansGrille6 } from '../gamecontent/Loader';
 import Grille from '../map/Grille';
 
@@ -6,6 +8,10 @@ import ImageLoader from '../utils/ImageLoader';
 import PlayerHudMode from '../modes/PlayerHudMode';
 import BUTTON from './touches';
 import Orientation from '../modes/Orientation';
+
+import Person from '../map/Person';
+import Pokemon from '../combat/Pokemon';
+import HUD from '../UI/HUD';
 
 import terrain from '../../assets/imgs/terrrainTest2.png';
 import ville2 from '../../assets/imgs/ville2.png';
@@ -24,17 +30,15 @@ window.boolPressC = false; // si touche deja appuye, car genere au bout du deuxi
 window.boolPressH = false; // si touche deja appuye, car genere au bout du deuxieme appui
 
 class PlayerController {
-	constructor(dresseur) {
-		this.dresseur = dresseur;
+	dresseur: Person;
+	fps: number;
+	mode: number;
+	grilles: Array<Grille>;
+	grille: Grille;
+	info: string;
+	hud: HUD;
 
-		this.dresseur.grandeTextureX = 1;
-		this.dresseur.grandeTextureY = 9;
-
-		this.dresseur.animationPosition = 0;
-
-		const dresseursImg = ImageLoader.load(dresseurs);
-		this.charSprites = dresseursImg;
-
+	constructor(dresseur: Person) {
 		this.fps = DevMode.dev ? 10 : 40;
 
 		this.mode = PlayerMode.MAP;
@@ -48,11 +52,25 @@ class PlayerController {
 		this.couleurPrefere = '#bbbbbb';
 
 		// to refacto
-		this.pokemonCapture = false;
+		this.pokemonCapture = null;
 		this.adversaire = null;
 		this.walkable = true;
 
+		this.initDresseur(dresseur);
+
 		this.loadGrilles();
+	}
+
+	initDresseur(dresseur: Person) {
+		this.dresseur = dresseur;
+
+		this.dresseur.grandeTextureX = 1;
+		this.dresseur.grandeTextureY = 9;
+
+		this.dresseur.animationPosition = 0;
+
+		const dresseursImg = ImageLoader.load(dresseurs);
+		this.charSprites = dresseursImg;
 	}
 
 	loadGrilles() {
@@ -96,7 +114,7 @@ class PlayerController {
 		chargeObjetsDansGrille6(this.grilles[6], this);
 	}
 
-	addPokemon(pokemon) {
+	addPokemon(pokemon: Pokemon) {
 		this.dresseur.addPokemon(pokemon);
 	}
 
@@ -112,8 +130,8 @@ class PlayerController {
 		return (this.dresseur.grandeTextureY);
 	}
 
-	setPokemonCapture(poke) {
-		this.pokemonCapture = poke;
+	setPokemonCapture(pokemon: Pokemon) {
+		this.pokemonCapture = pokemon;
 	}
 
 	calculNextCase() {
@@ -132,7 +150,7 @@ class PlayerController {
 		return (this.dresseur.adversaire);
 	}
 
-	setAdv(adv) {
+	setAdv(adv: Person) {
 		this.dresseur.adversaire = adv;
 	}
 
@@ -148,7 +166,7 @@ class PlayerController {
 		return this.dresseur.soignePokemons();
 	}
 
-	setOrientation(orientation) {
+	setOrientation(orientation: number) {
 		this.dresseur.setOrientation(orientation);
 	}
 
@@ -185,7 +203,7 @@ class PlayerController {
 		this.grille.checkWalkOnPorte();
 	}
 
-	actions(touche) {
+	actions(touche: number) {
 		switch (this.mode) {
 		case (PlayerMode.MAP):	// deplacement
 			this.handleMapEvent(touche);
@@ -203,7 +221,7 @@ class PlayerController {
 		}
 	}
 
-	handleDirectionnalEvent(touche) {
+	handleDirectionnalEvent(touche: number) {
 		this.dresseur.idle = false;
 
 		switch (touche) {
@@ -232,7 +250,7 @@ class PlayerController {
 		}
 	}
 
-	handleMapEvent(touche) {
+	handleMapEvent(touche: number) {
 		if ([BUTTON.DOWN, BUTTON.UP, BUTTON.LEFT, BUTTON.RIGHT].includes(touche)) {
 			this.handleDirectionnalEvent(touche);
 		}
@@ -261,7 +279,7 @@ class PlayerController {
 		this.handleDevMapEvent(touche);
 	}
 
-	handleDevMapEvent(touche) {
+	handleDevMapEvent(touche: number) {
 		if (DevMode.dev) {
 			if (touche === BUTTON.C) DevMode.addCollisionDev(this.dresseur.posX, this.dresseur.posY);
 			else if (touche === BUTTON.H) DevMode.addHerbeDev(this.dresseur.posX, this.dresseur.posY);

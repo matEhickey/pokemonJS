@@ -6,6 +6,8 @@ import BUTTON from '../gameloop/touches';
 import Font from '../modes/Font';
 import MenuCombat from './MenuCombat';
 import hero from '../../assets/imgs/BackSpritesHero.png';
+import PlayerController from '../gameloop/PlayerController';
+import Person from '../map/Person';
 
 import DevMode from '../modes/DevMode';
 import CombatMode from '../modes/CombatMode';
@@ -17,15 +19,17 @@ WaitLimit.short = 5;
 WaitLimit.middle = 10;
 WaitLimit.long = 20;
 
-function concat(a: string, b: string) {
-  return a + b;
-}
-
-console.log(concat("A", "B")); // Works!
-// concat(1, 2); // Error!
-
 class Combat {
-	constructor(player) {
+	player: PlayerController;
+	joueurs: Array<Person>;
+	tour: number;
+	mode: number;
+	menu: MenuCombat;
+	time: number;
+	infos: Array<string>
+	checkTourComplete: number;
+
+	constructor(player: PlayerController) {
 		this.player = player;
 
 		this.joueurs = [this.player.dresseur, this.player.getAdv()];
@@ -301,7 +305,7 @@ et inflige ${damages} dégats`,
 		}
 	}
 
-	gestionEvenement(touche) {
+	gestionEvenement(touche: number) {
 		// console.log(`event ${touche}`);
 		if (this.mode === CombatMode.menuSelection) {
 			if (touche === BUTTON.CONFIRM) this.menu.valide();
