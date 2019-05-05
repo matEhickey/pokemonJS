@@ -1,0 +1,23 @@
+version: '3'
+services:
+  web:
+    # image: apache
+    build:
+      context: ..
+      dockerfile: ./Dockerfile
+    container_name: apache
+    # restart: always
+    ports:
+      - "3000:80"
+
+  e2e:
+    image: cypress
+    build: ./e2e
+    container_name: cypress
+    volumes:
+      - ./e2e:/app
+    depends_on:
+      - web
+    environment:
+      - CYPRESS_baseUrl=http://web
+    command: npx cypress run
