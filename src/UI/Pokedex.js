@@ -126,7 +126,7 @@ class PokedexPokemon {
    );
  }
 
- getBackSprite() {
+ drawBackSprite() {
    const context = getContext();
    const backSpritesImg = ImageLoader.load(backSprites);
 

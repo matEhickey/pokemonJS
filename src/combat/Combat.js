@@ -233,7 +233,7 @@ et inflige ${damages} dégats`,
       context.fillText(this.player.dresseur.getPokemon(0).getName(), 450, 400);
       context.fillText(`Niveau :${this.player.dresseur.getPokemon(0).lvl}`, 500, 430);
       context.fillText(`Pdv :${this.player.dresseur.getPokemon(0).pdv}/${this.player.dresseur.getPokemon(0).pdvMax}`, 500, 450, 200);
-      this.player.dresseur.getPokemon(0).getBackSprite();
+      this.player.dresseur.getPokemon(0).drawBackSprite();
     }
 
     if (this.mode === CombatMode.discussions) {
@@ -247,7 +247,7 @@ et inflige ${damages} dégats`,
       context.fillText(this.player.dresseur.getPokemon(0).getName(), 450, 400);
       context.fillText(`Niveau :${this.player.dresseur.getPokemon(0).lvl}`, 500, 430);
       context.fillText(`Pdv :${this.player.dresseur.getPokemon(0).pdv}/${this.player.dresseur.getPokemon(0).pdvMax}`, 500, 450, 200);
-      this.player.dresseur.getPokemon(0).getBackSprite();
+      this.player.dresseur.getPokemon(0).drawBackSprite();
 
       context.fillStyle = '#aaaaaa';
       context.fillRect(50, 450, 800, 30 + (this.infos.length * 25));
@@ -271,7 +271,7 @@ et inflige ${damages} dégats`,
       context.fillText(this.player.dresseur.getPokemon(0).getName(), 450, 400);
       context.fillText(`Niveau :${this.player.dresseur.getPokemon(0).lvl}`, 500, 430);
       context.fillText(`Pdv :${this.player.dresseur.getPokemon(0).pdv}/${this.player.dresseur.getPokemon(0).pdvMax}`, 500, 450, 200);
-      this.player.dresseur.getPokemon(0).getBackSprite();
+      this.player.dresseur.getPokemon(0).drawBackSprite();
 
 
       this.menu.afficheToi();
@@ -293,7 +293,7 @@ et inflige ${damages} dégats`,
       context.fillText(this.player.dresseur.getPokemon(0).getName(), 450, 400);
       context.fillText(`Niveau :${this.player.dresseur.getPokemon(0).lvl}`, 500, 430);
       context.fillText(`Pdv :${this.player.dresseur.getPokemon(0).pdv}/${this.player.dresseur.getPokemon(0).pdvMax}`, 500, 450, 200);
-      this.player.dresseur.getPokemon(0).getBackSprite();
+      this.player.dresseur.getPokemon(0).drawBackSprite();
 
       context.fillStyle = '#aaaaaa';
       context.fillRect(50, 450, 800, 30 + (this.infos.length * 25));

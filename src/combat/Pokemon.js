@@ -103,9 +103,9 @@ class Pokemon {
     return (pokedexpokemon ? pokedexpokemon.afficheToiCombat() : 'Error');
   }
 
-  getBackSprite() {
+  drawBackSprite() {
     const pokedexpokemon = pokedex.getPoke(this.num);
-    if (pokedexpokemon) return pokedexpokemon;
+    if (pokedexpokemon) return pokedexpokemon.drawBackSprite();
   }
 
   getSelectAttaque() {
