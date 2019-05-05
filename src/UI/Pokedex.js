@@ -74,8 +74,8 @@ class PokedexPokemon {
      this.addAttaque(new Attaque('Cru Aile', 23, 0, 10, 75, 15));
    }
    if (this.isType('Electr')) {
-     this.addAttaque(new Attaque('Eclair', 0, 4, 40, 100, 30));
-     this.addAttaque(new Attaque('Cage Eclair', 8, 4, 0, 100, 20));
+     this.addAttaque(new Attaque('Eclair', 0, 4, 20, 100, 30));
+     this.addAttaque(new Attaque('Cage Eclair', 8, 4, 40, 100, 20));
    }
    if (this.isType('Roche')) {
      this.addAttaque(new Attaque('Poli Roche', 4, 0, 40, 100, 30));

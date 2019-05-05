@@ -134,6 +134,7 @@ class Pokemon {
   ),
     );
 
+    console.log(total);
     if (total < 0 || noDamages) { total = 0; }
 
     oth.pdv -= total;
