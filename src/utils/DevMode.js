@@ -1,16 +1,18 @@
+// @flow
+
 class _DevMode {
+	dev: bool;
+	framed: bool;
+	mode: Symbol;
+
 	constructor() {
 		this.dev = false;
 		this.framed = false;
 	}
 
-	setMode(mode) {
-		this.mode = mode;
-	}
-
-	getOption(optionName) {
+	getOption(optionName: string) {
 		const formElement = document.getElementById(`input_dev_${optionName}`);
-		return formElement.checked;
+		return (formElement instanceof HTMLInputElement) ? formElement.checked : false;
 	}
 
 	init() {
@@ -28,11 +30,11 @@ class _DevMode {
 		}
 	}
 
-	addCollisionDev(x, y) {
+	addCollisionDev(x: number, y: number) {
 		addCollisionDev(x, y);
 	}
 
-	addHerbeDev(x, y) {
+	addHerbeDev(x: number, y: number) {
 		addHerbeDev(x, y);
 	}
 }
@@ -48,7 +50,8 @@ function addCollisionDev(x, y) {
 		window.Cy2 = y - window.Cy1;
 
 		const chaine = `grille.ajouteObjet(new Objet("Collision",${window.Cx1}, ${window.Cy1}, ${window.Cx2},${window.Cy2}));<br>`;
-		document.getElementById('loaderOutput').innerHTML += chaine;
+		const loaderOuput = document.getElementById('loaderOutput');
+		if (loaderOuput) loaderOuput.innerHTML += chaine;
 	}
 	window.boolPressC = !window.boolPressC;
 }
@@ -63,7 +66,8 @@ function addHerbeDev(x, y) {
 		window.Hx2 = x - window.Hx1;
 		window.Hy2 = x - window.Hy1;
 		const chaine = `this.grille.ajouteHerbe(new Herbe(${window.Hx1}, ${window.Hy1}, ${window.Hx2}, ${window.Hy2}, 5));<br>`;
-		document.getElementById('loaderOutput').innerHTML += chaine;
+		const loaderOuput = document.getElementById('loaderOutput');
+		if (loaderOuput) loaderOuput.innerHTML += chaine;
 	}
 	window.boolPressH = !window.boolPressH;
 }

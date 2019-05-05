@@ -405,7 +405,8 @@ const chargeObjetsDansGrille3 = (grille, player) => { // centre pokemon argenta
 	grille.ajoutePorte(new Porte(20, 120, 35, 20, 18, 198, 'argenta', player));
 
 	// infirmiere
-	// grille.ajoutePNJ(new PNJ('Infirmiere Joelle', 36, 48, 54, 54, txtInfirmiere, () => { console.log('callback infirmiere'); }));
+	// grille.ajoutePNJ(new PNJ('Infirmiere Joelle', 36, 48, 54, 54,
+	// txtInfirmiere, () => { console.log('callback infirmiere'); }));
 
 	grille.ajouteObjet(new Objet('Collision', 100, 80, 36, 34));
 	grille.ajouteObjet(new Objet('Collision', -62, 128, 198, 8));

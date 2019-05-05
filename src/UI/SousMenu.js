@@ -1,7 +1,16 @@
+// @flow
+
 import MenuMode from '../types/MenuMode';
+import Menu from './Menu';
 
 class SousMenu {
-	constructor(title, render, validate) {
+	title: string;
+	render: () => void;
+	validate: () => void;
+	isShown: bool;
+	static load: (Menu) => void;
+
+	constructor(title: string, render: () => void, validate: () => void) {
 		this.title = title;
 		this.render = render;
 		this.validate = validate;

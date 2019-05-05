@@ -1,12 +1,20 @@
-// type -> 0:normal
-// 1:plante
-// 2:eau
-// 3:feu
-// 4:electr
-// 5:poison
+// @flow
 
 class Attaque {
-	constructor(nom, niveau, type, puiss, precis, pp) {
+	nom: string;
+	lvl: number;
+	type: number;
+	puissance: number;
+	precision: number;
+	pp: number;
+	num: number;
+	num: number;
+	static attNum: number;
+
+	constructor(
+		nom: string, niveau: number, type: number,
+		puiss: number, precis: number, pp: number,
+	) {
 		this.nom = nom;
 		this.lvl = niveau;
 		this.type = type;
@@ -21,7 +29,7 @@ class Attaque {
 		return (this.nom);
 	}
 
-	equals(oth) {
+	equals(oth: Attaque) {
 		return (this.nom === oth.getName());
 	}
 

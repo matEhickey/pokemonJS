@@ -1,3 +1,5 @@
+// @flow
+
 const Color = {
 	Black: '#000000',
 	DarkGrey: '#444444',

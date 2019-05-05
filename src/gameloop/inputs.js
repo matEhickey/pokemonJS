@@ -1,14 +1,17 @@
-import BUTTON from './touches';
+// @flow
 
-function keyPress(player, event) {
+import BUTTON from './touches';
+import PlayerController from './PlayerController';
+
+function keyPress(player: PlayerController, event) {
 	player.actions(event.keyCode);
 }
 
-function releaseKey(player) {
+function releaseKey(player: PlayerController) {
 	player.dresseur.idle = true;
 }
 
-function initInput(player) {
+function initInput(player: PlayerController) {
 	window.addEventListener('keydown', (e) => {
 		if (
 			[BUTTON.UP,
@@ -25,8 +28,8 @@ function initInput(player) {
 		}
 	}, false);
 
-	window.addEventListener('keyup', (e) => {
-		releaseKey(player, e);
+	window.addEventListener('keyup', () => {
+		releaseKey(player);
 	}, false);
 }
 

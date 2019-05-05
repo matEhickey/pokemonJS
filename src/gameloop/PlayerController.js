@@ -47,7 +47,7 @@ class PlayerController {
 	couleurPrefere: string;
 	charSprites: Image;
 
-	pokemonCapture: Pokemon;
+	pokemonCapture: ?Pokemon;
 	adversaire: Person;
 	walkable: bool;
 
