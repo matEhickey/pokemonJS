@@ -12,16 +12,16 @@ export default function render(player) { // Moteur d affichage
 	player.grille.show();
 
 	switch (player.mode) {
-	case (PlayerMode.MAP):
+	case PlayerMode.MAP:
 		player.update();
 		if (DevMode.dev) { player.grille.showDebug();	}
 		break;
 
-	case (PlayerMode.HUD):
+	case PlayerMode.HUD:
 		player.hud.show();
 		break;
 
-	case (PlayerMode.FIGHT):
+	case PlayerMode.FIGHT:
 		player.combat.drawCombat();
 		player.combat.runTour();
 		break;

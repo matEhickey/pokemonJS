@@ -214,15 +214,15 @@ class PlayerController {
 
 	actions(touche: number) {
 		switch (this.mode) {
-		case (PlayerMode.MAP):	// deplacement
+		case PlayerMode.MAP:	// deplacement
 			this.handleMapEvent(touche);
 			break;
 
-		case (PlayerMode.HUD):
+		case PlayerMode.HUD:
 			this.hud.event(touche);
 			break;
 
-		case (PlayerMode.FIGHT):
+		case PlayerMode.FIGHT:
 			this.combat.gestionEvenement(touche);
 			break;
 		default:
@@ -234,16 +234,16 @@ class PlayerController {
 		this.dresseur.idle = false;
 
 		switch (touche) {
-		case (BUTTON.DOWN):
+		case BUTTON.DOWN:
 			this.setOrientation(0);
 			break;
-		case (BUTTON.LEFT):
+		case BUTTON.LEFT:
 			this.setOrientation(1);
 			break;
-		case (BUTTON.RIGHT):
+		case BUTTON.RIGHT:
 			this.setOrientation(2);
 			break;
-		case (BUTTON.UP):
+		case BUTTON.UP:
 			this.setOrientation(3);
 			break;
 		default:

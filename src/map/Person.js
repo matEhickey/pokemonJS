@@ -3,6 +3,7 @@ import ZonePerson from './ZonePerson';
 import Discussion from '../UI/Discussion';
 import DevMode from '../utils/DevMode';
 import PlayerMode from '../types/PlayerMode';
+import Orientation from '../types/Orientation';
 import PlayerHudMode from '../types/PlayerHudMode';
 import ImageLoader from '../utils/ImageLoader';
 import { ColorDebug } from '../utils/Color';
@@ -78,16 +79,16 @@ class Person {
 		let y = this.posY;
 
 		switch (this.orientation) {
-		case (0):
+		case Orientation.South:
 			y += 1;
 			break;
-		case (1):
+		case Orientation.West:
 			x -= 1;
 			break;
-		case (2):
+		case Orientation.East:
 			x += 1;
 			break;
-		case (3):
+		case Orientation.North:
 			y -= 1;
 			break;
 		default:

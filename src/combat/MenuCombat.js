@@ -15,13 +15,10 @@ class MenuCombat {
 		this.combat = combat;
 		this.mode = MenuCombatMode.global; // -> menu normal, 1->  menu attaques 2 -> menu objets
 
-		this.selection = 0;
-		// -> attaque ,
-		// 1 -> objets,
-		// 2 ->changer pokemon
-		// 3-> fuite  (en mode normal / en mode choix objets ou pokemon
-		// il sera pour choisir le numero de l objet/pokemon)
+		this.selection = MenuCombat.options.Fight;
 
+		// to keyify, but keep values as it's also displayed
+		// but to extract from here
 		this.selectionAttaque = 0;
 		this.selectionObjet = 0;
 		this.selectionPokemon = 0;
@@ -30,12 +27,12 @@ class MenuCombat {
 	afficheToi() {
 		const context = getContext();
 		switch (this.mode) {
-		case (MenuCombatMode.global):	// menu normal
+		case MenuCombatMode.global:	// menu normal
 			AfficheMenuBackGround(context);
 			AfficheMenuSelection(context, this.player, this.selection);
 			break;
 
-		case (MenuCombatMode.attaques):	// menu attaque
+		case MenuCombatMode.attaques:	// menu attaque
 			AfficheMenuBackGround(context);
 			AfficheMenuSelection(context, this.player, this.selection);
 
@@ -62,11 +59,11 @@ class MenuCombat {
 			context.fillText('Retour', 390, 610, 270);
 			break;
 
-		case (MenuCombatMode.pokemons):
+		case MenuCombatMode.pokemons:
 			AfficheMenuBackGround(context);
 			AfficheMenuSelection(context, this.player, this.selection);
 
-			const topY = 400 - this.player.dresseur.pokemons.length * 70;
+			// const topY = 400 - this.player.dresseur.pokemons.length * 70;
 			context.fillStyle = Color.LightGrey;
 			// context.fillRect(360, topY, 320, 70 * (this.player.dresseur.pokemons.length + 1) + 20);
 			context.fillRect(360, 220, 320, 70 * (this.player.dresseur.pokemons.length + 1) + 20);
@@ -93,7 +90,7 @@ class MenuCombat {
 			);
 			break;
 
-		case (MenuCombatMode.objets):	// menu objet
+		case MenuCombatMode.objets:	// menu objet
 			AfficheMenuBackGround(context);
 			AfficheMenuSelection(context, this.player, this.selection);
 
@@ -109,28 +106,28 @@ class MenuCombat {
 			context.fillText('Retour', 390, 610, 270);
 			break;
 		default:
-			console.error('MenuCombat.afficheToi : no compatible option');
+			console.error('MenuCombat.afficheToi last : no compatible option');
 		}
 	}
 
 	changeSelection(touche) {
 		switch (this.mode) {
-		case (MenuCombatMode.global):
+		case MenuCombatMode.global:
 			if (touche === BUTTON.DOWN || touche === BUTTON.UP) {
 				switch (this.selection) {
-				case (0):
-					this.selection = 1;
+				case MenuCombat.options.Fight:
+					this.selection = MenuCombat.options.Objects;
 					break;
 
-				case (1):
-					this.selection = 0;
+				case MenuCombat.options.Objects:
+					this.selection = MenuCombat.options.Fight;
 					break;
 
-				case (2):
-					this.selection	= 3;
+				case MenuCombat.options.Pokemons:
+					this.selection	= MenuCombat.options.Escape;
 					break;
-				case (3):
-					this.selection	= 2;
+				case MenuCombat.options.Escape:
+					this.selection	= MenuCombat.options.Pokemons;
 					break;
 				default:
 					console.error('MenuCombat.afficheToi.inner1 : no compatible option');
@@ -138,19 +135,19 @@ class MenuCombat {
 			}
 			else if (touche === BUTTON.LEFT || touche === BUTTON.RIGHT) {
 				switch (this.selection) {
-				case (0):
-					this.selection = 2;
+				case MenuCombat.options.Fight:
+					this.selection = MenuCombat.options.Pokemons;
 					break;
 
-				case (1):
-					this.selection = 3;
+				case MenuCombat.options.Objects:
+					this.selection = MenuCombat.options.Escape;
 					break;
 
-				case (2):
-					this.selection	= 0;
+				case MenuCombat.options.Pokemons:
+					this.selection	= MenuCombat.options.Fight;
 					break;
-				case (3):
-					this.selection	= 1;
+				case MenuCombat.options.Escape:
+					this.selection	= MenuCombat.options.Objects;
 					break;
 				default:
 					console.error('MenuCombat.afficheToi.inner2 : no compatible option');
@@ -160,62 +157,62 @@ class MenuCombat {
 
 		case MenuCombatMode.attaques:// menu attaque
 			switch (touche) {
-			case (BUTTON.DOWN):
+			case BUTTON.DOWN:
 				this.selectionAttaque += 1;
 				if (this.selectionAttaque > 4) {
 					this.selectionAttaque = 0;
 				}
 				break;
-			case (BUTTON.UP):
+			case BUTTON.UP:
 				this.selectionAttaque -= 1;
 				if (this.selectionAttaque < 0) {
 					this.selectionAttaque = 4;
 				}
 				break;
 			default:
-				console.error('MenuCombat.afficheToi : no compatible option');
+				console.error('MenuCombat.afficheToi attaque : no compatible option');
 			}
 			break;
 
 		case MenuCombatMode.pokemons:
 			switch (touche) {
-			case (BUTTON.DOWN):
+			case BUTTON.DOWN:
 				this.selectionPokemon += 1;
 				if (this.selectionPokemon > this.player.dresseur.pokemons.length) {
 					this.selectionPokemon = 0;
 				}
 				break;
-			case (BUTTON.UP):
+			case BUTTON.UP:
 				this.selectionPokemon -= 1;
 				if (this.selectionPokemon < 0) {
 					this.selectionPokemon = this.player.dresseur.pokemons.length;
 				}
 				break;
 			default:
-				console.error('MenuCombat.afficheToi : no compatible option');
+				console.error('MenuCombat.afficheToi pokemons : no compatible option');
 			}
 			break;
 		case MenuCombatMode.objets:
 			switch (touche) {
-			case (BUTTON.DOWN):
+			case BUTTON.DOWN:
 				this.selectionObjet += 1;
 				if (this.selectionObjet > 4) {
 					// this.player.inveentaire.length +1 (pour le bouton retour )
 					this.selectionObjet = 0;
 				}
 				break;
-			case (BUTTON.UP):
+			case BUTTON.UP:
 				this.selectionObjet -= 1;
 				if (this.selectionObjet < 0) {
 					this.selectionObjet = 4;
 				}
 				break;
 			default:
-				console.error('MenuCombat.afficheToi : no compatible option');
+				console.error('MenuCombat.afficheToi changeselection button : no compatible option');
 			}
 			break;
 		default:
-			console.error('MenuCombat.afficheToi : no compatible option');
+			console.error('MenuCombat.afficheToi changeselection last : no compatible option');
 		}
 	}
 
@@ -227,16 +224,16 @@ class MenuCombat {
 		switch (this.mode) {
 		case MenuCombatMode.global:
 			switch (this.selection) {
-			case 0:
+			case MenuCombat.options.Fight:
 				this.mode = MenuCombatMode.attaques;
 				break;
-			case 1:
+			case MenuCombat.options.Objects:
 				this.mode = MenuCombatMode.pokemons;
 				break;
-			case 2:
+			case MenuCombat.options.Pokemons:
 				this.mode = MenuCombatMode.objets;
 				break;
-			case 3:// fuite
+			case MenuCombat.options.Escape:// fuite
 				if (this.player.getAdv().isSauvage()) {
 					if (Math.random() > 0.5) {
 						this.combat.finCombat();
@@ -257,7 +254,7 @@ class MenuCombat {
 				}
 				break;
 			default:
-				console.error('MenuCombat.afficheToi : no compatible option');
+				console.error('MenuCombat.afficheToi valide : no compatible option');
 			}
 			break;
 
@@ -329,7 +326,7 @@ class MenuCombat {
 			}
 			break;
 		default:
-			console.error('MenuCombat.afficheToi : no compatible option');
+			console.error('MenuCombat.afficheToi valide last : no compatible option');
 		}
 	}
 }
@@ -346,16 +343,17 @@ function AfficheMenuSelection(context, player, selection) {
 	context.fillStyle = Color.Black;
 	context.fillText('Que voulez vous faire ?', 70, 565);
 
-	context.fillStyle = selection === 0 ? Color.LighterGrey : Color.DarkGrey;
+	context.fillStyle = selection === MenuCombat.options.Fight ? Color.LighterGrey : Color.DarkGrey;
 	context.fillRect(340, 490, 240, 65);
 
-	context.fillStyle = selection === 1 ? Color.LighterGrey : Color.DarkGrey;
+	context.fillStyle = selection === MenuCombat.options.Objects ? Color.LighterGrey : Color.DarkGrey;
 	context.fillRect(340, 560, 240, 65);
 
-	context.fillStyle = selection === 2 ? Color.LighterGrey : Color.DarkGrey;
+	context.fillStyle =	selection === MenuCombat.options.Pokemons
+		? Color.LighterGrey : Color.DarkGrey;
 	context.fillRect(590, 490, 240, 65);
 
-	context.fillStyle = selection === 3 ? Color.LighterGrey : Color.DarkGrey;
+	context.fillStyle = selection === MenuCombat.options.Escape ? Color.LighterGrey : Color.DarkGrey;
 	context.fillRect(590, 560, 240, 65);
 
 	context.fillStyle = Color.Black;
@@ -364,5 +362,12 @@ function AfficheMenuSelection(context, player, selection) {
 	context.fillText('Objets', 610, 530);
 	context.fillText('Fuite', 610, 600);
 }
+
+MenuCombat.options = {
+	Fight: Symbol('MenuCombat.options.Fight'),
+	Objects: Symbol('MenuCombat.options.Objects'),
+	Pokemons: Symbol('MenuCombat.options.Pokemons'),
+	Escape: Symbol('MenuCombat.options.Escape'),
+};
 
 export default MenuCombat;
