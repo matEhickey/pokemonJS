@@ -1,4 +1,8 @@
 [ignore]
+  ./.eslintrc.js
+  ./babel.config.js
+  ./webpack.config.js
+./node_modules
 
 [include]
 
