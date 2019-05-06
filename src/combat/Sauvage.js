@@ -1,20 +1,20 @@
 // @flow
 
+import type { Adversaire } from './Adversaire';
 import Combat from './Combat';
 import PlayerMode from '../types/PlayerMode';
 import PlayerController from '../gameloop/PlayerController';
-import ZonePerson from '../map/ZonePerson';
 import Pokemon, { GenereUnPokemon } from './Pokemon';
 
 
-class PokemonSauvage {
+class PokemonSauvage implements Adversaire {
   pokemon: Pokemon;
   isAgressive: bool;
+  attaqueCanceled: bool;
 
   constructor(pokemon: Pokemon) {
     this.pokemon = pokemon;
     this.isAgressive = false;
-    // inutile, mais l objet pokemonSauvage doit correspondre a un dresseur (pendant un combat)
   }
 
   getPokemon() {
@@ -25,7 +25,7 @@ class PokemonSauvage {
     return this.pokemon.pdv > 0 ? [this.pokemon] : [];
   }
 
-  getName() {
+  getName(): string {
     return (this.pokemon.getName());
   }
 
@@ -41,16 +41,34 @@ class PokemonSauvage {
     // lors d'un combat, un pokemon sauvage agit + ou - comme un dresseur
     return (true);
   }
+
+  parler(): void {
+
+  }
+
+  getGTX(): number {
+    console.warn('Sauvage.getGTY called, is that normal ?');
+    return 0;
+  }
+
+  getGTY(): number {
+    console.warn('Sauvage.getGTY called, is that normal ?');
+    return 0;
+  }
+
+  echange():void {
+
+  }
 }
 
 
-function CombatContreSauvage(player: PlayerController, zone: ZonePerson) {
+function CombatContreSauvage(player: PlayerController, zone: number) {
   const poke = GenereUnPokemon(zone);
   // alert("combat niv: "+zone+"  contre un "+poke.getName());
   const sauvage = new PokemonSauvage(poke);
-  player.setAdv(sauvage);
+
   player.mode = PlayerMode.FIGHT;
-  player.combat = new Combat(player);
+  player.combat = new Combat(player, sauvage); // need interface here
 }
 
 export default PokemonSauvage;

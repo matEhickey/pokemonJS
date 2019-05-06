@@ -2,11 +2,18 @@
 
 import { getContext } from '../utils/render';
 import Font from '../types/Font';
+import Person from '../map/Person';
+import PlayerController from '../gameloop/PlayerController';
 
 class Discussion {
-  constructor(nom, messages) {
-    this.nom = nom;
-    this.messages = messages;
+  person: Person;
+  messages: Array<string>;
+  showCount: number;
+  context: CanvasRenderingContext2D;
+
+  constructor(person: Person) {
+    this.person = person;
+    this.messages = person.isAgressive ? person.texteLooser : person.texte;
     this.showCount = 0;
 
     this.context = getContext();
@@ -17,12 +24,12 @@ class Discussion {
     return (this.showCount === this.messages.length);
   }
 
-  showCurrentMessage(player) {
+  showCurrentMessage(player: PlayerController) {
     this.context.font = Font.little;
     this.context.fillStyle = player.couleurPrefere;
     this.context.fillRect(50, 480, 800, 150);
     this.context.fillStyle = '#ffffff';
-    this.context.fillText(`${this.nom} : `, 60, 510, 780);
+    this.context.fillText(`${this.person.nom} : `, 60, 510, 780);
 
     const message = this.messages[this.showCount];
     const lineheight = 25;

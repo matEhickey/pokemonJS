@@ -7,7 +7,7 @@ import Font from '../types/Font';
 import MenuCombat from './MenuCombat';
 import hero from '../../assets/imgs/BackSpritesHero.png';
 import PlayerController from '../gameloop/PlayerController';
-import Person from '../map/Person';
+import type { Adversaire } from './Adversaire';
 
 import DevMode from '../utils/DevMode';
 import CombatMode from '../types/CombatMode';
@@ -21,7 +21,7 @@ WaitLimit.long = 20;
 
 class Combat {
   player: PlayerController;
-  joueurs: Array<Person>;
+  joueurs: Array<Adversaire>;
   tour: number;
   mode: Symbol;
   menu: MenuCombat;
@@ -29,11 +29,12 @@ class Combat {
   infos: Array<string>
   checkTourComplete: number;
 
-  constructor(player: PlayerController) {
+  constructor(player: PlayerController, adversaire: Adversaire) {
     this.player = player;
 
-    this.joueurs = [this.player.dresseur, this.player.dresseur.adversaire];
-    this.tour = this.joueurs[0].getPokemon(0).agi - this.joueurs[1].getPokemon(0).agi > 0 ? 0 : 1;
+
+    this.joueurs = [this.player.dresseur, adversaire];
+    this.tour = this.joueurs[0].getPokemon(0).agi > this.joueurs[1].getPokemon(0).agi ? 0 : 1;
 
     this.checkTourComplete = 0;
     // -> devient 1 quand un pokemon a attaquer,
@@ -89,7 +90,6 @@ class Combat {
   handleAttaque() {
     const { currentDresseur, currentPokemon, currentPokemonName } = this.initAttaqueAgressor();
     const { adversaire, advPokemon, advPokemonName } = this.initAttaqueDefensor();
-
     // console.log(`Combat.handleAttaque: ${currentDresseur.nom} / ${adversaire.nom}`);
 
     if (!(currentDresseur === this.player.dresseur)) {
@@ -97,6 +97,13 @@ class Combat {
       const rand = Math.round(Math.random() * 4);
       currentPokemon.setSelectAttaque(rand);
     }
+
+    const attaque = currentPokemon.getSelectAttaque();
+    if (!attaque) {
+      console.error('Combat.handleAttaque: no seleted attaque');
+      return;
+    }
+
 
     if (
       currentPokemon.pdv > 0
@@ -114,7 +121,7 @@ class Combat {
 
         this.infos.push(
           `${currentPokemonName} attaque
-${currentPokemon.getSelectAttaque().getName()}
+${attaque.getName()}
 et inflige ${damages} dégats`,
         );
       }
@@ -144,13 +151,11 @@ et inflige ${damages} dégats`,
         const pokemonsAlive = adversaire.pokemonsEnVie();
         // console.log(`${adversaire.nom} lost a pokemon, remain ${pokemonsAlive.length}`);
         if (pokemonsAlive.length > 0) {
-          // change pokemon
           // console.log('Combat.handleAttaque: change pokemon');
+          adversaire.echange(pokemonsAlive[0], advPokemon);
           this.infos.push(`${adversaire.getName()} change de pokemon`);
           this.mode = CombatMode.discussions;
 
-          // normalement un pokemon sauvage n as pas besoin de cette fonction
-          adversaire.echange(pokemonsAlive[0], advPokemon);
 
           this.tour = 1 - this.tour;
           // this.tour = (this.joueurs[0].getPokemon(0).agi - this.joueurs[1].getPokemon(0).agi)
@@ -200,20 +205,20 @@ et inflige ${damages} dégats`,
     // console.log(`Combat.drawCombat: mode ${this.mode}`);
 
     if (this.mode === CombatMode.dresseurs) {
-      if (this.player.getAdv().isSauvage()) {
-        this.player.getAdv().getPokemon(0).afficheToiCombat();
+      if (this.joueurs[1].isSauvage()) {
+        this.joueurs[1].getPokemon(0).afficheToiCombat();
       }
       else {
         context.drawImage(
           this.player.charSprites,
-          80 * this.player.getAdv().getGTX(),
-          80 * this.player.getAdv().getGTY(),
+          80 * this.joueurs[1].getGTX(),
+          80 * this.joueurs[1].getGTY(),
           80, 80, 600, 50, 250, 250,
         );
       }
 
       context.font = Font.medium;
-      context.fillText(`Adversaire : ${this.player.getAdv().getName()}`, 65, 100);
+      context.fillText(`Adversaire : ${this.joueurs[1].getName()}`, 65, 100);
       const heroImg = ImageLoader.load(hero);
       context.drawImage(heroImg, 0, 0, 70, 75, 50, 250, 400, 400);
       context.font = Font.medium;
@@ -222,10 +227,10 @@ et inflige ${damages} dégats`,
 
     if (this.mode === CombatMode.pokemons) {
       context.font = Font.little;
-      context.fillText(this.player.getAdv().getPokemon(0).getName(), 65, 140);
-      context.fillText(`Niveau :${this.player.getAdv().getPokemon(0).lvl}`, 90, 170);
-      context.fillText(`Pdv :${this.player.getAdv().getPokemon(0).pdv}/${this.player.getAdv().getPokemon(0).pdvMax}`, 90, 190, 200);
-      this.player.getAdv().getPokemon(0).afficheToiCombat();
+      context.fillText(this.joueurs[1].getPokemon(0).getName(), 65, 140);
+      context.fillText(`Niveau :${this.joueurs[1].getPokemon(0).lvl}`, 90, 170);
+      context.fillText(`Pdv :${this.joueurs[1].getPokemon(0).pdv}/${this.joueurs[1].getPokemon(0).pdvMax}`, 90, 190, 200);
+      this.joueurs[1].getPokemon(0).afficheToiCombat();
 
 
       context.font = Font.little;
@@ -237,10 +242,10 @@ et inflige ${damages} dégats`,
 
     if (this.mode === CombatMode.discussions) {
       context.font = Font.little;
-      context.fillText(this.player.getAdv().getPokemon(0).getName(), 65, 140);
-      context.fillText(`Niveau :${this.player.getAdv().getPokemon(0).lvl}`, 90, 170);
-      context.fillText(`Pdv :${this.player.getAdv().getPokemon(0).pdv}/${this.player.getAdv().getPokemon(0).pdvMax}`, 90, 190, 200);
-      this.player.getAdv().getPokemon(0).afficheToiCombat();
+      context.fillText(this.joueurs[1].getPokemon(0).getName(), 65, 140);
+      context.fillText(`Niveau :${this.joueurs[1].getPokemon(0).lvl}`, 90, 170);
+      context.fillText(`Pdv :${this.joueurs[1].getPokemon(0).pdv}/${this.joueurs[1].getPokemon(0).pdvMax}`, 90, 190, 200);
+      this.joueurs[1].getPokemon(0).afficheToiCombat();
 
       context.font = Font.little;
       context.fillText(this.player.dresseur.getPokemon(0).getName(), 450, 400);
@@ -261,10 +266,10 @@ et inflige ${damages} dégats`,
 
     if (this.mode === CombatMode.menuSelection) {
       context.font = Font.little;
-      context.fillText(this.player.getAdv().getPokemon(0).getName(), 65, 140);
-      context.fillText(`Niveau :${this.player.getAdv().getPokemon(0).lvl}`, 90, 170);
-      context.fillText(`Pdv :${this.player.getAdv().getPokemon(0).pdv}/${this.player.getAdv().getPokemon(0).pdvMax}`, 90, 190, 200);
-      this.player.getAdv().getPokemon(0).afficheToiCombat();
+      context.fillText(this.joueurs[1].getPokemon(0).getName(), 65, 140);
+      context.fillText(`Niveau :${this.joueurs[1].getPokemon(0).lvl}`, 90, 170);
+      context.fillText(`Pdv :${this.joueurs[1].getPokemon(0).pdv}/${this.joueurs[1].getPokemon(0).pdvMax}`, 90, 190, 200);
+      this.joueurs[1].getPokemon(0).afficheToiCombat();
 
       context.font = Font.little;
       context.fillText(this.player.dresseur.getPokemon(0).getName(), 450, 400);
@@ -282,10 +287,10 @@ et inflige ${damages} dégats`,
 
     if (this.mode === CombatMode.discussions_end) { // copie du 3 mais pour la fin
       context.font = Font.little;
-      context.fillText(this.player.getAdv().getPokemon(0).getName(), 65, 140);
-      context.fillText(`Niveau :${this.player.getAdv().getPokemon(0).lvl}`, 90, 170);
-      context.fillText(`Pdv :${this.player.getAdv().getPokemon(0).pdv}/${this.player.getAdv().getPokemon(0).pdvMax}`, 90, 190, 200);
-      // this.player.getAdv().getPokemon(0).afficheToiCombat();
+      context.fillText(this.joueurs[1].getPokemon(0).getName(), 65, 140);
+      context.fillText(`Niveau :${this.joueurs[1].getPokemon(0).lvl}`, 90, 170);
+      context.fillText(`Pdv :${this.joueurs[1].getPokemon(0).pdv}/${this.joueurs[1].getPokemon(0).pdvMax}`, 90, 190, 200);
+      // this.joueurs[1].getPokemon(0).afficheToiCombat();
 
 
       context.font = Font.little;

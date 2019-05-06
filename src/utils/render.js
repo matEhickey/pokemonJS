@@ -3,13 +3,17 @@
 import render from '../gameloop/main';
 import PlayerController from '../gameloop/PlayerController';
 
-function getCanvas() {
+function getCanvas(): HTMLElement {
   const context = document.getElementById('ecran');
-  if (context) return context;
+  return context || document.createElement('canvas');
 }
 
-function getContext() {
-  return getCanvas().getContext('2d');
+function getContext(): CanvasRenderingContext2D {
+  const canvas = getCanvas();
+  if (canvas instanceof HTMLCanvasElement) {
+    return canvas.getContext('2d');
+  }
+  throw new Error('utils/render.getContext: can\'t get context of the canvas');
 }
 
 function animate(player: PlayerController) {

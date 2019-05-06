@@ -6,13 +6,16 @@ import Font from '../types/Font';
 
 import { getContext } from '../utils/render';
 import ImageLoader from '../utils/ImageLoader';
+import PlayerController from '../gameloop/PlayerController';
 import pokeworldmap from '../../assets/imgs/pokeworldmap.png';
 
 class Carte {
-  constructor(player) {
+  player: PlayerController;
+  endroits: Array<EndroitCarte> = [];
+  selection: number = 0;
+
+  constructor(player: PlayerController) {
     this.player = player;
-    this.endroits = [];
-    this.selection = 0;
   }
 
   displayCarte() {
@@ -31,7 +34,7 @@ class Carte {
     }
   }
 
-  addEndroit(endroit) {
+  addEndroit(endroit: EndroitCarte) {
     this.endroits.push(endroit);
   }
 
@@ -49,24 +52,24 @@ class Carte {
     }
   }
 
-  voyage(player) {
-    this.endroits[this.selection].rejoindreDestination(player);
+  voyage() {
+    this.endroits[this.selection].rejoindreDestination(this.player);
   }
 }
 
-function ChargeCarte(player) {
+function ChargeCarte(player: PlayerController) {
   player.carte.addEndroit(new EndroitCarte(
     'Foret',
     240,
     220,
-    new Porte(0, 0, 5, 5, 0, 0, 'foret1', player),
+    new Porte(0, 0, 5, 5, 0, 0, 'foret1'),
   ));
 
   player.carte.addEndroit(new EndroitCarte(
     'Argenta',
     310,
     395,
-    new Porte(-102, 30, 5, 5, 18, 198, 'argenta', player),
+    new Porte(-102, 30, 5, 5, 18, 198, 'argenta'),
   ));
 }
 

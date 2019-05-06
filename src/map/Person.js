@@ -11,10 +11,11 @@ import ImageLoader from '../utils/ImageLoader';
 import PlayerController from '../gameloop/PlayerController';
 import Pokemon from '../combat/Pokemon';
 import Inventaire from '../UI/Inventaire';
+import type { Adversaire } from '../combat/Adversaire';
 import { ColorDebug } from '../utils/Color';
 import dresseurVert from '../../assets/imgs/dresseurVert.png';
 
-class Person {
+class Person implements Adversaire {
   nom: string;
   posX: number;
   posY: number;
@@ -33,7 +34,7 @@ class Person {
   idle: bool;
   num: number;
   static nbDresseur: number;
-  texture: HTMLElement;
+  texture: HTMLImageElement;
   grandeTextureX: number;
   grandeTextureY: number;
   orientationInit: number;
@@ -134,8 +135,11 @@ class Person {
   }
 
   parler(player: PlayerController) {
+    player.mode = PlayerMode.HUD;
+    player.hud.mode = PlayerHudMode.DISCUSSION;
+
     this.trouveOrientation(player);
-    player.discussion = new Discussion(this.nom, this.isAgressive ? this.texteLooser : this.texte);
+    player.discussion = new Discussion(this);
   }
 
   trouveOrientation(player: PlayerController) {
@@ -257,7 +261,7 @@ class Person {
     return false;
   }
 
-  setTexture(texture: HTMLElement) {
+  setTexture(texture: HTMLImageElement) {
     this.texture = texture;
   }
 
@@ -337,10 +341,9 @@ class Person {
 
   attaqueJoueur(player: PlayerController) {
     console.log(`${this.nom} attaque`);
-    player.setAdv(this);
+    // player.setAdv(this);
 
-    player.mode = PlayerMode.HUD;
-    player.hud.mode = PlayerHudMode.DISCUSSION;
+
     this.parler(player);
   }
 

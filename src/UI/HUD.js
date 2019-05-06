@@ -67,23 +67,29 @@ class HUD {
       case PlayerHudMode.DISCUSSION:
         // console.log('mode discussion');
         if (touche === BUTTON.CONFIRM || touche === BUTTON.BACK) {
-          const isDiscussionOver = this.player.discussion
-            && this.player.discussion.increaseMessage();
+          const { discussion } = this.player;
+
+          const isDiscussionOver = discussion
+            && discussion.increaseMessage();
 
           if (isDiscussionOver) {
             this.player.discussion = null;
 
-            if (this.player.dresseur.adversaire) {
+            // const { combat } = this.player;
+
+            if (discussion && discussion.person) {
               const { x, y } = this.player.calculNextCase();
-              const adversaire = this.player.getAdv(); // si un dresseur nous attaquait
+              const adversaire = discussion.person;
 
               if (this.player.grille.getDresseur(x, y)) {
                 // on parlait directement au dresseur pour l attaquer
                 if (!this.player.grille.getDresseur(x, y).isAgressive) {
                   this.player.mode = PlayerMode.FIGHT;
-                  this.player.dresseur.adversaire = this.player.grille.getDresseur(x, y);
 
-                  this.player.combat = new Combat(this.player);
+                  this.player.combat = new Combat(
+                    this.player,
+                    adversaire,
+                  );
                 }
                 else {
                   this.player.mode = PlayerMode.MAP;
@@ -95,7 +101,7 @@ class HUD {
               }
               else {
                 this.player.mode = PlayerMode.FIGHT;
-                this.player.combat = new Combat(this.player);
+                this.player.combat = new Combat(this.player, adversaire);
               }
             }
             else {
@@ -133,8 +139,11 @@ class HUD {
   displayFail() {
     const context = getContext();
     const canvas = getCanvas();
+    const width = parseInt(canvas.getAttribute('width'), 10);
+    const height = parseInt(canvas.getAttribute('height'), 10);
+
     context.fillStyle = '#000000';
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.fillRect(0, 0, width, height);
     context.fillStyle = this.player.couleurPrefere;
     context.fillRect(50, 50, 800, 550);
     context.fillStyle = '#000000';
@@ -146,16 +155,22 @@ class HUD {
     context.fillText('(Appuyer sur une touche)', 65, 350);
   }
 
-  displayInfo() {
-    const context = getContext();
-    context.fillStyle = this.player.couleurPrefere;
-    context.fillRect(50, 350, 800, 250);
-    context.fillStyle = '#000000';
-    context.font = Font.little;
-    context.fillText(this.player.info, 60, 380);
+  displayInfo(): void {
+    const infos = this.player.info;
+
+    if (infos) {
+      const context = getContext();
+      context.fillStyle = this.player.couleurPrefere;
+      context.fillRect(50, 350, 800, 250);
+      context.fillStyle = '#000000';
+      context.font = Font.little;
+      context.fillText(infos, 60, 380);
+      return;
+    }
+    throw new Error('HUD.displayInfo: no player.info');
   }
 
-  displayWinCapture() {
+  displayWinCapture():void {
     const context = getContext();
     const pokemonCapture = this.player.getPokemonCapture();
 

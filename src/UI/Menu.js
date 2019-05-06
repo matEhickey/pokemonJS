@@ -3,14 +3,22 @@
 import { getContext } from '../utils/render';
 import pokedex from './Pokedex';
 import BUTTON from '../gameloop/touches';
+import PlayerController from '../gameloop/PlayerController';
 import PlayerMode from '../types/PlayerMode';
 import MenuMode from '../types/MenuMode';
+import Pokemon from '../combat/Pokemon';
 import Font from '../types/Font';
 import SousMenu from './SousMenu';
 
 
 class Menu {
-  constructor(player) {
+  player: PlayerController;
+  options: Array<SousMenu>;
+  selection: number;
+  mode: Symbol;
+  lastSeen: Symbol;
+
+  constructor(player: PlayerController) {
     this.player = player;
 
     this.options = [];
@@ -33,7 +41,7 @@ class Menu {
     }
   }
 
-  event(touche) {
+  event(touche: number) {
     console.log(`Menu.event(${touche}): mode ${this.mode.toString()}`);
 
     switch (this.mode) {
@@ -125,7 +133,7 @@ class Menu {
     this.afficheCurseur();
   }
 
-  handleMainMenuEvent(touche) {
+  handleMainMenuEvent(touche: number) {
     switch (touche) {
       case BUTTON.PAUSE:
         this.player.mode = PlayerMode.MAP;
@@ -147,7 +155,7 @@ class Menu {
     }
   }
 
-  handlePokedexEvent(touche, toggle) {
+  handlePokedexEvent(touche: number, toggle: ()=>void) {
     switch (touche) {
       case BUTTON.BACK:
         toggle();
@@ -164,7 +172,7 @@ class Menu {
     }
   }
 
-  handleCarteEvent(touche, toggle) {
+  handleCarteEvent(touche: number, toggle: ()=>void) {
     switch (touche) {
       case BUTTON.UP:
         this.player.carte.selectM();
@@ -174,7 +182,7 @@ class Menu {
         break;
       case BUTTON.CONFIRM: // valider
         toggle();
-        this.player.carte.voyage(this.player);
+        this.player.carte.voyage();
         this.player.mode = PlayerMode.MAP;
         this.mode = MenuMode.Global;
         break;
@@ -212,7 +220,7 @@ class Menu {
   }
 
   // {x, y, taileX, tailleY} Portion , {x, y, tailleX, tailleY} Canvas
-  displayPokemons(pokemons) {
+  displayPokemons(pokemons: Array<Pokemon>) {
     const context = getContext();
     context.fillStyle = this.player.couleurPrefere;
     context.fillRect(50, 50, 800, 550);

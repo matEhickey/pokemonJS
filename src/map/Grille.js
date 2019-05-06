@@ -3,18 +3,29 @@
 import { getContext, getCanvas } from '../utils/render';
 import { CombatContreSauvage } from '../combat/Sauvage';
 import DevMode from '../utils/DevMode';
+import Objet from './Objet';
+import Person from './Person';
+import Batiment from './Batiment';
+import Porte from './Porte';
+import Herbe from './Herbes';
+import PlayerController from '../gameloop/PlayerController';
 
 class Grille {
-  constructor(player, terrain) {
-    this.player = player;
+  player: PlayerController;
+  static nbG: number;
 
+  num: number;
+  terrain: HTMLImageElement;
+  objets: Array<Objet> = [];
+  dresseurs: Array<Person> = [];
+  batiments: Array<Batiment> = [];
+  portes: Array<Porte> = [];
+  herbes: Array<Herbe> = [];
+
+  constructor(player: PlayerController, terrain: HTMLImageElement) {
+    this.player = player;
     this.terrain = terrain;
-    this.objets = [];
-    this.dresseurs = [];
-    this.batiments = [];
-    this.pnjs = [];
-    this.portes = [];
-    this.herbes = [];
+
     this.num = Grille.nbG;
     Grille.nbG += 1;
   }
@@ -36,7 +47,7 @@ class Grille {
     // return(chaine);
   }
 
-  ajouteObjet(objet) {
+  ajouteObjet(objet: Objet) {
     this.objets.push(objet);
   }
 
@@ -44,25 +55,25 @@ class Grille {
   //  this.pnjs.push(objet);
   // }
 
-  ajoutePorte(porte) {
+  ajoutePorte(porte: Porte) {
     this.portes.push(porte);
   }
 
-  ajouteHerbe(herbe) {
+  ajouteHerbe(herbe: Herbe) {
     this.herbes.push(herbe);
   }
 
-  ajouteDresseur(objet) {
+  ajouteDresseur(objet: Objet) {
     this.dresseurs.push(objet);
     this.objets.push(objet);
   }
 
-  ajouteBatiment(bati) {
+  ajouteBatiment(bati: Batiment) {
     this.batiments.push(bati);
     this.objets.push(bati);
   }
 
-  afficheBatiments(player) {
+  afficheBatiments(player: PlayerController) {
     this.batiments.forEach((batiment) => {
       batiment.afficheToi(player);
     });
@@ -74,12 +85,12 @@ class Grille {
     });
   }
 
-  isWalkable(posX, posY) {
+  isWalkable(posX: number, posY: number) {
     const notWalkable = this.objets.some(objet => !objet.isWalkable(posX, posY));
     return !notWalkable;
   }
 
-  checkWalkOnPorte() {
+  checkWalkOnPorte(): void {
     this.portes.forEach((porte) => {
       if (porte.walkOn(this.player)) {
         console.log('Grille.checkWalkOnPorte: porte colision detected');
@@ -90,7 +101,7 @@ class Grille {
     });
   }
 
-  checkWalkOnHerbes() {
+  checkWalkOnHerbes(): void {
     this.herbes.forEach((herbe) => {
       if (herbe.walkOn(this.player)) {
         console.log('Grille.checkWalkOnHerbes: herbe colision detected');
@@ -101,7 +112,7 @@ class Grille {
     });
   }
 
-  getDresseur(x, y) {
+  getDresseur(x: number, y: number) {
     return this.dresseurs.find((dresseur) => {
       if (dresseur.isOnPosition(x, y)) {
         return dresseur;
@@ -110,11 +121,11 @@ class Grille {
     });
   }
 
-  getPNJ(x, y) {
-    this.pnjs.find(pnj => pnj.isOnPosition(x, y));
-  }
+  // getPNJ(x: number, y: number) {
+  //   this.pnjs.find(pnj => pnj.isOnPosition(x, y));
+  // }
 
-  getBatiment(x, y) {
+  getBatiment(x: number, y: number) {
     this.batiments.forEach((batiment) => {
       if (batiment.isOnPosition(x, y)) {
         return batiment;
@@ -132,17 +143,21 @@ class Grille {
   drawTerrain() {
     const context = getContext();
     const canvas = getCanvas();
+    const width = parseInt(canvas.getAttribute('width'), 10);
+
+    const height = parseInt(canvas.getAttribute('height'), 10);
+
 
     context.drawImage(
       this.terrain,
       this.player.dresseur.posX + 250,
       this.player.dresseur.posY + 250,
-      canvas.width / 3,
-      canvas.height / 3,
+      width / 3,
+      height / 3,
       0,
       0,
-      canvas.width,
-      canvas.height,
+      width,
+      height,
     );
   }
 
@@ -183,7 +198,7 @@ class Grille {
     }
   }
 
-  checkZonesDresseurs(player) {
+  checkZonesDresseurs(player: PlayerController) {
     this.dresseurs.forEach((dresseur) => {
       if (dresseur.walkOnZone(player)) {
         console.log('Grille.checkZonesDresseurs: zone colision detected');
@@ -200,7 +215,7 @@ class Grille {
     });
   }
 
-  getDresseurByName(name) {
+  getDresseurByName(name: string) {
     this.dresseurs.forEach((dresseur) => {
       if (dresseur.getName() === name) {
         return dresseur;
@@ -209,7 +224,7 @@ class Grille {
     console.log(`Probleme :${name} n'est pas dans la grille`);
   }
 
-  getDresseurByNum(num) {
+  getDresseurByNum(num: number) {
     this.dresseurs.forEach((dresseur) => {
       if (dresseur.getNum() === num) {
         return dresseur;

@@ -102,7 +102,7 @@ class PokedexPokemon {
    );
  }
 
- afficheToiCombat() {
+ afficheToiCombat(): void {
    const context = getContext();
    const allPokemonImg = ImageLoader.load(allPokemon);
 
@@ -138,23 +138,19 @@ class PokedexPokemon {
    );
  }
 
- getGTX() {
+ getGTX(): number {
    return ((this.numero - 1) % 25);
  }
 
- getGTY() {
+ getGTY(): number {
    return (Math.floor((this.numero - 1) / 25));
- }
-
- getName() {
-   return (this.nom);
  }
 
  addAttaque(att: Attaque) {
    this.attaques.push(att);
  }
 
- getAttaquesByNum(niveau: number) {
+ getAttaquesByNum(niveau: number): Array<Attaque> {
    const tab = [];
    this.attaques.forEach((attaque) => {
      if (niveau >= attaque.lvl) {
@@ -164,7 +160,7 @@ class PokedexPokemon {
    return (tab);
  }
 
- isType(type: string) {
+ isType(type: string): bool {
    // verifie si un pokedexPokemon est de type en faisant une recherche dans le mot
    // (car des fois le type est genre Plante/Poison)
    return (this.type.includes(type));

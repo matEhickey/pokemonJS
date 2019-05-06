@@ -1,10 +1,26 @@
 // @flow
 
 import { getContext } from '../utils/render';
+import PlayerController from '../gameloop/PlayerController';
 // Adapter pour creer automatiquement via devMode
 
 class Batiment {
-  constructor(nom, texture, posX, posY, tailleX, tailleY) {
+  nom: string;
+  texture: HTMLImageElement;
+  posX: number;
+  posY: number;
+  tailleX: number;
+  tailleY: number;
+  context: CanvasRenderingContext2D;
+
+  constructor(
+    nom: string,
+    texture: HTMLImageElement,
+    posX: number,
+    posY: number,
+    tailleX: number,
+    tailleY: number,
+  ) {
     this.nom = nom;
     this.texture = texture;
     this.posX = posX;
@@ -15,7 +31,7 @@ class Batiment {
     this.context = getContext();
   }
 
-  afficheToi(player) {
+  afficheToi(player: PlayerController): void {
     const { posX, posY } = player.dresseur;
     this.context.drawImage(
       this.texture,
@@ -26,11 +42,11 @@ class Batiment {
     );
   }
 
-  isWalkable(x, y) {
+  isWalkable(x: number, y: number): bool {
     return (!this.isOnPosition(x, y));
   }
 
-  isOnPosition(x, y) {
+  isOnPosition(x: number, y: number): bool {
     if (x > this.posX && x < this.posX + (this.tailleX / 2.7)) {
       if (y > this.posY && y < this.posY + (this.tailleY / 2.5)) {
         return (true);
@@ -39,7 +55,7 @@ class Batiment {
     return (false);
   }
 
-  showDebug(player) {
+  showDebug(player: PlayerController): void {
     const { posX, posY } = player.dresseur;
     const context = getContext();
 

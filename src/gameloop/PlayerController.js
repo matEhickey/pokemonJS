@@ -10,6 +10,7 @@ import BUTTON from './touches';
 import Orientation from '../types/Orientation';
 import Discussion from '../UI/Discussion';
 import Combat from '../combat/Combat';
+import Carte from '../UI/Carte';
 
 import Person from '../map/Person';
 import Pokemon from '../combat/Pokemon';
@@ -42,10 +43,11 @@ class PlayerController {
   hud: HUD;
   discussion: ?Discussion;
   combat: ?Combat;
+  carte: Carte;
 
   fps: number;
   couleurPrefere: string;
-  charSprites: HTMLElement;
+  charSprites: HTMLImageElement;
 
   pokemonCapture: ?Pokemon;
   walkable: bool;
@@ -93,15 +95,15 @@ class PlayerController {
     this.grilles.push(new Grille(this, areneArgentaImg));
   }
 
-  getGrille() {
+  getGrille(): Grille {
     return (this.grille);
   }
 
-  setTexture(texture: Image) {
+  setTexture(texture: HTMLImageElement): void {
     this.dresseur.setTexture(texture);
   }
 
-  setGrille(num: number) {
+  setGrille(num: number): void {
     this.grille = this.grilles[num];
   }
 
@@ -145,10 +147,6 @@ class PlayerController {
 
   getTailleY() {
     return (this.dresseur.tailleY);
-  }
-
-  getAdv() {
-    return (this.dresseur.adversaire);
   }
 
   setAdv(adv: Person) {
@@ -215,6 +213,8 @@ class PlayerController {
         break;
 
       case PlayerMode.FIGHT:
+        if (!this.combat) throw new Error('PlayerController.action: no fight in fight mode');
+
         this.combat.gestionEvenement(touche);
         break;
       default:
@@ -270,8 +270,7 @@ class PlayerController {
         this.mode = PlayerMode.HUD;
         this.hud.mode = PlayerHudMode.DISCUSSION;
 
-        this.setAdv(dresseur);
-        this.getAdv().parler(this);
+        dresseur.parler(this);
       }
       else {
         console.log('nothing found');

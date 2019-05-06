@@ -1,11 +1,6 @@
 // @flow
-
+// $FlowFixMe
 import soundtrack from '../../assets/musiqueLoop.wav';
-
-const audio = new Audio();
-audio.src = soundtrack;
-audio.loop = true;
-// audio.play();
 
 function stopMusique() {
   const buttonMusic = document.getElementById('buttonMusique');
@@ -18,5 +13,10 @@ function stopMusique() {
     if (buttonMusic) buttonMusic.innerHTML = 'Musique ON';
   }
 }
+
+const audio = new Audio();
+audio.src = soundtrack;
+audio.loop = true;
+// audio.play();
 
 window.stopMusique = stopMusique;

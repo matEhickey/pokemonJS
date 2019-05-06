@@ -16,7 +16,7 @@ class Pokemon {
   agi: number;
 
   attaques: Array<Attaque>;
-  selectAttaque: ? Attaque;
+  selectAttaque: ?Attaque;
 
   constructor(
     num: number, lvl: number, exp: number,
@@ -36,32 +36,32 @@ class Pokemon {
     this.selectAttaque = this.attaques.find(() => true); // the first
   }
 
-  setExp(val: number) {
+  setExp(val: number): void {
     this.exp = val;
   }
 
-  setExpMax(val: number) {
+  setExpMax(val: number): void {
     this.expMax = val;
   }
 
-  setPdv(val: number) {
+  setPdv(val: number): void {
     this.pdv = val;
   }
 
-  setPdvMax(val: number) {
+  setPdvMax(val: number): void {
     this.pdvMax = val;
   }
 
-  setSelectAttaque(att: number) {
+  setSelectAttaque(att: number): void {
     this.selectAttaque = this.attaques[att];
   }
 
-  afficheToiAt(x: number, y: number) {
+  afficheToiAt(x: number, y: number): void {
     const pokedexpokemon = pokedex.getPoke(this.num);
     if (pokedexpokemon) pokedexpokemon.afficheToiAt(x, y);
   }
 
-  getAttaques() {
+  getAttaques(): void {
     const attaques = pokedex.getAttaques(this);
     let testIsNew;
     for (let i = 0; i < attaques.length; i += 1) {
@@ -77,42 +77,51 @@ class Pokemon {
     }
   }
 
-  getAttaqueNum(num: number) {
+  getAttaqueNum(num: number): Attaque {
     if (num >= this.attaques.length) {
-      return ('');
+      throw new Error('Pokemon.getAttaqueNum: num >= attaques.length');
     }
 
     return (this.attaques[num]);
   }
 
   displayInfo() {
-    console.log(`${this.getName()}---lvl:${this.lvl}`);
+    console.log(`${this.getName()} ---lvl:${this.lvl}`);
   }
 
   soigneToi() {
     this.pdv = this.pdvMax;
   }
 
-  getName() {
+  getName(): string {
     const pokedexpokemon = pokedex.getPoke(this.num);
-    return (pokedexpokemon ? pokedexpokemon.getName() : 'Error');
+    if (pokedexpokemon) return pokedexpokemon.nom;
+
+    throw new Error('Pokemon.getName: no corresponding pokedexpokemon');
   }
 
-  afficheToiCombat() {
+  afficheToiCombat(): void {
     const pokedexpokemon = pokedex.getPoke(this.num);
-    return (pokedexpokemon ? pokedexpokemon.afficheToiCombat() : 'Error');
+    if (pokedexpokemon) {
+      pokedexpokemon.afficheToiCombat();
+      return;
+    }
+
+    throw new Error('Pokemon.afficheToiCombat: no corresponding pokedexpokemon');
   }
 
-  drawBackSprite() {
+  drawBackSprite(): void {
     const pokedexpokemon = pokedex.getPoke(this.num);
-    if (pokedexpokemon) return pokedexpokemon.drawBackSprite();
+    if (pokedexpokemon) pokedexpokemon.drawBackSprite();
   }
 
-  getSelectAttaque() {
-    return (this.selectAttaque);
+  getSelectAttaque(): Attaque {
+    if (this.selectAttaque) return this.selectAttaque;
+
+    throw new Error('Pokemon.getSelectAttaque: no selectAttaque');
   }
 
-  attaque(oth: Pokemon, noDamages: bool) {
+  attaque(oth: Pokemon, noDamages: bool): number {
     if (this.pdv <= 0) console.warn('Pokemon.attaque but life is <= 0');
     if (this.pdv <= 0) console.warn('Pokemon.attaque but life is <= 0');
 
@@ -134,14 +143,14 @@ class Pokemon {
   ),
     );
 
-    console.log(total);
+
     if (total < 0 || noDamages) { total = 0; }
 
     oth.pdv -= total;
     return (total);
   }
 
-  addExperience(expe: number, combat: ?Combat = null) {
+  addExperience(expe: number, combat: ?Combat = null): void {
     this.exp += expe;
 
     if (this.exp >= this.expMax) {
@@ -149,7 +158,7 @@ class Pokemon {
     }
   }
 
-  monteNiveau(combat: ?Combat = null) { // pour afficher les infos
+  monteNiveau(combat: ?Combat = null): void { // pour afficher les infos
     this.lvl += 1;
 
     const pokedexpokemon = pokedex.pokemons[this.num];
@@ -160,16 +169,17 @@ class Pokemon {
 
     if (combat && pokedexpokemon) {
       combat.infos.push(
-        `${pokedexpokemon.getName()} passe au niveau  ${this.lvl}`,
+        `${pokedexpokemon.nom} passe au niveau  ${this.lvl}`,
       );
     }
 
     this.expMax += this.lvl * this.lvl * this.lvl * 10;
 
     if (this.checkEvolution()) {
-      const name = this.getName();
+      const name = pokedexpokemon.nom;
       this.num = pokedexpokemon.evolution;
-      if (combat) combat.infos.push(`${name} vient d'evoluer en ${this.getName()}`);
+      const newName = this.getName();
+      if (combat) combat.infos.push(`${name} vient d'evoluer en ${newName}`);
     }
 
     // ameliore les stats
@@ -180,11 +190,10 @@ class Pokemon {
     this.getAttaques();
   }
 
-  checkEvolution() {
+  checkEvolution(): bool {
     const pokedexpokemon = pokedex.pokemons[this.num];
     if (!pokedexpokemon) {
-      console.warn('Pokemon.monteNiveau: no pokedexpokemon relation');
-      return;
+      throw new Error('Pokemon.monteNiveau: no pokedexpokemon relation');
     }
 
     if (
@@ -227,7 +236,7 @@ class Pokemon {
 }
 
 
-function GenereUnPokemon(niveau: number) {
+function GenereUnPokemon(niveau: number): Pokemon {
   const num = Math.floor(Math.random() * 148) + 1;
 
   const pokemon = new Pokemon(num, 5, 0, 100, 10, 10, 10);

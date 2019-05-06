@@ -232,7 +232,19 @@ class MenuCombat {
   valide() {
     // console.log("Vous avez cliqué sur "+this.selection);
     const myPokemon = this.player.dresseur.getPokemon(0);
-    const advPokemon = this.player.getAdv().getPokemon(0);
+    const { combat } = this.player;
+    if (!combat) {
+      console.error('MenuCombat.valide: no combat');
+      return;
+    }
+
+    const adversaire = combat.joueurs[1];
+    if (!adversaire) {
+      console.error('MenuCombat.valide: no adversaire');
+      return;
+    }
+
+    const advPokemon = adversaire.getPokemon(0);
 
     switch (this.mode) {
       case MenuCombatMode.global:
@@ -247,7 +259,13 @@ class MenuCombat {
             this.mode = MenuCombatMode.objets;
             break;
           case MenuCombatMode.escape:// fuite
-            if (this.player.getAdv().isSauvage()) {
+
+            if (!combat) {
+              console.error('MenuCombat.valide: no combat to escape');
+              return;
+            }
+
+            if (adversaire && adversaire.isSauvage()) {
               if (Math.random() > 0.5) {
                 this.combat.finCombat();
               }
@@ -303,7 +321,12 @@ class MenuCombat {
             break;
           case 1: // pokeball
             this.player.dresseur.attaqueCanceled = true;
-            if (this.player.getAdv().isSauvage()) {
+            if (!adversaire) {
+              console.log('MenuCombat.valide2: no adversaire');
+              return;
+            }
+
+            if (adversaire.isSauvage()) {
               if (Math.random() > 0.8 || DevMode.getOption('masterball')) { // recalculer a partir des pdv et de l agilité
                 console.log('WIN capture pokemon');
                 this.player.addPokemon(advPokemon);

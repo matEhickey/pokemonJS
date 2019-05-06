@@ -9,6 +9,10 @@ class Inventaire {
     this.objects = [];
   }
 
+  get length() {
+    return this.objects.length;
+  }
+
   addObject(obj: InventaireObjet) {
     this.objects.push(obj);
   }
