@@ -8,6 +8,8 @@ import Person from './Person';
 import Batiment from './Batiment';
 import Porte from './Porte';
 import Herbe from './Herbes';
+import type { Collision } from './Collision';
+
 import PlayerController from '../gameloop/PlayerController';
 
 class Grille {
@@ -16,7 +18,7 @@ class Grille {
 
   num: number;
   terrain: HTMLImageElement;
-  objets: Array<Objet> = [];
+  objets: Array<Collision> = [];
   dresseurs: Array<Person> = [];
   batiments: Array<Batiment> = [];
   portes: Array<Porte> = [];
@@ -63,9 +65,9 @@ class Grille {
     this.herbes.push(herbe);
   }
 
-  ajouteDresseur(objet: Objet) {
-    this.dresseurs.push(objet);
-    this.objets.push(objet);
+  ajouteDresseur(dresseur: Person) {
+    this.dresseurs.push(dresseur);
+    this.objets.push(dresseur);
   }
 
   ajouteBatiment(bati: Batiment) {
@@ -86,7 +88,7 @@ class Grille {
   }
 
   isWalkable(posX: number, posY: number) {
-    const notWalkable = this.objets.some(objet => !objet.isWalkable(posX, posY));
+    const notWalkable = this.objets.some(objet => !objet.isWalkable({ x: posX, y: posY }));
     return !notWalkable;
   }
 
@@ -112,10 +114,10 @@ class Grille {
     });
   }
 
-  getDresseur(x: number, y: number) {
+  getDresseur(x: number, y: number): ?Person {
     return this.dresseurs.find((dresseur) => {
       if (dresseur.isOnPosition(x, y)) {
-        return dresseur;
+        return true;
       }
       return null;
     });
@@ -167,8 +169,12 @@ class Grille {
 
   showDebug() {
     if (DevMode.dev) {
-      document.getElementById('playerControllerX').innerHTML = `X: ${this.player.dresseur.posX}`;
-      document.getElementById('playerControllerY').innerHTML = `Y: ${this.player.dresseur.posY}`;
+      const elemX = document.getElementById('playerControllerX');
+      const elemY = document.getElementById('playerControllerY');
+      if (elemX && elemY) {
+        elemX.innerHTML = `X: ${this.player.dresseur.posX}`;
+        elemY.innerHTML = `Y: ${this.player.dresseur.posY}`;
+      }
     }
 
     if (DevMode.getOption('showCollision')) {

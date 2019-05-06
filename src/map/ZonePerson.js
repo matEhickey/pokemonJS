@@ -3,9 +3,14 @@
 import { getContext } from '../utils/render';
 import { ColorDebug } from '../utils/Color';
 import Orientation from '../types/Orientation';
+import Person from './Person';
+import PlayerController from '../gameloop/PlayerController';
 
 class ZonePerson {
-  constructor(dresseur) {
+  taille: number = 20;
+  dresseur: Person;
+
+  constructor(dresseur: Person) {
     this.taille = 20;
     this.dresseur = dresseur;
   }
@@ -57,7 +62,7 @@ class ZonePerson {
     };
   }
 
-  isWalkOn(player) {
+  isWalkOn(player: PlayerController) {
     const zoneCoords = this.getCoordinates();
     const playerCoords = player.dresseur.getCoordinates();
 
@@ -70,7 +75,7 @@ class ZonePerson {
     );
   }
 
-  showDebug(player) {
+  showDebug(player: PlayerController) {
     const context = getContext();
     context.fillStyle = ColorDebug.ZonePerson;
 

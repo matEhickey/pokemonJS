@@ -12,10 +12,11 @@ import PlayerController from '../gameloop/PlayerController';
 import Pokemon from '../combat/Pokemon';
 import Inventaire from '../UI/Inventaire';
 import type { Adversaire } from '../combat/Adversaire';
+import type { Collision } from './Collision';
 import { ColorDebug } from '../utils/Color';
 import dresseurVert from '../../assets/imgs/dresseurVert.png';
 
-class Person implements Adversaire {
+class Person implements Adversaire, Collision {
   nom: string;
   posX: number;
   posY: number;
@@ -130,8 +131,8 @@ class Person implements Adversaire {
     return ({ x, y });
   }
 
-  isWalkable(x: number, y: number) {
-    return (!this.isOnPosition(x, y));
+  isWalkable(coords: {x: number, y: number}) {
+    return (!this.isOnPosition(coords.x, coords.y));
   }
 
   parler(player: PlayerController) {

@@ -2,9 +2,26 @@
 
 import { getContext } from '../utils/render';
 import { ColorDebug } from '../utils/Color';
+import PlayerController from '../gameloop/PlayerController';
 
 class Porte {
-  constructor(posX, posY, tailleX, tailleY, joueurX, joueurY, destination) {
+  posX: number;
+  posY: number;
+  tailleX: number;
+  tailleY: number;
+  joueurX: number;
+  joueurY: number;
+  destination: string;
+
+  constructor(
+    posX: number,
+    posY: number,
+    tailleX: number,
+    tailleY: number,
+    joueurX: number,
+    joueurY: number,
+    destination: string,
+  ) {
     this.posX = posX;
     this.posY = posY;
     this.tailleX = tailleX;
@@ -26,7 +43,7 @@ class Porte {
     };
   }
 
-  walkOn(player) {
+  walkOn(player: PlayerController) {
     const porteCoords = this.getCoordinates();
     const playerCoords = player.dresseur.getCoordinates();
 
@@ -39,12 +56,12 @@ class Porte {
     );
   }
 
-  setLargeur(value) {
+  setLargeur(value: number) {
     this.tailleX = value;
     return this;
   }
 
-  rejoindreDestination(player) {
+  rejoindreDestination(player: PlayerController) {
     console.log(`Voyage to: '${this.destination}'`);
 
     switch (this.destination) {
@@ -76,18 +93,7 @@ class Porte {
     player.dresseur.posY = this.joueurY;
   }
 
-  showDebug(player) {
-    // const { posX, posY } = player.dresseur;
-    // const context = getContext();
-    //
-    // context.fillStyle = 'rgba(0, 0, 255, 0.5)';
-    //
-    // context.fillRect(
-    //  this.posX * 3 - (posX * 3) + 340,
-    //  this.posY * 3 - (posY * 3) + 280,
-    //  this.tailleX * 3,
-    //  this.tailleY * 3,
-    // );
+  showDebug(player: PlayerController) {
     const context = getContext();
     context.fillStyle = ColorDebug.Porte;
 

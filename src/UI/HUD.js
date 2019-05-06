@@ -80,10 +80,11 @@ class HUD {
             if (discussion && discussion.person) {
               const { x, y } = this.player.calculNextCase();
               const adversaire = discussion.person;
+              const peopleInFrontOfPlayer = this.player.grille.getDresseur(x, y);
 
-              if (this.player.grille.getDresseur(x, y)) {
+              if (peopleInFrontOfPlayer) {
                 // on parlait directement au dresseur pour l attaquer
-                if (!this.player.grille.getDresseur(x, y).isAgressive) {
+                if (!peopleInFrontOfPlayer.isAgressive) {
                   this.player.mode = PlayerMode.FIGHT;
 
                   this.player.combat = new Combat(

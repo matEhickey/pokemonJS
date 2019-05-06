@@ -1,8 +1,11 @@
+// @flow
+
 import { GenereUnPokemon } from '../combat/Pokemon';
 import Person from '../map/Person';
 import Herbe from '../map/Herbes';
 import Batiment from '../map/Batiment';
 import Objet from '../map/Objet';
+import Grille from '../map/Grille';
 import Porte from '../map/Porte';
 import ImageLoader from '../utils/ImageLoader';
 
@@ -19,8 +22,8 @@ const txtInfirmiere = [
   'Nous avons soigné vos pokemons',
 ];
 
-function loadDataDresseurs(grille) {
-  const dresseur1 = new Person('Mathias', 20, -50, 0, 0, 0);
+function loadDataDresseurs(grille: Grille) {
+  const dresseur1 = new Person('Mathias', 20, -50, 0);
   dresseur1.setTexture(ImageLoader.load(dresseurRougeChatain));
   dresseur1.setTexte(['Bienvenue dans ce jeu Pokemon.', 'Des pokemons ont étrangement disparus', 'Nous avons besoin de ton aide pour les retrouver, \nmais avant ca, je voudrais tester tes compétences', 'En garde !']);
   dresseur1.setTexteLooser(['Tu me semble prêt à nous aider', 'Nos soupcons se porte sur la team rocket \nqui sévit souvent dans le secteur', 'N\'hésite pas à les affronter si tu les croise, \nils trafiquent forcement quelque chose']);
@@ -82,7 +85,7 @@ function loadDataDresseurs(grille) {
   grille.ajouteDresseur(dresseur6);
 }
 
-function loadDataTeamrocket(grille) {
+function loadDataTeamrocket(grille: Grille) {
   const teamR1 = new Person('Bad Guy1', 686, 34, 0);
   teamR1.setTexture(ImageLoader.load(teamRocketBasic));
   teamR1.setTexte(['Tiens toi! Donnes moi tes pokémons!']);
@@ -94,7 +97,7 @@ function loadDataTeamrocket(grille) {
   const teamR2 = new Person('Bad Guy2', 740, 20, 3);
   teamR2.setTexture(ImageLoader.load(teamRocketBasic));
   teamR2.setTexte(['Hey toi, tu vas voir!']);
-  teamR2.setTexteLooser('Tu m\'as battu, mais attend toi au pire!');
+  teamR2.setTexteLooser(['Tu m\'as battu, mais attend toi au pire!']);
   teamR2.addPokemon(GenereUnPokemon(11));
   teamR2.addPokemon(GenereUnPokemon(12));
 
@@ -133,7 +136,7 @@ function loadDataTeamrocket(grille) {
   grille.ajouteDresseur(teamR5);
 }
 
-function loadDataHerbe(grille) {
+function loadDataHerbe(grille: Grille) {
   grille.ajouteHerbe(new Herbe(160, -64, 78, 48, 3));
   grille.ajouteHerbe(new Herbe(128, -58, 32, 26, 3));
   grille.ajouteHerbe(new Herbe(146, -32, 14, 16, 3));
@@ -183,7 +186,7 @@ function loadDataHerbe(grille) {
   grille.ajouteHerbe(new Herbe(1038, 18, 72, 42, 20));
 }
 
-function loadDataColisisonsScene1(grille) {
+function loadDataColisisonsScene1(grille: Grille) {
 // All the data where generated using the 'z' or 'h' shortcut while playing,
 // and copy-pasted here as it
 // (this tool define where objects are based on the player pos)
@@ -339,7 +342,7 @@ function loadDataColisisonsScene1(grille) {
   grille.ajouteObjet(new Objet('Collision', 224, -96, 50, 28));
 }
 
-const chargeObjetsDansGrille0 = (grille, player) => {
+const chargeObjetsDansGrille0 = (grille: Grille) => {
   loadDataDresseurs(grille);
   loadDataTeamrocket(grille);
   loadDataHerbe(grille);
@@ -348,11 +351,11 @@ const chargeObjetsDansGrille0 = (grille, player) => {
   const centrePokemonImg = ImageLoader.load(centrePokemon);
   const batiment1 = new Batiment('Centre Pokemon', centrePokemonImg, -122, -40, 120, 100);
 
-  grille.ajoutePorte(new Porte(-100, 0, 10, 10, 44, 100, 'centreP1', player));
+  grille.ajoutePorte(new Porte(-100, 0, 10, 10, 44, 100, 'centreP1'));
   grille.ajouteBatiment(batiment1);
 };
 
-const chargeObjetsDansGrille1 = (grille/* , player */) => {
+const chargeObjetsDansGrille1 = (grille: Grille) => {
   // maisons
   grille.ajouteObjet(new Objet('Collision', 800, 688, 68, 68));
   grille.ajouteObjet(new Objet('Collision', 640, 746, 118, 110));
@@ -372,8 +375,8 @@ const chargeObjetsDansGrille1 = (grille/* , player */) => {
   grille.ajouteObjet(new Objet('Collision', 248, 842, 118, 110));
 };
 
-const chargeObjetsDansGrille2 = (grille, player) => { // premier centre pokemon
-  grille.ajoutePorte(new Porte(20, 120, 35, 20, -72, 12, 'foret1', player));
+const chargeObjetsDansGrille2 = (grille: Grille) => { // premier centre pokemon
+  grille.ajoutePorte(new Porte(20, 120, 35, 20, -72, 12, 'foret1'));
 
   // infirmiere
   const infirmiere = new Person('Infirmiere', 36, 48, 2);
@@ -401,8 +404,8 @@ const chargeObjetsDansGrille2 = (grille, player) => { // premier centre pokemon
   grille.ajouteObjet(new Objet('Collision', 138, 114, 18, 28));
 };
 
-const chargeObjetsDansGrille3 = (grille, player) => { // centre pokemon argenta
-  grille.ajoutePorte(new Porte(20, 120, 35, 20, 18, 198, 'argenta', player));
+const chargeObjetsDansGrille3 = (grille: Grille) => { // centre pokemon argenta
+  grille.ajoutePorte(new Porte(20, 120, 35, 20, 18, 198, 'argenta'));
 
   // infirmiere
   // grille.ajoutePNJ(new PNJ('Infirmiere Joelle', 36, 48, 54, 54,
@@ -424,10 +427,10 @@ const chargeObjetsDansGrille3 = (grille, player) => { // centre pokemon argenta
   grille.ajouteObjet(new Objet('Collision', 138, 114, 18, 28));
 };
 
-const chargeObjetsDansGrille4 = (grille, player) => { // argenta
-  grille.ajoutePorte(new Porte(12, 178, 5, 5, 44, 100, 'centreP2').setLargeur(10), player);
-  grille.ajoutePorte(new Porte(190, 52, 5, 5, 10, 42, 'pokeshopArgenta').setLargeur(10), player);
-  grille.ajoutePorte(new Porte(-18, 30, 5, 5, -60, 42, 'areneArgenta').setLargeur(8), player);
+const chargeObjetsDansGrille4 = (grille: Grille) => { // argenta
+  grille.ajoutePorte(new Porte(12, 178, 5, 5, 44, 100, 'centreP2').setLargeur(10));
+  grille.ajoutePorte(new Porte(190, 52, 5, 5, 10, 42, 'pokeshopArgenta').setLargeur(10));
+  grille.ajoutePorte(new Porte(-18, 30, 5, 5, -60, 42, 'areneArgenta').setLargeur(8));
 
   grille.ajouteObjet(new Objet('Batiment', -26, 102, 86, 62));
   grille.ajouteObjet(new Objet('Batiment', 22, 162, 38, 12));
@@ -479,8 +482,8 @@ const chargeObjetsDansGrille4 = (grille, player) => { // argenta
   grille.ajouteObjet(new Objet('Collision', 78, 24, 14, 66));
 };
 
-const chargeObjetsDansGrille5 = (grille, player) => { // pokeshop argenta
-  grille.ajoutePorte(new Porte(0, 54, 5, 5, 190, 65, 'argenta').setLargeur(10), player);
+const chargeObjetsDansGrille5 = (grille: Grille) => { // pokeshop argenta
+  grille.ajoutePorte(new Porte(0, 54, 5, 5, 190, 65, 'argenta').setLargeur(10));
 
   grille.ajouteObjet(new Objet('Collision', -52, 20, 40, 24));
   grille.ajouteObjet(new Objet('Collision', 44, -12, 40, 54));
@@ -499,8 +502,8 @@ const chargeObjetsDansGrille5 = (grille, player) => { // pokeshop argenta
   grille.ajouteObjet(new Objet('Collision', -70, -2, 10, 56));
 };
 
-const chargeObjetsDansGrille6 = (grille, player) => { // arene argenta
-  grille.ajoutePorte(new Porte(-68, 45, 5, 5, -16, 40, 'argenta').setLargeur(12), player);
+const chargeObjetsDansGrille6 = (grille: Grille) => { // arene argenta
+  grille.ajoutePorte(new Porte(-68, 45, 5, 5, -16, 40, 'argenta').setLargeur(12));
 
   grille.ajouteObjet(new Objet('Collision', -110, -22, 34, 30));
   grille.ajouteObjet(new Objet('Collision', -110, -74, 34, 28));

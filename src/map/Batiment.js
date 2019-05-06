@@ -2,9 +2,11 @@
 
 import { getContext } from '../utils/render';
 import PlayerController from '../gameloop/PlayerController';
+import type { Collision } from './Collision';
+
 // Adapter pour creer automatiquement via devMode
 
-class Batiment {
+class Batiment implements Collision {
   nom: string;
   texture: HTMLImageElement;
   posX: number;
@@ -31,6 +33,10 @@ class Batiment {
     this.context = getContext();
   }
 
+  displayName() {
+    console.log(this.nom);
+  }
+
   afficheToi(player: PlayerController): void {
     const { posX, posY } = player.dresseur;
     this.context.drawImage(
@@ -42,8 +48,8 @@ class Batiment {
     );
   }
 
-  isWalkable(x: number, y: number): bool {
-    return (!this.isOnPosition(x, y));
+  isWalkable(coords: {x: number, y: number}): bool {
+    return (!this.isOnPosition(coords.x, coords.y));
   }
 
   isOnPosition(x: number, y: number): bool {

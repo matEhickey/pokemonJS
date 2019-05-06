@@ -108,13 +108,13 @@ class PlayerController {
   }
 
   loadObjects() {
-    chargeObjetsDansGrille0(this.grilles[0], this); // collisions, dresseur, pnj porte etc
-    chargeObjetsDansGrille1(this.grilles[1], this);
-    chargeObjetsDansGrille2(this.grilles[2], this);
-    chargeObjetsDansGrille3(this.grilles[3], this);
-    chargeObjetsDansGrille4(this.grilles[4], this);
-    chargeObjetsDansGrille5(this.grilles[5], this);
-    chargeObjetsDansGrille6(this.grilles[6], this);
+    chargeObjetsDansGrille0(this.grilles[0]); // collisions, dresseur, pnj porte etc
+    chargeObjetsDansGrille1(this.grilles[1]);
+    chargeObjetsDansGrille2(this.grilles[2]);
+    chargeObjetsDansGrille3(this.grilles[3]);
+    chargeObjetsDansGrille4(this.grilles[4]);
+    chargeObjetsDansGrille5(this.grilles[5]);
+    chargeObjetsDansGrille6(this.grilles[6]);
   }
 
   addPokemon(pokemon: Pokemon) {

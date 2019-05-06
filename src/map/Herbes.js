@@ -1,9 +1,16 @@
 // @flow
 
 import { getContext } from '../utils/render';
+import PlayerController from '../gameloop/PlayerController';
 
 class Herbe {
-  constructor(posX, posY, tailleX, tailleY, puissance) {
+  posX: number;
+  posY: number;
+  tailleX: number;
+  tailleY: number;
+  puissance: number;
+
+  constructor(posX: number, posY: number, tailleX: number, tailleY: number, puissance: number) {
     this.posX = posX;
     this.posY = posY;
     this.tailleX = tailleX;
@@ -15,7 +22,7 @@ class Herbe {
     // genre une liste de types possibles
   }
 
-  walkOn(player) {
+  walkOn(player: PlayerController) {
     if (player.dresseur.posX > this.posX && player.dresseur.posX < this.posX + this.tailleX) {
       if (player.dresseur.posY > this.posY && player.dresseur.posY < this.posY + this.tailleY) {
         return true;
@@ -28,7 +35,7 @@ class Herbe {
     return this.puissance;
   }
 
-  showDebug(player) {
+  showDebug(player: PlayerController) {
     const { posX, posY } = player.dresseur;
     const context = getContext();
 
