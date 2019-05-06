@@ -39,18 +39,21 @@ class PlayerController {
   grille: Grille;
 
   mode: Symbol;
-  info: ?string;
-  hud: HUD;
-  discussion: ?Discussion;
-  combat: ?Combat;
-  carte: Carte;
 
-  fps: number;
-  couleurPrefere: string;
+  hud: HUD;
+  combat: ?Combat;
+  discussion: ?Discussion;
+  info: ?string;
+
+
+  carte: Carte; // move this to HUD
+
+  fps: number; // move this to a config manager
+  couleurPrefere: string; // move this to a config manager
   charSprites: HTMLImageElement;
 
-  pokemonCapture: ?Pokemon;
-  walkable: bool;
+  pokemonCapture: ?Pokemon; // deal this a better way
+  walkable: bool; // deal this a better way
 
   constructor(dresseur: Person) {
     this.fps = DevMode.dev ? 10 : 40;
@@ -95,14 +98,6 @@ class PlayerController {
     this.grilles.push(new Grille(this, areneArgentaImg));
   }
 
-  getGrille(): Grille {
-    return (this.grille);
-  }
-
-  setTexture(texture: HTMLImageElement): void {
-    this.dresseur.setTexture(texture);
-  }
-
   setGrille(num: number): void {
     this.grille = this.grilles[num];
   }
@@ -117,48 +112,12 @@ class PlayerController {
     chargeObjetsDansGrille6(this.grilles[6]);
   }
 
-  addPokemon(pokemon: Pokemon) {
-    this.dresseur.addPokemon(pokemon);
-  }
-
-  getTailleX() {
-    return (this.dresseur.tailleX);
-  }
-
-  getGTX() {
-    return (this.dresseur.grandeTextureX);
-  }
-
-  getGTY() {
-    return (this.dresseur.grandeTextureY);
-  }
-
   setPokemonCapture(pokemon: Pokemon) {
     this.pokemonCapture = pokemon;
   }
 
-  calculNextCase() {
-    return (this.dresseur.calculNextCase());
-  }
-
   getPokemonCapture() {
     return (this.pokemonCapture);
-  }
-
-  getTailleY() {
-    return (this.dresseur.tailleY);
-  }
-
-  setAdv(adv: Person) {
-    this.dresseur.adversaire = adv;
-  }
-
-  getTexture() {
-    return (this.dresseur.texture);
-  }
-
-  getName() {
-    return (this.dresseur.getName());
   }
 
   soignePokemons() {
@@ -167,10 +126,6 @@ class PlayerController {
 
   setOrientation(orientation: number) {
     this.dresseur.setOrientation(orientation);
-  }
-
-  getOrientation() {
-    return this.dresseur.orientation;
   }
 
   onLose() {
@@ -185,7 +140,7 @@ class PlayerController {
 
   avance() {
     if (this.walkable && !this.dresseur.idle) {
-      const orientation = this.getOrientation();
+      const orientation = this.dresseur.getOrientation();
       if (orientation === Orientation.South) this.dresseur.posY += 1;
       else if (orientation === Orientation.West) this.dresseur.posX -= 1;
       else if (orientation === Orientation.East) this.dresseur.posX += 1;
@@ -244,7 +199,7 @@ class PlayerController {
   }
 
   update() {
-    const { x, y } = this.calculNextCase();
+    const { x, y } = this.dresseur.calculNextCase();
     this.walkable = this.grille.isWalkable(x, y) || (DevMode.dev && DevMode.getOption('noCollision'));
     if (this.walkable) {
       this.avance();
@@ -262,7 +217,7 @@ class PlayerController {
       this.hud.mode = PlayerHudMode.PAUSE;
     }
     if (touche === BUTTON.CONFIRM) {
-      const { x, y } = this.calculNextCase();
+      const { x, y } = this.dresseur.calculNextCase();
       const dresseur = this.grille.getDresseur(x, y);
 
       if (dresseur) {

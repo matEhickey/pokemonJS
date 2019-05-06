@@ -342,8 +342,6 @@ class Person implements Adversaire, Collision {
 
   attaqueJoueur(player: PlayerController) {
     console.log(`${this.nom} attaque`);
-    // player.setAdv(this);
-
 
     this.parler(player);
   }

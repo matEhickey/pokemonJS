@@ -329,7 +329,7 @@ class MenuCombat {
             if (adversaire.isSauvage()) {
               if (Math.random() > 0.8 || DevMode.getOption('masterball')) { // recalculer a partir des pdv et de l agilité
                 console.log('WIN capture pokemon');
-                this.player.addPokemon(advPokemon);
+                this.player.dresseur.addPokemon(advPokemon);
 
                 this.player.mode = PlayerMode.HUD;
                 this.player.hud.mode = PlayerHudMode.SUCCESS;

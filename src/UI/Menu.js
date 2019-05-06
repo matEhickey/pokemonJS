@@ -270,7 +270,7 @@ class Menu {
     context.fillRect(50, 50, 800, 550);
     context.fillStyle = '#000000';
     context.font = Font.little;
-    context.fillText(`Nom : ${this.player.getName()}`, 65, 270);
+    context.fillText(`Nom : ${this.player.dresseur.getName()}`, 65, 270);
     context.fillText(`Argent : ${this.player.dresseur.argent}`, 65, 300);
     context.fillText(`Badges : ${this.player.dresseur.badges}`, 65, 330);
     context.fillText(`Objets : ${this.player.dresseur.inventaire.length}`, 65, 360);
@@ -280,8 +280,8 @@ class Menu {
     );
     context.drawImage(
       this.player.charSprites,
-      (80 * this.player.getGTX()),
-      (80 * this.player.getGTY()),
+      (80 * this.player.dresseur.getGTX()),
+      (80 * this.player.dresseur.getGTY()),
       80, 80, 400, 200, 250, 250,
     );
   }

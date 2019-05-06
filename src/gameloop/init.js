@@ -27,11 +27,11 @@ export default function init() {
   const player = new PlayerController(new Person('Sacha', 0, -10, 0));
 
   const sachaImg = ImageLoader.load(sacha);
-  player.setTexture(sachaImg);
+  player.dresseur.setTexture(sachaImg);
   player.setGrille(0);
 
   const pikachu = new Pokemon(25, 5, 0, 100, 20, 15, 15);
-  player.addPokemon(pikachu);
+  player.dresseur.addPokemon(pikachu);
 
   player.carte = new Carte(player);
   ChargeCarte(player);

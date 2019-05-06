@@ -47,7 +47,7 @@ SousMenu.load = (menu) => {
       () => { menu.mode = MenuMode.Inventaire; },
     ),
     new SousMenu(
-      menu.player.getName(),
+      menu.player.dresseur.getName(),
       () => { menu.displayInfosJoueur(); },
       () => { menu.mode = MenuMode.Person; },
     ),

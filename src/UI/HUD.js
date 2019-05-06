@@ -78,7 +78,7 @@ class HUD {
             // const { combat } = this.player;
 
             if (discussion && discussion.person) {
-              const { x, y } = this.player.calculNextCase();
+              const { x, y } = this.player.dresseur.calculNextCase();
               const adversaire = discussion.person;
               const peopleInFrontOfPlayer = this.player.grille.getDresseur(x, y);
 
