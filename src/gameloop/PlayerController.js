@@ -125,23 +125,19 @@ class PlayerController {
     return this.dresseur.soignePokemons();
   }
 
-  setOrientation(orientation: number) {
-    this.dresseur.setOrientation(orientation);
-  }
-
   onLose() {
     this.dresseur.posX = -72;
     this.dresseur.posY = 12;
 
     this.mode = PlayerMode.HUD;
-    this.hud.setMode(PlayerHudMode.FAIL);
+    this.hud.mode = PlayerHudMode.FAIL;
 
     this.soignePokemons();
   }
 
   avance() {
     if (this.walkable && !this.dresseur.idle) {
-      const orientation = this.dresseur.getOrientation();
+      const { orientation } = this.dresseur;
       if (orientation === Orientation.South) this.dresseur.posY += 1;
       else if (orientation === Orientation.West) this.dresseur.posX -= 1;
       else if (orientation === Orientation.East) this.dresseur.posX += 1;
@@ -183,16 +179,16 @@ class PlayerController {
 
     switch (touche) {
       case BUTTON.DOWN:
-        this.setOrientation(0);
+        this.dresseur.orientation = 0;
         break;
       case BUTTON.LEFT:
-        this.setOrientation(1);
+        this.dresseur.orientation = 1;
         break;
       case BUTTON.RIGHT:
-        this.setOrientation(2);
+        this.dresseur.orientation = 2;
         break;
       case BUTTON.UP:
-        this.setOrientation(3);
+        this.dresseur.orientation = 3;
         break;
       default:
         console.warn('PlayerController.handleDirectionnalEvent no compatible option');
@@ -240,6 +236,13 @@ class PlayerController {
       if (touche === BUTTON.C) DevMode.addCollisionDev(this.dresseur.posX, this.dresseur.posY);
       else if (touche === BUTTON.H) DevMode.addHerbeDev(this.dresseur.posX, this.dresseur.posY);
     }
+  }
+
+  sendDresseurToHealthCenter() {
+    // console.log('sendDresseurToHealthCenter : should set hud mode to pause');
+
+    this.dresseur.posY = -72; // ---> devant centre pokemon / TODO: get from grille
+    this.dresseur.posY = 6;
   }
 
   save() { // old way
@@ -349,7 +352,7 @@ class PlayerController {
 //                  //console.log("test trouve dresseur num "+dressNum[i].innerHTML);
 //                  dresseur = this.grille.getDresseurByNum(parseInt(dressNum[i].innerHTML));
 //                  //console.log(
-//          // dresseur.getName()+ " isAgressive:  "+
+//          // dresseur.nom+ " isAgressive:  "+
 //          // dresseur.isAgressive+ "  mais en fait :"+dressAsPerdu[i].innerHTML
 //          // );
 //                  dresseur.isAgressive = parseInt(dressAsPerdu[i].innerHTML);

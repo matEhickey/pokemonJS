@@ -23,12 +23,8 @@ class Herbe {
   }
 
   walkOn(player: PlayerController) {
-    if (player.dresseur.posX > this.posX && player.dresseur.posX < this.posX + this.tailleX) {
-      if (player.dresseur.posY > this.posY && player.dresseur.posY < this.posY + this.tailleY) {
-        return true;
-      }
-    }
-    return false;
+    return (player.dresseur.posX > this.posX && player.dresseur.posX < this.posX + this.tailleX)
+      && (player.dresseur.posY > this.posY && player.dresseur.posY < this.posY + this.tailleY);
   }
 
   getPuissance() {

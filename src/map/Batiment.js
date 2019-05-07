@@ -33,10 +33,6 @@ class Batiment implements Collision {
     this.context = getContext();
   }
 
-  displayName() {
-    console.log(this.nom);
-  }
-
   afficheToi(player: PlayerController): void {
     const { posX, posY } = player.dresseur;
     this.context.drawImage(

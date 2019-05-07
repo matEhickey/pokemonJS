@@ -6,9 +6,9 @@ import PlayerController from '../gameloop/PlayerController';
 export interface Adversaire {
   isAgressive: bool;
   attaqueCanceled: bool;
+  nom: string;
   isSauvage(): bool;
   getPokemon(number): Pokemon;
-  getName(): string;
   pokemonsEnVie(): Array<Pokemon>;
   echange(Pokemon, Pokemon): void;
   soignePokemons(): void;

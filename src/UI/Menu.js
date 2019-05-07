@@ -270,7 +270,7 @@ class Menu {
     context.fillRect(50, 50, 800, 550);
     context.fillStyle = '#000000';
     context.font = Font.little;
-    context.fillText(`Nom : ${this.player.dresseur.getName()}`, 65, 270);
+    context.fillText(`Nom : ${this.player.dresseur.nom}`, 65, 270);
     context.fillText(`Argent : ${this.player.dresseur.argent}`, 65, 300);
     context.fillText(`Badges : ${this.player.dresseur.badges}`, 65, 330);
     context.fillText(`Objets : ${this.player.dresseur.inventaire.length}`, 65, 360);

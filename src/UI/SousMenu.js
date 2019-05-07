@@ -4,29 +4,27 @@ import MenuMode from '../types/MenuMode';
 import Menu from './Menu';
 
 class SousMenu {
- title: string;
- render: () => void;
- validate: () => void;
- isShown: bool;
- static load: (Menu) => void;
+  title: string;
+  render: () => void;
+  validate: () => void;
+  isShown: bool;
+  static load: (Menu) => void;
 
- constructor(title: string, render: () => void, validate: () => void) {
-   this.title = title;
-   this.render = render;
-   this.validate = validate;
+  constructor(title: string, render: () => void, validate: () => void) {
+    this.title = title;
+    this.render = render;
+    this.validate = validate;
 
-   this.isShown = false;
- }
+    this.isShown = false;
+  }
 
- display() {
-   if (this.isShown) {
-     this.render();
-   }
- }
+  display() {
+    if (this.isShown) this.render();
+  }
 
- toggle() {
-   this.isShown = !this.isShown;
- }
+  toggle() {
+    this.isShown = !this.isShown;
+  }
 }
 
 SousMenu.load = (menu) => {
@@ -47,7 +45,7 @@ SousMenu.load = (menu) => {
       () => { menu.mode = MenuMode.Inventaire; },
     ),
     new SousMenu(
-      menu.player.dresseur.getName(),
+      menu.player.dresseur.nom,
       () => { menu.displayInfosJoueur(); },
       () => { menu.mode = MenuMode.Person; },
     ),

@@ -25,12 +25,8 @@ class Attaque {
     Attaque.attNum += 1;
   }
 
-  getName() {
-    return (this.nom);
-  }
-
   equals(oth: Attaque) {
-    return (this.nom === oth.getName());
+    return (this.nom === oth.nom);
   }
 
   save(/* pokemonId */) {

@@ -16,9 +16,16 @@ function getContext(): CanvasRenderingContext2D {
   throw new Error('utils/render.getContext: can\'t get context of the canvas');
 }
 
-function animate(player: PlayerController) {
+function getWidthHeight():{width: number, height: number} {
+  const canvas = getCanvas();
+  const width = parseInt(canvas.getAttribute('width'), 10);
+  const height = parseInt(canvas.getAttribute('height'), 10);
+  return { width, height };
+}
+
+function animate(player: PlayerController): void {
   const renderFunction = () => { render(player); };
   setInterval(renderFunction, player.fps);
 }
 
-export { getCanvas, getContext, animate };
+export { getCanvas, getContext, getWidthHeight, animate };

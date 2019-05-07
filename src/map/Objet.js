@@ -21,10 +21,6 @@ class Objet implements Collision {
     this.tailleY = tY;
   }
 
-  displayName() {
-    console.log(`Objet: ${this.nom}`);
-  }
-
   isWalkable(coords: {x: number, y: number}) {
     if (this.walkable) {
       return true;

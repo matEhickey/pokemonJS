@@ -1,6 +1,6 @@
 // @flow
 
-import { getContext } from '../utils/render';
+import dresseurVert from 'assets/imgs/dresseurVert.png';
 import ZonePerson from './ZonePerson';
 import Discussion from '../UI/Discussion';
 import DevMode from '../utils/DevMode';
@@ -11,10 +11,9 @@ import ImageLoader from '../utils/ImageLoader';
 import PlayerController from '../gameloop/PlayerController';
 import Pokemon from '../combat/Pokemon';
 import Inventaire from '../UI/Inventaire';
+import PersonRenderer from '../renderers/PersonRenderer';
 import type { Adversaire } from '../combat/Adversaire';
 import type { Collision } from './Collision';
-import { ColorDebug } from '../utils/Color';
-import dresseurVert from 'assets/imgs/dresseurVert.png';
 
 class Person implements Adversaire, Collision {
   nom: string;
@@ -26,7 +25,6 @@ class Person implements Adversaire, Collision {
   texteLooser: Array<string>;
   pokemons: Array<Pokemon>;
   pcDeLeo: Array<Pokemon>;
-  adversaire: ?Person;
   inventaire: Inventaire;
   argent: number;
   badges: number;
@@ -43,7 +41,14 @@ class Person implements Adversaire, Collision {
   animationPosition: number;
   attaqueCanceled: bool;
 
+  renderer: PersonRenderer;
+
   constructor(nom: string, posX: number, posY: number, orientation: number) {
+    this.num = Person.nbDresseur;
+    Person.nbDresseur += 1;
+
+    this.renderer = new PersonRenderer(this);
+
     this.nom = nom;
     this.posX = posX;
     this.posY = posY;
@@ -62,9 +67,6 @@ class Person implements Adversaire, Collision {
 
     this.idle = true;
 
-    this.num = Person.nbDresseur;
-    Person.nbDresseur += 1;
-
     const dresseurVertImg = ImageLoader.load(dresseurVert);
     this.texture = dresseurVertImg;
 
@@ -77,18 +79,6 @@ class Person implements Adversaire, Collision {
     this.animationPosition = 5;
 
     this.attaqueCanceled = false;
-  }
-
-  displayName() {
-    console.log(`Person:${this.nom}`);
-  }
-
-  getName() {
-    return (this.nom);
-  }
-
-  getNum() {
-    return (this.num);
   }
 
   getGTX() {
@@ -143,29 +133,27 @@ class Person implements Adversaire, Collision {
     player.discussion = new Discussion(this);
   }
 
-  trouveOrientation(player: PlayerController) {
-    const playerCoords = player.dresseur.getCoordinates();
-    const dresseurCoords = this.getCoordinates();
+  trouveOrientation(player: PlayerController) { // eslint-disable-line no-unused-vars
+    // const playerCoords = player.dresseur.getCoordinates();
+    // const dresseurCoords = this.getCoordinates();
 
-    const x = playerCoords.x - dresseurCoords.x;
-    const y = playerCoords.y - dresseurCoords.y;
+    console.warn('Person.trouveOrientation: desactivé');
 
-    if (x <= y) {
-      this.setOrientation(x > 0 ? 0 : 1);
-    }
-    else {
-      this.setOrientation(y > 0 ? 2 : 3);
-    }
+    // const x = playerCoords.x - dresseurCoords.x;
+    // const y = playerCoords.y - dresseurCoords.y;
+    //
+    // if (x <= y) {
+    //   this.orientation = x > 0 ? 0 : 1;
+    // }
+    // else {
+    //   this.orientation = y > 0 ? 2 : 3;
+    // }
   }
 
   showPokemon() {
     this.pokemons.forEach((pokemon) => {
       pokemon.displayInfo();
     });
-  }
-
-  image() {
-    return this.texture;
   }
 
   addPokemon(poke: Pokemon) {
@@ -190,65 +178,15 @@ class Person implements Adversaire, Collision {
   }
 
   afficheToi(player: PlayerController) {
-    const context = getContext();
-    const playerCoords = player.dresseur.getCoordinates();
-    const dresseurCoords = this.getCoordinates();
-
     if (DevMode.dev && DevMode.getOption('dresseursAsDots')) {
       this.showDebug(player);
     }
 
-    // ---- animation personage
-    const xClip = this.idle
-      ? 0
-      : this.animationPosition * 32;
-    const yClip = this.orientation * 48;
-
-
-    context.drawImage(
-      this.texture,
-      xClip,
-      yClip,
-      dresseurCoords.tailleX,
-      dresseurCoords.tailleY,
-      (dresseurCoords.x - playerCoords.x) * 3 + 340,
-      (dresseurCoords.y - playerCoords.y) * 3 + 260,
-      dresseurCoords.tailleX,
-      dresseurCoords.tailleY,
-    );
-    // }
+    this.renderer.render(player);
   }
 
   showDebug(player: PlayerController) {
-    const context = getContext();
-    const playerCoords = player.dresseur.getCoordinates();
-    const dresseurCoords = this.getCoordinates();
-
-    context.fillStyle = ColorDebug.Person;
-    context.fillRect(
-      (dresseurCoords.x - playerCoords.x) * 3 + 340,
-      (dresseurCoords.y - playerCoords.y) * 3 + 260,
-      dresseurCoords.tailleX,
-      dresseurCoords.tailleY,
-    );
-
-    context.fillStyle = 'black';
-
-    // tryin to show cursor
-    context.fillRect(
-      (dresseurCoords.x - playerCoords.x) * 3 + 340 - 2,
-      (dresseurCoords.y - playerCoords.y) * 3 + 260 - 2,
-      4, 4,
-    );
-
-    context.fillRect(
-      (dresseurCoords.mx - playerCoords.x) * 3 + 340 - 2,
-      (dresseurCoords.my - playerCoords.y) * 3 + 260 - 2,
-      4, 4,
-    );
-
-
-    this.zone.showDebug(player);
+    this.renderer.renderDebug(player);
   }
 
   isOnPosition(x: number, y: number) {
@@ -309,16 +247,8 @@ class Person implements Adversaire, Collision {
   //  return this.player.grille.isWalkable(dresseurCoords.x, dresseurCoords.y);
   // }
 
-  setOrientation(or: number) {
-    this.orientation = or;
-  }
-
   setOriginalOrientation() {
     this.orientation = this.orientationInit;
-  }
-
-  getOrientation() {
-    return this.orientation;
   }
 
   walkOnZone(player: PlayerController) {
@@ -334,10 +264,6 @@ class Person implements Adversaire, Collision {
 
   getPokemon(place: number) {
     return this.pokemons[place];
-  }
-
-  getNombrePokemon() {
-    return this.pokemons.length;
   }
 
   attaqueJoueur(player: PlayerController) {

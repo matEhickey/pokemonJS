@@ -24,7 +24,7 @@ class ZonePerson {
       tailleY: 0,
     };
 
-    switch (this.dresseur.getOrientation()) {
+    switch (this.dresseur.orientation) {
       case Orientation.South:
         addTailleCoords.y += this.taille - 5;
         addTailleCoords.tailleY += this.taille;

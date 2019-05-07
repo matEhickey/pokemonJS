@@ -8,6 +8,7 @@ import Pokemon, { GenereUnPokemon } from './Pokemon';
 
 
 class PokemonSauvage implements Adversaire {
+  nom: string = 'Sauvage';
   pokemon: Pokemon;
   isAgressive: bool;
   attaqueCanceled: bool;
@@ -25,7 +26,7 @@ class PokemonSauvage implements Adversaire {
     return this.pokemon.pdv > 0 ? [this.pokemon] : [];
   }
 
-  getName(): string {
+  get nom(): string {
     return (this.pokemon.getName());
   }
 

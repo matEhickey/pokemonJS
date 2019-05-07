@@ -6,7 +6,7 @@ const CombatMode = {
   discussions: Symbol('CombatMode.discussions'), // discussion (ex:pokemon gagne pts, pokemon recoit degats) ,
   menuSelection: Symbol('CombatMode.menuSelection'), // Menu selection,
   attaque: Symbol('CombatMode.attaque'), // attaque
-  discussions_end: Symbol('CombatMode.discussions_end'), // discussion puis retour au jeu apres combat
+  discussionsEnd: Symbol('CombatMode.discussionsEnd'), // discussion puis retour au jeu apres combat
 };
 
 export default CombatMode;

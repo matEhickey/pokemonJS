@@ -1,11 +1,11 @@
 // @flow
 
+import hero from 'assets/imgs/BackSpritesHero.png';
 import { getContext } from '../utils/render';
 import ImageLoader from '../utils/ImageLoader';
 import BUTTON from '../gameloop/touches';
 import Font from '../types/Font';
 import MenuCombat from './MenuCombat';
-import hero from 'assets/imgs/BackSpritesHero.png';
 import PlayerController from '../gameloop/PlayerController';
 import type { Adversaire } from './Adversaire';
 
@@ -83,7 +83,7 @@ class Combat {
   }
 
   finCombat() {
-    this.mode = CombatMode.discussions_end;
+    this.mode = CombatMode.discussionsEnd;
     this.infos.push('Bravo, vous avez gagné ce combat');
   }
 
@@ -121,7 +121,7 @@ class Combat {
 
         this.infos.push(
           `${currentPokemonName} attaque
-${attaque.getName()}
+${attaque.nom}
 et inflige ${damages} dégats`,
         );
       }
@@ -153,7 +153,7 @@ et inflige ${damages} dégats`,
         if (pokemonsAlive.length > 0) {
           // console.log('Combat.handleAttaque: change pokemon');
           adversaire.echange(pokemonsAlive[0], advPokemon);
-          this.infos.push(`${adversaire.getName()} change de pokemon`);
+          this.infos.push(`${adversaire.nom} change de pokemon`);
           this.mode = CombatMode.discussions;
 
 
@@ -218,7 +218,7 @@ et inflige ${damages} dégats`,
       }
 
       context.font = Font.medium;
-      context.fillText(`Adversaire : ${this.joueurs[1].getName()}`, 65, 100);
+      context.fillText(`Adversaire : ${this.joueurs[1].nom}`, 65, 100);
       const heroImg = ImageLoader.load(hero);
       context.drawImage(heroImg, 0, 0, 70, 75, 50, 250, 400, 400);
       context.font = Font.medium;
@@ -285,7 +285,7 @@ et inflige ${damages} dégats`,
       // console.log('draw attaque');
     }
 
-    if (this.mode === CombatMode.discussions_end) { // copie du 3 mais pour la fin
+    if (this.mode === CombatMode.discussionsEnd) { // copie du 3 mais pour la fin
       context.font = Font.little;
       context.fillText(this.joueurs[1].getPokemon(0).getName(), 65, 140);
       context.fillText(`Niveau :${this.joueurs[1].getPokemon(0).lvl}`, 90, 170);
@@ -321,7 +321,7 @@ et inflige ${damages} dégats`,
         this.infos = [];
       }
     }
-    if (this.mode === CombatMode.discussions_end) {
+    if (this.mode === CombatMode.discussionsEnd) {
       if (touche === BUTTON.CONFIRM) {
         if (!this.joueurs[1].isSauvage()) { // si c est un dresseur
           this.joueurs[1].parler(this.player);

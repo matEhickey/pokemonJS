@@ -81,12 +81,6 @@ class Grille {
     });
   }
 
-  displayObjetConsole() {
-    this.objets.forEach((objet) => {
-      objet.displayName();
-    });
-  }
-
   isWalkable(posX: number, posY: number) {
     const notWalkable = this.objets.some(objet => !objet.isWalkable({ x: posX, y: posY }));
     return !notWalkable;
@@ -223,7 +217,7 @@ class Grille {
 
   getDresseurByName(name: string) {
     this.dresseurs.forEach((dresseur) => {
-      if (dresseur.getName() === name) {
+      if (dresseur.nom === name) {
         return dresseur;
       }
     });
@@ -232,7 +226,7 @@ class Grille {
 
   getDresseurByNum(num: number) {
     this.dresseurs.forEach((dresseur) => {
-      if (dresseur.getNum() === num) {
+      if (dresseur.num === num) {
         return dresseur;
       }
     });

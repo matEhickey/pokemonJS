@@ -57,7 +57,7 @@ class MenuCombat {
 
         context.fillStyle = Color.Black;
         const attNames = this.player.dresseur.getPokemon(0).attaques.map(
-          attaque => attaque.getName(),
+          attaque => attaque.nom,
         );
 
         attNames.forEach((attName, i) => {
