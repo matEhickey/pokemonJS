@@ -5,7 +5,7 @@ import ImageLoader from '../utils/ImageLoader';
 import BUTTON from '../gameloop/touches';
 import Font from '../types/Font';
 import MenuCombat from './MenuCombat';
-import hero from '../../assets/imgs/BackSpritesHero.png';
+import hero from 'assets/imgs/BackSpritesHero.png';
 import PlayerController from '../gameloop/PlayerController';
 import type { Adversaire } from './Adversaire';
 

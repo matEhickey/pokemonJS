@@ -1,5 +1,6 @@
 // @flow
 
+import pokeworldmap from 'assets/imgs/pokeworldmap.png';
 import Porte from '../map/Porte';
 import EndroitCarte from './EndroitCarte';
 import Font from '../types/Font';
@@ -7,7 +8,6 @@ import Font from '../types/Font';
 import { getContext } from '../utils/render';
 import ImageLoader from '../utils/ImageLoader';
 import PlayerController from '../gameloop/PlayerController';
-import pokeworldmap from '../../assets/imgs/pokeworldmap.png';
 
 class Carte {
   player: PlayerController;

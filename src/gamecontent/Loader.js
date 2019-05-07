@@ -1,5 +1,11 @@
 // @flow
 
+import centrePokemon from 'assets/imgs/centrePokemon.png';
+import dresseurRougeChatain from 'assets/imgs/dresseurRougeChatain.png';
+import dresseurRougeBrun from 'assets/imgs/dresseurRougeBrun.png';
+import dresseurRougeBlond from 'assets/imgs/dresseurRougeBlond.png';
+import teamRocketBasic from 'assets/imgs/teamRocketBasic.png';
+
 import { GenereUnPokemon } from '../combat/Pokemon';
 import Person from '../map/Person';
 import Herbe from '../map/Herbes';
@@ -9,11 +15,6 @@ import Grille from '../map/Grille';
 import Porte from '../map/Porte';
 import ImageLoader from '../utils/ImageLoader';
 
-import centrePokemon from '../../assets/imgs/centrePokemon.png';
-import dresseurRougeChatain from '../../assets/imgs/dresseurRougeChatain.png';
-import dresseurRougeBrun from '../../assets/imgs/dresseurRougeBrun.png';
-import dresseurRougeBlond from '../../assets/imgs/dresseurRougeBlond.png';
-import teamRocketBasic from '../../assets/imgs/teamRocketBasic.png';
 
 const txtInfirmiere = [
   'Bienvenue au centre pokémon',

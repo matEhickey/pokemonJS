@@ -14,7 +14,7 @@ import Inventaire from '../UI/Inventaire';
 import type { Adversaire } from '../combat/Adversaire';
 import type { Collision } from './Collision';
 import { ColorDebug } from '../utils/Color';
-import dresseurVert from '../../assets/imgs/dresseurVert.png';
+import dresseurVert from 'assets/imgs/dresseurVert.png';
 
 class Person implements Adversaire, Collision {
   nom: string;

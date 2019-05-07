@@ -2,7 +2,7 @@
 
 import init from './gameloop/init';
 
-import '../assets/styles/global.css';
+import 'assets/styles/global.css';
 import './UI/music';
 
 document.addEventListener('DOMContentLoaded', () => {

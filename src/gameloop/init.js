@@ -1,5 +1,6 @@
 // @flow
 
+import sacha from 'assets/imgs/sacha.png';
 import PlayerController from './PlayerController';
 import HUD from '../UI/HUD';
 import Carte, { ChargeCarte } from '../UI/Carte';
@@ -12,7 +13,7 @@ import initInput from './inputs';
 
 import { animate, getContext } from '../utils/render';
 import ImageLoader from '../utils/ImageLoader';
-import sacha from '../../assets/imgs/sacha.png';
+import initMusique from '../UI/music';
 
 export default function init() {
   DevMode.init();
@@ -40,6 +41,7 @@ export default function init() {
 
   player.loadObjects();
 
+  initMusique();
   initInput(player);
   animate(player);
 }

@@ -1,5 +1,13 @@
 // @flow
 
+import terrain from 'assets/imgs/terrrainTest2.png';
+import ville2 from 'assets/imgs/ville2.png';
+import centrePinterieur from 'assets/imgs/centrePinterieur.png';
+import argenta from 'assets/imgs/argenta.png';
+import pokeshopInside from 'assets/imgs/pokeshopInside.png';
+import areneArgenta from 'assets/imgs/areneArgenta.png';
+import dresseurs from 'assets/imgs/dresseurs.png';
+
 import { chargeObjetsDansGrille0, chargeObjetsDansGrille1, chargeObjetsDansGrille2, chargeObjetsDansGrille3, chargeObjetsDansGrille4, chargeObjetsDansGrille5, chargeObjetsDansGrille6 } from '../gamecontent/Loader';
 import Grille from '../map/Grille';
 
@@ -16,13 +24,6 @@ import Person from '../map/Person';
 import Pokemon from '../combat/Pokemon';
 import HUD from '../UI/HUD';
 
-import terrain from '../../assets/imgs/terrrainTest2.png';
-import ville2 from '../../assets/imgs/ville2.png';
-import centrePinterieur from '../../assets/imgs/centrePinterieur.png';
-import argenta from '../../assets/imgs/argenta.png';
-import pokeshopInside from '../../assets/imgs/pokeshopInside.png';
-import areneArgenta from '../../assets/imgs/areneArgenta.png';
-import dresseurs from '../../assets/imgs/dresseurs.png';
 
 import DevMode from '../utils/DevMode';
 

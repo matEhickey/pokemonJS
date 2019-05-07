@@ -6,8 +6,8 @@ import { getContext } from '../utils/render';
 import ImageLoader from '../utils/ImageLoader';
 import Font from '../types/Font';
 
-import allPokemon from '../../assets/imgs/all-pokemon.png';
-import backSprites from '../../assets/imgs/back_sprites.png';
+import allPokemon from 'assets/imgs/all-pokemon.png';
+import backSprites from 'assets/imgs/back_sprites.png';
 
 class PokedexPokemon {
  numero: number;
