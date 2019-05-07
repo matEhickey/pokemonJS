@@ -1,75 +1,81 @@
 // @flow
 
 class _DevMode {
- dev: bool;
- framed: bool;
- mode: Symbol;
+dev: bool;
+framed: bool;
+mode: Symbol;
 
- constructor() {
-   this.dev = false;
-   this.framed = false;
- }
-
- getOption(optionName: string) {
-   const formElement = document.getElementById(`input_dev_${optionName}`);
-   return (formElement instanceof HTMLInputElement) ? formElement.checked : false;
- }
-
- init() {
-   if (location.search === '?dev') {
-     this.dev = true;
-     hideIfDevMode();
-   }
-   else {
-     hideIfNotDevMode();
-   }
-
-   if (location.search === '?framed') {
-     this.framed = true;
-     hideUnframed();
-   }
- }
-
- addCollisionDev(x: number, y: number) {
-   addCollisionDev(x, y);
- }
-
- addHerbeDev(x: number, y: number) {
-   addHerbeDev(x, y);
- }
+constructor() {
+  this.dev = false;
+  this.framed = false;
 }
 
+getOption(optionName: string) {
+  const formElement = document.getElementById(`input_dev_${optionName}`);
+  return (formElement instanceof HTMLInputElement) ? formElement.checked : false;
+}
+
+init() {
+  if (location.search === '?dev') {
+    this.dev = true;
+    hideIfDevMode();
+  }
+  else {
+    hideIfNotDevMode();
+  }
+
+  if (location.search === '?framed') {
+    this.framed = true;
+    hideUnframed();
+  }
+}
+
+addCollisionDev(x: number, y: number) {
+  addCollisionDev(x, y);
+}
+
+addHerbeDev(x: number, y: number) {
+  addHerbeDev(x, y);
+}
+}
+
+let boolPressC = false; // memoire touche appuye, genere au 2nd appui
+let boolPressH = false; // memoire touche appuye, genere au 2nd appui
+
+let Cx1 = 0; let Cx2 = 0; let Cy1 = 0; let Cy2 = 0;
+let Hx1 = 0; let Hx2 = 0; let Hy1 = 0; let Hy2 = 0;
+
 function addCollisionDev(x, y) {
-  if (!window.boolPressC) {
-    window.Cx1 = x;
-    window.Cy1 = y;
+  if (!boolPressC) {
+    Cx1 = x;
+    Cy1 = y;
   }
   else {
     // x2,y2 representent la taille de l objet et non sa coordonnee
-    window.Cx2 = x - window.Cx1;
-    window.Cy2 = y - window.Cy1;
+    Cx2 = x - Cx1;
+    Cy2 = y - Cy1;
 
-    const chaine = `grille.ajouteObjet(new Objet("Collision",${window.Cx1}, ${window.Cy1}, ${window.Cx2},${window.Cy2}));<br>`;
+    const chaine = `grille.ajouteObjet(new Objet("Collision",${Cx1}, ${Cy1}, ${Cx2},${Cy2}));<br>`;
     const loaderOuput = document.getElementById('loaderOutput');
     if (loaderOuput) loaderOuput.innerHTML += chaine;
   }
-  window.boolPressC = !window.boolPressC;
+  boolPressC = !boolPressC;
 }
 
 function addHerbeDev(x, y) {
-  if (!window.boolPressH) {
-    window.Hx1 = x;
-    window.Hy1 = y;
+  if (!boolPressH) {
+    Hx1 = x;
+    Hy1 = y;
   }
   else {
     // x2,y2 representent la taille de l objet et non sa coordonnee
-    window.Hx2 = x - window.Hx1;
-    window.Hy2 = x - window.Hy1;
-    const chaine = `this.grille.ajouteHerbe(new Herbe(${window.Hx1}, ${window.Hy1}, ${window.Hx2}, ${window.Hy2}, 5));<br>`;
+    Hx2 = x - Hx1;
+    Hy2 = x - Hy1;
+    const chaine = `this.grille.ajouteHerbe(new Herbe(${Hx1}, ${Hy1}, ${Hx2}, ${Hy2}, 5));<br>`;
     const loaderOuput = document.getElementById('loaderOutput');
     if (loaderOuput) loaderOuput.innerHTML += chaine;
   }
-  window.boolPressH = !window.boolPressH;
+  boolPressH = !boolPressH;
 }
 
 function hideIfDevMode() {
@@ -88,7 +94,7 @@ function hideUnframed() {
 
 function hideAllFromClass(className) {
   const hideElements = document.getElementsByClassName(className);
-  Array.from(hideElements).forEach((elem) => {
+  Array.from(hideElements).forEach((elem: HTMLElement) => {
     elem.style.display = 'none';
   });
 }

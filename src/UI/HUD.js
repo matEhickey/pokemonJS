@@ -14,8 +14,7 @@ class HUD {
   renderer: HUDRenderer;
   mode: Symbol;
   menu: Menu;
-
-  lastSeen: Symbol;
+  // lastSeen: Symbol;
 
   constructor(player: PlayerController) {
     this.player = player;
@@ -26,10 +25,10 @@ class HUD {
   }
 
   show() {
-    if (this.lastSeen !== this.mode) {
-      // console.log(`HUD.show: mode did change -> ${this.mode}`);
-      this.lastSeen = this.mode;
-    }
+    // if (this.lastSeen !== this.mode) {
+    //   // console.log(`HUD.show: mode did change -> ${this.mode}`);
+    //   this.lastSeen = this.mode;
+    // }
 
     switch (this.mode) {
       case PlayerHudMode.PAUSE:

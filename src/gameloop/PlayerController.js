@@ -7,6 +7,8 @@ import argenta from 'assets/imgs/argenta.png';
 import pokeshopInside from 'assets/imgs/pokeshopInside.png';
 import areneArgenta from 'assets/imgs/areneArgenta.png';
 import dresseurs from 'assets/imgs/dresseurs.png';
+import sacha from 'assets/imgs/sacha.png';
+
 
 import { chargeObjetsDansGrille0, chargeObjetsDansGrille1, chargeObjetsDansGrille2, chargeObjetsDansGrille3, chargeObjetsDansGrille4, chargeObjetsDansGrille5, chargeObjetsDansGrille6 } from '../gamecontent/Loader';
 import Grille from '../map/Grille';
@@ -18,7 +20,7 @@ import BUTTON from './touches';
 import Orientation from '../types/Orientation';
 import Discussion from '../UI/Discussion';
 import Combat from '../combat/Combat';
-import Carte from '../UI/Carte';
+import Carte, { ChargeCarte } from '../UI/Carte';
 
 import Person from '../map/Person';
 import Pokemon from '../combat/Pokemon';
@@ -26,12 +28,6 @@ import HUD from '../UI/HUD';
 
 
 import DevMode from '../utils/DevMode';
-
-
-// for making colision press 'z' twice
-window.boolPressC = false; // si touche deja appuye, car genere au bout du deuxieme appui
-// for making colision press 'z' twice
-window.boolPressH = false; // si touche deja appuye, car genere au bout du deuxieme appui
 
 class PlayerController {
   dresseur: Person;
@@ -42,12 +38,11 @@ class PlayerController {
   mode: Symbol;
 
   hud: HUD;
-  combat: ?Combat;
-  discussion: ?Discussion;
-  info: ?string;
+  combat: ?Combat; // move to HUD
+  discussion: ?Discussion; // move to HUD
+  info: ?string; // move to HUD
+  carte: Carte; // move to HUD
 
-
-  carte: Carte; // move this to HUD
 
   fps: number; // move this to a config manager
   couleurPrefere: string; // move this to a config manager
@@ -56,7 +51,7 @@ class PlayerController {
   pokemonCapture: ?Pokemon; // deal this a better way
   walkable: bool; // deal this a better way
 
-  constructor(dresseur: Person) {
+  constructor() {
     this.fps = DevMode.dev ? 10 : 40;
 
     this.mode = PlayerMode.MAP;
@@ -64,21 +59,32 @@ class PlayerController {
 
     this.couleurPrefere = '#bbbbbb';
 
-    this.initDresseur(dresseur);
+    this.initDresseur();
+
+    this.hud = new HUD(this);
+    this.carte = new Carte(this);
+    ChargeCarte(this);
 
     this.loadGrilles();
+    this.setGrille(0);
+
+    this.loadObjects();
   }
 
-  initDresseur(dresseur: Person) {
-    this.dresseur = dresseur;
+  initDresseur() {
+    this.dresseur = new Person('Sacha', 0, -10, 0);
 
-    this.dresseur.grandeTextureX = 1;
-    this.dresseur.grandeTextureY = 9;
-
-    this.dresseur.animationPosition = 0;
+    const sachaImg = ImageLoader.load(sacha);
+    this.dresseur.setTexture(sachaImg);
 
     const dresseursImg = ImageLoader.load(dresseurs);
     this.charSprites = dresseursImg;
+
+    this.dresseur.grandeTextureX = 1;
+    this.dresseur.grandeTextureY = 9;
+    this.dresseur.animationPosition = 0;
+
+    this.dresseur.addPokemon(new Pokemon(25, 5, 0, 100, 20, 15, 15));
   }
 
   loadGrilles() {

@@ -46,7 +46,7 @@ class HUDRenderer {
     throw new Error('HUDRenderer.displayInfo: no player.info');
   }
 
-  displayWinCapture(player: PlayerController) {
+  displayWinCapture(player: PlayerController): void {
     const context = getContext();
     const pokemonCapture = player.getPokemonCapture();
 
