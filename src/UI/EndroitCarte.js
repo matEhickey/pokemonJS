@@ -1,23 +1,31 @@
-import { getContext } from '../utils/render';
+// @flow
+
+import Porte from '../map/Porte';
+import PlayerController from '../gameloop/PlayerController';
+import MenuRenderer from '../renderers/MenuRenderer';
 
 class EndroitCarte {
-	constructor(nom, x, y, porte) {
-		this.nom = nom;
-		this.x = x;		// positions d affichage sur la carte
-		this.y = y;
-		this.porte = porte; // porte qui n a pas de coordonnées sur la grille
-	}
+  nom: string;
+  x: number;
+  y: number;
+  porte: Porte;
+  menuRenderer: MenuRenderer;
 
-	rejoindreDestination(player) {
-		this.porte.rejoindreDestination(player);
-	}
+  constructor(nom: string, x: number, y: number, porte: Porte, menuRenderer: MenuRenderer) {
+    this.nom = nom;
+    this.x = x; // positions d affichage sur la carte
+    this.y = y;
+    this.porte = porte; // porte qui n a pas de coordonnées sur la grille
+    this.menuRenderer = menuRenderer;
+  }
 
-	displayOnCarte() {
-		const context = getContext();
-		// console.log(this.nom+" en x:"+this.x+"  y:"+this.y);
-		context.fillRect(this.x, this.y, 12, 12);
-		context.fillText(this.nom, 650, 550);
-	}
+  rejoindreDestination(player: PlayerController) {
+    this.porte.rejoindreDestination(player);
+  }
+
+  displayOnCarte() {
+    this.menuRenderer.displayEndroitCarte(this);
+  }
 }
 
 

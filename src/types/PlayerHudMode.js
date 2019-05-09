@@ -1,3 +1,5 @@
+// @flow
+
 const PlayerHudMode = {};
 PlayerHudMode.PAUSE = Symbol('PlayerHudMode.PAUSE');
 PlayerHudMode.DISCUSSION = Symbol('PlayerHudMode.DISCUSSION');

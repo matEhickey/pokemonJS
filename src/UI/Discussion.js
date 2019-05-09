@@ -1,36 +1,31 @@
-import { getContext } from '../utils/render';
-import Font from '../types/Font';
+// @flow
+
+import Person from '../map/Person';
+import PlayerController from '../gameloop/PlayerController';
+import DiscussionRenderer from '../renderers/DiscussionRenderer';
 
 class Discussion {
-	constructor(nom, messages) {
-		this.nom = nom;
-		this.messages = messages;
-		this.showCount = 0;
+  person: Person;
+  renderer: DiscussionRenderer;
+  messages: Array<string>;
+  showCount: number;
 
-		this.context = getContext();
-	}
+  constructor(person: Person) {
+    this.person = person;
+    this.renderer = new DiscussionRenderer(this);
+    this.messages = person.isAgressive ? person.texteLooser : person.texte;
+    this.showCount = 0;
+  }
 
-	increaseMessage() {
-		this.showCount += 1;
-		return (this.showCount === this.messages.length);
-	}
+  increaseMessage() {
+    this.showCount += 1;
+    return (this.showCount === this.messages.length);
+  }
 
-	showCurrentMessage(player) {
-		this.context.font = Font.little;
-		this.context.fillStyle = player.couleurPrefere;
-		this.context.fillRect(50, 480, 800, 150);
-		this.context.fillStyle = '#ffffff';
-		this.context.fillText(`${this.nom} : `, 60, 510, 780);
-
-		const message = this.messages[this.showCount];
-		const lineheight = 25;
-
-		// split message by \n
-		const lines = message.split('\n');
-		lines.forEach((line, index) => {
-			this.context.fillText(line, 80, 550 + (index * lineheight));
-		});
-	}
+  showCurrentMessage(player: PlayerController) {
+    const message = this.messages[this.showCount];
+    this.renderer.render(player, this.person.nom, message);
+  }
 }
 
 export default Discussion;

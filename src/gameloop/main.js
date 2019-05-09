@@ -1,34 +1,35 @@
-import { getCanvas, getContext } from '../utils/render';
+// @flow
+
+import { clearCanvas } from '../utils/render';
 import DevMode from '../utils/DevMode';
 import PlayerMode from '../types/PlayerMode';
+import PlayerController from './PlayerController';
 
-export default function render(player) { // Moteur d affichage
-	const canvas = getCanvas();
-	const context = getContext();
+export default function render(player: PlayerController) { // Moteur d affichage
+  clearCanvas();
 
-	context.save();
-	context.clearRect(0, 0, canvas.width, canvas.height);
+  player.grille.show();
 
-	player.grille.show();
+  switch (player.mode) {
+    case PlayerMode.MAP:
+      player.update();
+      if (DevMode.dev) { player.grille.showDebug(); }
+      break;
 
-	switch (player.mode) {
-	case PlayerMode.MAP:
-		player.update();
-		if (DevMode.dev) { player.grille.showDebug();	}
-		break;
+    case PlayerMode.HUD:
+      player.hud.show();
+      break;
 
-	case PlayerMode.HUD:
-		player.hud.show();
-		break;
+    case PlayerMode.FIGHT:
+      const { combat } = player;
+      if (combat) {
+        combat.drawCombat();
+        combat.runTour();
+        break;
+      }
+      throw new Error('main.render: no combat in combat mode');
 
-	case PlayerMode.FIGHT:
-		player.combat.drawCombat();
-		player.combat.runTour();
-		break;
-
-	default:
-		console.error(`main.render: no compatible option ${player.mode}`);
-	}
-
-	context.restore();
+    default:
+      console.error(`main.render: no compatible option ${player.mode.toString()}`);
+  }
 }

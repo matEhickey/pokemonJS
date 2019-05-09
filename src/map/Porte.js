@@ -1,110 +1,100 @@
-import { getContext } from '../utils/render';
-import { ColorDebug } from '../utils/Color';
+// @flow
+
+import PlayerController from '../gameloop/PlayerController';
+import devRenderer from '../renderers/DevModeRenderer';
 
 class Porte {
-	constructor(posX, posY, tailleX, tailleY, joueurX, joueurY, destination) {
-		this.posX = posX;
-		this.posY = posY;
-		this.tailleX = tailleX;
-		this.tailleY = tailleY;
+  posX: number;
+  posY: number;
+  tailleX: number;
+  tailleY: number;
+  joueurX: number;
+  joueurY: number;
+  destination: string;
 
-		this.joueurX = joueurX; // where the player is after teleportation
-		this.joueurY = joueurY;
-		this.destination = destination;
-	}
+  constructor(
+    posX: number,
+    posY: number,
+    tailleX: number,
+    tailleY: number,
+    joueurX: number,
+    joueurY: number,
+    destination: string,
+  ) {
+    this.posX = posX;
+    this.posY = posY;
+    this.tailleX = tailleX;
+    this.tailleY = tailleY;
 
-	getCoordinates() {
-		return {
-			x: this.posX,
-			y: this.posY,
-			tailleX: this.tailleX,
-			tailleY: this.tailleY,
-			mx: this.posX + this.tailleX,
-			my: this.posY + this.tailleY,
-		};
-	}
+    this.joueurX = joueurX; // where the player is after teleportation
+    this.joueurY = joueurY;
+    this.destination = destination;
+  }
 
-	walkOn(player) {
-		const porteCoords = this.getCoordinates();
-		const playerCoords = player.dresseur.getCoordinates();
+  getCoordinates() {
+    return {
+      x: this.posX,
+      y: this.posY,
+      tailleX: this.tailleX,
+      tailleY: this.tailleY,
+      mx: this.posX + this.tailleX,
+      my: this.posY + this.tailleY,
+    };
+  }
 
-		return (
-			(playerCoords.x + (playerCoords.tailleX / 3) > porteCoords.x)
-			&& (playerCoords.x < porteCoords.mx)
+  walkOn(player: PlayerController) {
+    const porteCoords = this.getCoordinates();
+    const playerCoords = player.dresseur.getCoordinates();
 
-			&& (playerCoords.y + (playerCoords.tailleY / 3) > porteCoords.y)
-			&& (playerCoords.y < porteCoords.my)
-			// if ((player.dresseur.posX >= this.posX) && (player.dresseur.posX <= (this.posX + this.tailleX))) {
-			// 	if ((player.dresseur.posY >= this.posY) && (player.dresseur.posY <= (this.posY + this.tailleY))) {
-		);
-		// 		return true;
-		// 	}
-		// }
-		// return false;
-	}
+    return (
+      (playerCoords.x + (playerCoords.tailleX / 3) > porteCoords.x)
+   && (playerCoords.x < porteCoords.mx)
 
-	setLargeur(value) {
-		this.tailleX = value;
-		return this;
-	}
+   && (playerCoords.y + (playerCoords.tailleY / 3) > porteCoords.y)
+   && (playerCoords.y < porteCoords.my)
+    );
+  }
 
-	rejoindreDestination(player) {
-		console.log(`Voyage to: '${this.destination}'`);
+  setLargeur(value: number) {
+    this.tailleX = value;
+    return this;
+  }
 
-		switch (this.destination) {
-		case 'foret1':
-			player.setGrille(0);
-			break;
-		case 'ville2':
-			player.setGrille(1);
-			break;
-		case 'centreP1':	// foret1
-			player.setGrille(2);
-			break;
-		case 'centreP2':	// argenta
-			player.setGrille(3);
-			break;
-		case 'argenta':
-			player.setGrille(4);
-			break;
-		case 'pokeshopArgenta':
-			player.setGrille(5);
-			break;
-		case 'areneArgenta':
-			player.setGrille(6);
-			break;
-		default:
-			console.warn('rejoindreDestination: no compatible option');
-		}
-		player.dresseur.posX = this.joueurX;
-		player.dresseur.posY = this.joueurY;
-	}
+  rejoindreDestination(player: PlayerController) {
+    console.log(`Voyage to: '${this.destination}'`);
 
-	showDebug(player) {
-		// const { posX, posY } = player.dresseur;
-		// const context = getContext();
-		//
-		// context.fillStyle = 'rgba(0, 0, 255, 0.5)';
-		//
-		// context.fillRect(
-		// 	this.posX * 3 - (posX * 3) + 340,
-		// 	this.posY * 3 - (posY * 3) + 280,
-		// 	this.tailleX * 3,
-		// 	this.tailleY * 3,
-		// );
-		const context = getContext();
-		context.fillStyle = ColorDebug.Porte;
+    switch (this.destination) {
+      case 'foret1':
+        player.setGrille(0);
+        break;
+      case 'ville2':
+        player.setGrille(1);
+        break;
+      case 'centreP1': // foret1
+        player.setGrille(2);
+        break;
+      case 'centreP2': // argenta
+        player.setGrille(3);
+        break;
+      case 'argenta':
+        player.setGrille(4);
+        break;
+      case 'pokeshopArgenta':
+        player.setGrille(5);
+        break;
+      case 'areneArgenta':
+        player.setGrille(6);
+        break;
+      default:
+        console.warn('rejoindreDestination: no compatible option');
+    }
+    player.dresseur.posX = this.joueurX;
+    player.dresseur.posY = this.joueurY;
+  }
 
-		const playerCoords = player.dresseur.getCoordinates();
-		const porteCoords = this.getCoordinates();
-
-		context.fillRect(
-			(porteCoords.x - playerCoords.x) * 3 + 340,
-			(porteCoords.y - playerCoords.y) * 3 + 260,
-			porteCoords.tailleX * 3,
-			porteCoords.tailleY * 3,
-		);
-	}
+  showDebug(player: PlayerController) {
+    devRenderer.renderPorte(this, player);
+  }
 }
 
 export default Porte;

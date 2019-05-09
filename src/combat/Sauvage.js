@@ -1,49 +1,75 @@
+// @flow
+
+import type { Adversaire } from './Adversaire';
 import Combat from './Combat';
 import PlayerMode from '../types/PlayerMode';
-import { GenereUnPokemon } from './Pokemon';
+import PlayerController from '../gameloop/PlayerController';
+import Pokemon, { GenereUnPokemon } from './Pokemon';
 
 
-class PokemonSauvage {
-	constructor(pokemon) {
-		this.pokemon = pokemon;
-		this.isAgressive = false;
-		// inutile, mais l objet pokemonSauvage doit correspondre a un dresseur (pendant un combat)
-	}
+class PokemonSauvage implements Adversaire {
+  nom: string = 'Sauvage';
+  pokemon: Pokemon;
+  isAgressive: bool;
+  attaqueCanceled: bool;
 
-	getPokemon() {
-		return (this.pokemon);
-	}
+  constructor(pokemon: Pokemon) {
+    this.pokemon = pokemon;
+    this.isAgressive = false;
+  }
 
-	pokemonsEnVie() {
-		return this.pokemon.pdv > 0 ? [this.pokemon] : [];
-	}
+  getPokemon() {
+    return (this.pokemon);
+  }
 
-	getName() {
-		return (this.pokemon.getName());
-	}
+  pokemonsEnVie() {
+    return this.pokemon.pdv > 0 ? [this.pokemon] : [];
+  }
 
-	soignePokemons() {
-		this.pokemon.soigneToi();
-	}
+  get nom(): string {
+    return (this.pokemon.getName());
+  }
 
-	setOriginalOrientation() {
-		// rien a faire
-	}
+  soignePokemons() {
+    this.pokemon.soigneToi();
+  }
 
-	isSauvage() {
-		// lors d'un combat, un pokemon sauvage agit + ou - comme un dresseur
-		return (true);
-	}
+  setOriginalOrientation() {
+    // rien a faire
+  }
+
+  isSauvage() {
+    // lors d'un combat, un pokemon sauvage agit + ou - comme un dresseur
+    return (true);
+  }
+
+  parler(): void {
+
+  }
+
+  getGTX(): number {
+    console.warn('Sauvage.getGTY called, is that normal ?');
+    return 0;
+  }
+
+  getGTY(): number {
+    console.warn('Sauvage.getGTY called, is that normal ?');
+    return 0;
+  }
+
+  echange():void {
+
+  }
 }
 
 
-function CombatContreSauvage(player, zone) {
-	const poke = GenereUnPokemon(zone);
-	// alert("combat niv: "+zone+"  contre un "+poke.getName());
-	const sauvage = new PokemonSauvage(poke);
-	player.setAdv(sauvage);
-	player.mode = PlayerMode.FIGHT;
-	player.combat = new Combat(player);
+function CombatContreSauvage(player: PlayerController, zone: number) {
+  const poke = GenereUnPokemon(zone);
+  // alert("combat niv: "+zone+"  contre un "+poke.getName());
+  const sauvage = new PokemonSauvage(poke);
+
+  player.mode = PlayerMode.FIGHT;
+  player.combat = new Combat(player, sauvage); // need interface here
 }
 
 export default PokemonSauvage;

@@ -1,33 +1,37 @@
-// type -> 0:normal
-// 1:plante
-// 2:eau
-// 3:feu
-// 4:electr
-// 5:poison
+// @flow
 
 class Attaque {
-	constructor(nom, niveau, type, puiss, precis, pp) {
-		this.nom = nom;
-		this.lvl = niveau;
-		this.type = type;
-		this.puissance = puiss;
-		this.precision = precis;
-		this.pp = pp;
-		this.num = Attaque.attNum;
-		Attaque.attNum += 1;
-	}
+  nom: string;
+  lvl: number;
+  type: number;
+  puissance: number;
+  precision: number;
+  pp: number;
+  num: number;
+  num: number;
+  static attNum: number;
 
-	getName() {
-		return (this.nom);
-	}
+  constructor(
+    nom: string, niveau: number, type: number,
+    puiss: number, precis: number, pp: number,
+  ) {
+    this.nom = nom;
+    this.lvl = niveau;
+    this.type = type;
+    this.puissance = puiss;
+    this.precision = precis;
+    this.pp = pp;
+    this.num = Attaque.attNum;
+    Attaque.attNum += 1;
+  }
 
-	equals(oth) {
-		return (this.nom === oth.getName());
-	}
+  equals(oth: Attaque) {
+    return (this.nom === oth.nom);
+  }
 
-	save(/* pokemonId */) {
-		// SauvegardeAttaque(pokemonId,this.num);
-	}
+  save(/* pokemonId */) {
+    // SauvegardeAttaque(pokemonId,this.num);
+  }
 }
 
 Attaque.attNum = 0;

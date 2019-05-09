@@ -20,8 +20,7 @@ module.exports = {
       sourceType: 'module',
     },
     "rules": {
-      "no-tabs": "off",
-      "indent": [2, "tab"],
+      "indent": [2],
       "brace-style": ["error", "stroustrup", { "allowSingleLine": true }],
       "object-curly-newline": "off",
       "class-methods-use-this": "off",

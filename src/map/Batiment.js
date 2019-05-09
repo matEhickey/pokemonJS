@@ -1,55 +1,58 @@
-import { getContext } from '../utils/render';
+// @flow
+
+import PlayerController from '../gameloop/PlayerController';
+import BatimentRenderer from '../renderers/BatimentRenderer';
+import devRenderer from '../renderers/DevModeRenderer';
+import type { Collision } from './Collision';
+
 // Adapter pour creer automatiquement via devMode
+class Batiment implements Collision {
+  nom: string;
+  texture: HTMLImageElement;
+  posX: number;
+  posY: number;
+  tailleX: number;
+  tailleY: number;
+  renderer: BatimentRenderer
 
-class Batiment {
-	constructor(nom, texture, posX, posY, tailleX, tailleY) {
-		this.nom = nom;
-		this.texture = texture;
-		this.posX = posX;
-		this.posY = posY;
-		this.tailleX = tailleX;
-		this.tailleY = tailleY;
+  constructor(
+    nom: string,
+    texture: HTMLImageElement,
+    posX: number,
+    posY: number,
+    tailleX: number,
+    tailleY: number,
+  ) {
+    this.nom = nom;
+    this.texture = texture;
+    this.posX = posX;
+    this.posY = posY;
+    this.tailleX = tailleX;
+    this.tailleY = tailleY;
+    this.renderer = new BatimentRenderer(this);
+    // this.context = getContext();
+  }
 
-		this.context = getContext();
-	}
+  afficheToi(player: PlayerController): void {
+    this.renderer.render(player);
+  }
 
-	afficheToi(player) {
-		const { posX, posY } = player.dresseur;
-		this.context.drawImage(
-			this.texture,
-			(this.posX - posX) * 3 + 340,
-			(this.posY - posY) * 3 + 280,
-			this.tailleX,
-			this.tailleY,
-		);
-	}
+  isWalkable(coords: {x: number, y: number}): bool {
+    return (!this.isOnPosition(coords.x, coords.y));
+  }
 
-	isWalkable(x, y) {
-		return (!this.isOnPosition(x, y));
-	}
+  isOnPosition(x: number, y: number): bool {
+    if (x > this.posX && x < this.posX + (this.tailleX / 2.7)) {
+      if (y > this.posY && y < this.posY + (this.tailleY / 2.5)) {
+        return (true);
+      }
+    }
+    return (false);
+  }
 
-	isOnPosition(x, y) {
-		if (x > this.posX && x < this.posX + (this.tailleX / 2.7)) {
-			if (y > this.posY && y < this.posY + (this.tailleY / 2.5)) {
-				return (true);
-			}
-		}
-		return (false);
-	}
-
-	showDebug(player) {
-		const { posX, posY } = player.dresseur;
-		const context = getContext();
-
-		context.fillStyle = 'rgba(0, 0, 0, 0.5)';
-
-		context.fillRect(
-			this.posX * 3 - (posX * 3) + 340,
-			this.posY * 3 - (posY * 3) + 280,
-			this.tailleX,
-			this.tailleY,
-		);
-	}
+  showDebug(player: PlayerController): void {
+    devRenderer.renderBatiment(this, player);
+  }
 }
 
 export default Batiment;

@@ -1,3 +1,5 @@
+// @flow
+
 const BUTTON = {};
 BUTTON.CONFIRM = 65;
 BUTTON.BACK = 66;

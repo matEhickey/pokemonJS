@@ -1,11 +1,22 @@
+💩
 [ignore]
+  ./.eslintrc.js
+  ./babel.config.js
+  ./webpack.config.js
 
 [include]
+  ./assets
 
 [libs]
 
 [lints]
 
 [options]
+module.system=haste
+
+# get basename
+module.system.haste.name_reducers='^.*/\([a-zA-Z0-9$_.-]+\.js\(\.flow\)?\)$' -> '\1'
+module.name_mapper.extension='^[./a-zA-Z0-9$_-]+\.\(bmp\|gif\|jpg\|jpeg\|png\|psd\|svg\|webp\|m4v\|mov\|mp4\|mpeg\|mpg\|webm\|aac\|aiff\|caf\|m4a\|mp3\|wav\|html\|pdf\)$' -> 'RelativeImageStub'
+
 
 [strict]

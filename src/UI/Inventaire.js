@@ -1,15 +1,25 @@
+// @flow
+
+class InventaireObjet {}
+
 class Inventaire {
-	constructor() {
-		this.objects = [];
-	}
+  objects: Array<InventaireObjet>;
 
-	addObject(obj) {
-		this.objects.push(obj);
-	}
+  constructor() {
+    this.objects = [];
+  }
 
-	getObject(i) {
-		return this.objects[i];
-	}
+  get length() {
+    return this.objects.length;
+  }
+
+  addObject(obj: InventaireObjet) {
+    this.objects.push(obj);
+  }
+
+  getObject(i: number) {
+    return this.objects[i];
+  }
 }
 
 export default Inventaire;

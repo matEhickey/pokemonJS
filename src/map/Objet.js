@@ -1,46 +1,43 @@
-import { getContext } from '../utils/render';
+// @flow
 
-class Objet {
-	// Pour collision quelquonque dans mode de deplacement
-	constructor(nom, x, y, tX, tY) {
-		this.nom = nom;
-		this.coordX = x;
-		this.coordY = y;
-		this.tailleX = tX;
-		this.tailleY = tY;
-		this.walkable = false;
-	}
+import PlayerController from '../gameloop/PlayerController';
+import type { Collision } from './Collision';
+import devRenderer from '../renderers/DevModeRenderer';
 
-	displayName() {
-		console.log(`Objet: ${this.nom}`);
-	}
 
-	isWalkable(posX, posY) {
-		if (this.walkable) {
-			return true;
-		}
+class Objet implements Collision {
+  nom: string;
+  coordX: number;
+  coordY: number;
+  tailleX: number;
+  tailleY: number;
+  walkable: bool = false;
 
-		if (posX + 11 > this.coordX && posX < this.coordX + this.tailleX) {
-			if (posY + 8 > this.coordY && posY - 8 < this.coordY + this.tailleY) {
-				return false;
-			}
-		}
-		return true;
-	}
+  // Pour collision quelquonque dans mode de deplacement
+  constructor(nom: string, x: number, y: number, tX: number, tY: number) {
+    this.nom = nom;
+    this.coordX = x;
+    this.coordY = y;
+    this.tailleX = tX;
+    this.tailleY = tY;
+  }
 
-	showDebug(player) {
-		const { posX, posY } = player.dresseur;
-		const context = getContext();
+  isWalkable(coords: {x: number, y: number}) {
+    if (this.walkable) {
+      return true;
+    }
 
-		context.fillStyle = 'rgba(0, 0, 0, 0.5)';
+    if (coords.x + 11 > this.coordX && coords.x < this.coordX + this.tailleX) {
+      if (coords.y + 8 > this.coordY && coords.y - 8 < this.coordY + this.tailleY) {
+        return false;
+      }
+    }
+    return true;
+  }
 
-		context.fillRect(
-			this.coordX * 3 - (posX * 3) + 340,
-			this.coordY * 3 - (posY * 3) + 280,
-			this.tailleX * 3,
-			this.tailleY * 3,
-		);
-	}
+  showDebug(player: PlayerController) {
+    devRenderer.renderObjet(this, player);
+  }
 }
 
 export default Objet;

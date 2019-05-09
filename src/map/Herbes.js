@@ -1,43 +1,40 @@
-import { getContext } from '../utils/render';
+// @flow
+
+import PlayerController from '../gameloop/PlayerController';
+import devRenderer from '../renderers/DevModeRenderer';
+
 
 class Herbe {
-	constructor(posX, posY, tailleX, tailleY, puissance) {
-		this.posX = posX;
-		this.posY = posY;
-		this.tailleX = tailleX;
-		this.tailleY = tailleY;
+  posX: number;
+  posY: number;
+  tailleX: number;
+  tailleY: number;
+  puissance: number;
 
-		this.puissance = puissance;
-		// pour qq niveau de pokemon presents,
-		// pourra etre complexifier sur les types,
-		// genre une liste de types possibles
-	}
+  constructor(posX: number, posY: number, tailleX: number, tailleY: number, puissance: number) {
+    this.posX = posX;
+    this.posY = posY;
+    this.tailleX = tailleX;
+    this.tailleY = tailleY;
 
-	walkOn(player) {
-		if (player.dresseur.posX > this.posX && player.dresseur.posX < this.posX + this.tailleX) {
-			if (player.dresseur.posY > this.posY && player.dresseur.posY < this.posY + this.tailleY) {
-				return true;
-			}
-		}
-		return false;
-	}
+    this.puissance = puissance;
+    // pour qq niveau de pokemon presents,
+    // pourra etre complexifier sur les types,
+    // genre une liste de types possibles
+  }
 
-	getPuissance() {
-		return this.puissance;
-	}
+  walkOn(player: PlayerController) {
+    return (player.dresseur.posX > this.posX && player.dresseur.posX < this.posX + this.tailleX)
+      && (player.dresseur.posY > this.posY && player.dresseur.posY < this.posY + this.tailleY);
+  }
 
-	showDebug(player) {
-		const { posX, posY } = player.dresseur;
-		const context = getContext();
+  getPuissance() {
+    return this.puissance;
+  }
 
-		context.fillStyle = 'rgba(0, 255, 0, 0.5)';
-		context.fillRect(
-			this.posX * 3 - (posX * 3) + 340,
-			this.posY * 3 - (posY * 3) + 280,
-			this.tailleX * 3,
-			this.tailleY * 3,
-		);
-	}
+  showDebug(player: PlayerController) {
+    devRenderer.renderHerbe(this, player);
+  }
 }
 
 export default Herbe;
