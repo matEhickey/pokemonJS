@@ -1,8 +1,9 @@
 // @flow
 
-import { getContext } from '../utils/render';
 import PlayerController from '../gameloop/PlayerController';
 import type { Collision } from './Collision';
+import devRenderer from '../renderers/DevModeRenderer';
+
 
 class Objet implements Collision {
   nom: string;
@@ -35,17 +36,7 @@ class Objet implements Collision {
   }
 
   showDebug(player: PlayerController) {
-    const { posX, posY } = player.dresseur;
-    const context = getContext();
-
-    context.fillStyle = 'rgba(0, 0, 0, 0.5)';
-
-    context.fillRect(
-      this.coordX * 3 - (posX * 3) + 340,
-      this.coordY * 3 - (posY * 3) + 280,
-      this.tailleX * 3,
-      this.tailleY * 3,
-    );
+    devRenderer.renderObjet(this, player);
   }
 }
 

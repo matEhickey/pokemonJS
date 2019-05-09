@@ -31,37 +31,37 @@ SousMenu.load = (menu) => {
   menu.options = [
     new SousMenu(
       'Pokedex',
-      () => { menu.displayPokedex(); },
+      () => { menu.renderer.displayPokedex(); },
       () => { menu.mode = MenuMode.Pokedex; },
     ),
     new SousMenu(
       'Pokemon',
-      () => { menu.displayPokemons(menu.player.dresseur.pokemons); },
+      () => { menu.renderer.displayPokemons(menu.player.dresseur.pokemons); },
       () => { menu.mode = MenuMode.Pokemons; },
     ),
     new SousMenu(
       'Inventaire',
-      () => { menu.displayInventaire(); },
+      () => { menu.renderer.displayInventaire(); },
       () => { menu.mode = MenuMode.Inventaire; },
     ),
     new SousMenu(
       menu.player.dresseur.nom,
-      () => { menu.displayInfosJoueur(); },
+      () => { menu.renderer.displayInfosJoueur(); },
       () => { menu.mode = MenuMode.Person; },
     ),
     new SousMenu(
       'Carte',
-      () => { menu.displayCarte(); },
+      () => { menu.renderer.displayCarte(); },
       () => { menu.mode = MenuMode.Carte; },
     ),
     new SousMenu(
       'Sauvegarde',
-      () => { menu.displaySauv(); },
+      () => { menu.renderer.displaySauv(); },
       () => { menu.mode = MenuMode.Sauvegrade; },
     ),
     new SousMenu(
       'Options',
-      () => { menu.displayOptions(); },
+      () => { menu.renderer.displayOptions(); },
       () => { menu.mode = MenuMode.Options; },
     ),
   ];

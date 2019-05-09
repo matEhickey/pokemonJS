@@ -1,10 +1,9 @@
 // @flow
 
-import { getContext } from '../utils/render';
-import { ColorDebug } from '../utils/Color';
 import Orientation from '../types/Orientation';
 import Person from './Person';
 import PlayerController from '../gameloop/PlayerController';
+import devRenderer from '../renderers/DevModeRenderer';
 
 class ZonePerson {
   taille: number = 20;
@@ -76,18 +75,7 @@ class ZonePerson {
   }
 
   showDebug(player: PlayerController) {
-    const context = getContext();
-    context.fillStyle = ColorDebug.ZonePerson;
-
-    const playerCoords = player.dresseur.getCoordinates();
-    const zoneCoords = this.getCoordinates();
-
-    context.fillRect(
-      (zoneCoords.x - playerCoords.x) * 3 + 340,
-      (zoneCoords.y - playerCoords.y) * 3 + 260,
-      zoneCoords.tailleX * 3,
-      zoneCoords.tailleY * 3,
-    );
+    devRenderer.renderZonePerson(this, player);
   }
 }
 

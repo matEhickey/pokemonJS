@@ -28,4 +28,14 @@ function animate(player: PlayerController): void {
   setInterval(renderFunction, player.fps);
 }
 
-export { getCanvas, getContext, getWidthHeight, animate };
+function clearCanvas() {
+  const context = getContext();
+  const canvas = getCanvas();
+  const width = parseInt(canvas.getAttribute('width'), 10);
+  const height = parseInt(canvas.getAttribute('height'), 10);
+
+  context.save();
+  context.clearRect(0, 0, width, height);
+}
+
+export { getCanvas, getContext, clearCanvas, getWidthHeight, animate };

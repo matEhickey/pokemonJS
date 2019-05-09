@@ -52,7 +52,7 @@ class PlayerController {
   walkable: bool; // deal this a better way
 
   constructor() {
-    this.fps = DevMode.dev ? 10 : 40;
+    this.fps = DevMode.dev ? 15 : 40;
 
     this.mode = PlayerMode.MAP;
     this.grilles = [];

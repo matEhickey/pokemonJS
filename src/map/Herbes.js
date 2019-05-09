@@ -1,7 +1,8 @@
 // @flow
 
-import { getContext } from '../utils/render';
 import PlayerController from '../gameloop/PlayerController';
+import devRenderer from '../renderers/DevModeRenderer';
+
 
 class Herbe {
   posX: number;
@@ -32,16 +33,7 @@ class Herbe {
   }
 
   showDebug(player: PlayerController) {
-    const { posX, posY } = player.dresseur;
-    const context = getContext();
-
-    context.fillStyle = 'rgba(0, 255, 0, 0.5)';
-    context.fillRect(
-      this.posX * 3 - (posX * 3) + 340,
-      this.posY * 3 - (posY * 3) + 280,
-      this.tailleX * 3,
-      this.tailleY * 3,
-    );
+    devRenderer.renderHerbe(this, player);
   }
 }
 

@@ -1,8 +1,7 @@
 // @flow
 
-import { getContext } from '../utils/render';
-import { ColorDebug } from '../utils/Color';
 import PlayerController from '../gameloop/PlayerController';
+import devRenderer from '../renderers/DevModeRenderer';
 
 class Porte {
   posX: number;
@@ -94,18 +93,7 @@ class Porte {
   }
 
   showDebug(player: PlayerController) {
-    const context = getContext();
-    context.fillStyle = ColorDebug.Porte;
-
-    const playerCoords = player.dresseur.getCoordinates();
-    const porteCoords = this.getCoordinates();
-
-    context.fillRect(
-      (porteCoords.x - playerCoords.x) * 3 + 340,
-      (porteCoords.y - playerCoords.y) * 3 + 260,
-      porteCoords.tailleX * 3,
-      porteCoords.tailleY * 3,
-    );
+    devRenderer.renderPorte(this, player);
   }
 }
 

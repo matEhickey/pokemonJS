@@ -1,12 +1,8 @@
 // @flow
 
-import pokeworldmap from 'assets/imgs/pokeworldmap.png';
 import Porte from '../map/Porte';
 import EndroitCarte from './EndroitCarte';
-import Font from '../types/Font';
 
-import { getContext } from '../utils/render';
-import ImageLoader from '../utils/ImageLoader';
 import PlayerController from '../gameloop/PlayerController';
 
 class Carte {
@@ -16,22 +12,6 @@ class Carte {
 
   constructor(player: PlayerController) {
     this.player = player;
-  }
-
-  displayCarte() {
-    const context = getContext();
-
-    context.fillStyle = this.player.couleurPrefere;
-    context.fillRect(50, 50, 800, 550);
-    context.fillStyle = '#000000';
-    context.font = Font.little;
-
-    const pokeworldmapImg = ImageLoader.load(pokeworldmap);
-    context.drawImage(pokeworldmapImg, 0, 0, 240, 160, 70, 70, 760, 510);
-
-    if (this.endroits.length > 0) {
-      this.endroits[this.selection].displayOnCarte();
-    }
   }
 
   addEndroit(endroit: EndroitCarte) {
@@ -63,6 +43,7 @@ function ChargeCarte(player: PlayerController) {
     240,
     220,
     new Porte(0, 0, 5, 5, 0, 0, 'foret1'),
+    player.hud.menu.renderer,
   ));
 
   player.carte.addEndroit(new EndroitCarte(
@@ -70,9 +51,9 @@ function ChargeCarte(player: PlayerController) {
     310,
     395,
     new Porte(-102, 30, 5, 5, 18, 198, 'argenta'),
+    player.hud.menu.renderer,
   ));
 }
-
 
 export default Carte;
 export { ChargeCarte };

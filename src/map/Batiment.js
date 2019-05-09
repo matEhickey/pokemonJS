@@ -1,11 +1,11 @@
 // @flow
 
-import { getContext } from '../utils/render';
 import PlayerController from '../gameloop/PlayerController';
+import BatimentRenderer from '../renderers/BatimentRenderer';
+import devRenderer from '../renderers/DevModeRenderer';
 import type { Collision } from './Collision';
 
 // Adapter pour creer automatiquement via devMode
-
 class Batiment implements Collision {
   nom: string;
   texture: HTMLImageElement;
@@ -13,7 +13,7 @@ class Batiment implements Collision {
   posY: number;
   tailleX: number;
   tailleY: number;
-  context: CanvasRenderingContext2D;
+  renderer: BatimentRenderer
 
   constructor(
     nom: string,
@@ -29,19 +29,12 @@ class Batiment implements Collision {
     this.posY = posY;
     this.tailleX = tailleX;
     this.tailleY = tailleY;
-
-    this.context = getContext();
+    this.renderer = new BatimentRenderer(this);
+    // this.context = getContext();
   }
 
   afficheToi(player: PlayerController): void {
-    const { posX, posY } = player.dresseur;
-    this.context.drawImage(
-      this.texture,
-      (this.posX - posX) * 3 + 340,
-      (this.posY - posY) * 3 + 280,
-      this.tailleX,
-      this.tailleY,
-    );
+    this.renderer.render(player);
   }
 
   isWalkable(coords: {x: number, y: number}): bool {
@@ -58,17 +51,7 @@ class Batiment implements Collision {
   }
 
   showDebug(player: PlayerController): void {
-    const { posX, posY } = player.dresseur;
-    const context = getContext();
-
-    context.fillStyle = 'rgba(0, 0, 0, 0.5)';
-
-    context.fillRect(
-      this.posX * 3 - (posX * 3) + 340,
-      this.posY * 3 - (posY * 3) + 280,
-      this.tailleX,
-      this.tailleY,
-    );
+    devRenderer.renderBatiment(this, player);
   }
 }
 

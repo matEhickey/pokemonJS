@@ -1,18 +1,12 @@
 // @flow
 
-import { getCanvas, getContext } from '../utils/render';
+import { clearCanvas } from '../utils/render';
 import DevMode from '../utils/DevMode';
 import PlayerMode from '../types/PlayerMode';
 import PlayerController from './PlayerController';
 
 export default function render(player: PlayerController) { // Moteur d affichage
-  const context = getContext();
-  const canvas = getCanvas();
-  const width = parseInt(canvas.getAttribute('width'), 10);
-  const height = parseInt(canvas.getAttribute('height'), 10);
-
-  context.save();
-  context.clearRect(0, 0, width, height);
+  clearCanvas();
 
   player.grille.show();
 
@@ -38,6 +32,4 @@ export default function render(player: PlayerController) { // Moteur d affichage
     default:
       console.error(`main.render: no compatible option ${player.mode.toString()}`);
   }
-
-  context.restore();
 }

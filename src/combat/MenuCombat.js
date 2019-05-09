@@ -2,21 +2,21 @@
 
 import BUTTON from '../gameloop/touches';
 import PlayerController from '../gameloop/PlayerController';
-import { getContext } from '../utils/render';
 
-import Color from '../utils/Color';
 import CombatMode from '../types/CombatMode';
 import Combat from './Combat';
 import DevMode from '../utils/DevMode';
 import PlayerHudMode from '../types/PlayerHudMode';
 import PlayerMode from '../types/PlayerMode';
 import MenuCombatMode from '../types/MenuCombatMode';
+import MenuCombatRenderer from '../renderers/MenuCombatRenderer';
 
 class MenuCombat {
   player: PlayerController;
   combat: Combat;
   mode: Symbol;
   selection: Symbol;
+  renderer: MenuCombatRenderer;
 
   selectionAttaque: number;
   selectionObjet: number;
@@ -29,6 +29,7 @@ class MenuCombat {
     this.mode = MenuCombatMode.global;
 
     this.selection = MenuCombatMode.attaques;
+    this.renderer = new MenuCombatRenderer(this);
 
     // to keyify, but keep values as it's also displayed
     // but to extract from here
@@ -37,90 +38,8 @@ class MenuCombat {
     this.selectionPokemon = 0;
   }
 
-  afficheToi() {
-    const context = getContext();
-    switch (this.mode) {
-      case MenuCombatMode.global: // menu normal
-        AfficheMenuBackGround(context);
-        AfficheMenuSelection(context, this.player, this.selection);
-        break;
-
-      case MenuCombatMode.attaques: // menu attaque
-        AfficheMenuBackGround(context);
-        AfficheMenuSelection(context, this.player, this.selection);
-
-        context.fillStyle = Color.LightGrey;
-        context.fillRect(360, 280, 320, 370);
-
-        context.fillStyle = this.player.couleurPrefere;
-        context.fillRect(380, 290 + (this.selectionAttaque * 70), 280, 70);
-
-        context.fillStyle = Color.Black;
-        const attNames = this.player.dresseur.getPokemon(0).attaques.map(
-          attaque => attaque.nom,
-        );
-
-        attNames.forEach((attName, i) => {
-          if (i < 4) {
-            context.fillText(
-              attName,
-              390, 330 + (70 * i), 270,
-            );
-          }
-        });
-
-        context.fillText('Retour', 390, 610, 270);
-        break;
-
-      case MenuCombatMode.pokemons:
-        AfficheMenuBackGround(context);
-        AfficheMenuSelection(context, this.player, this.selection);
-
-        // const topY = 400 - this.player.dresseur.pokemons.length * 70;
-        context.fillStyle = Color.LightGrey;
-        // context.fillRect(360, topY, 320, 70 * (this.player.dresseur.pokemons.length + 1) + 20);
-        context.fillRect(360, 220, 320, 70 * (this.player.dresseur.pokemons.length + 1) + 20);
-
-        context.fillStyle = this.player.couleurPrefere;
-        // context.fillRect(380, (topY + 10) + 70 * this.selectionPokemon, 280, 70);
-        context.fillRect(380, 230 + 70 * this.selectionPokemon, 280, 70);
-
-        context.fillStyle = Color.Black;
-        this.player.dresseur.pokemons.forEach((pokemon, i) => {
-          context.fillText(
-            pokemon.getName(),
-            // 390, (topY + 50) + (70 * i), 270,
-            390, 270 + (70 * i), 270,
-          );
-        });
-
-        // context.fillText('Retour',
-        //  (topY + 50), 200 + 70 * (this.player.dresseur.pokemons.length + 1), 270
-        // );
-        context.fillText(
-          'Retour',
-          390, 200 + 70 * (this.player.dresseur.pokemons.length + 1), 270,
-        );
-        break;
-
-      case MenuCombatMode.objets: // menu objet
-        AfficheMenuBackGround(context);
-        AfficheMenuSelection(context, this.player, this.selection);
-
-        context.fillStyle = Color.LightGrey;
-        context.fillRect(360, 280, 320, 370);
-
-        context.fillStyle = this.player.couleurPrefere;
-        context.fillRect(380, 290 + (this.selectionObjet * 70), 280, 70);
-
-        context.fillStyle = Color.Black;
-        context.fillText('Potion : 0', 390, 330, 270);
-        context.fillText('Pokeball', 390, 400, 270);
-        context.fillText('Retour', 390, 610, 270);
-        break;
-      default:
-        console.error('MenuCombat.afficheToi last : no compatible option');
-    }
+  display() {
+    this.renderer.display();
   }
 
   changeSelection(touche: number) {
@@ -365,38 +284,6 @@ class MenuCombat {
         console.error('MenuCombat.afficheToi valide last : no compatible option');
     }
   }
-}
-
-function AfficheMenuBackGround(context) {
-  context.fillStyle = Color.LightGrey;
-  context.fillRect(50, 480, 800, 155);
-}
-
-function AfficheMenuSelection(context, player, selection) {
-  context.fillStyle = player.couleurPrefere;
-  context.fillRect(60, 490, 260, 135);
-
-  context.fillStyle = Color.Black;
-  context.fillText('Que voulez vous faire ?', 70, 565);
-
-  context.fillStyle = selection === MenuCombatMode.attaques ? Color.LighterGrey : Color.DarkGrey;
-  context.fillRect(340, 490, 240, 65);
-
-  context.fillStyle = selection === MenuCombatMode.objets ? Color.LighterGrey : Color.DarkGrey;
-  context.fillRect(340, 560, 240, 65);
-
-  context.fillStyle = selection === MenuCombatMode.pokemons
-    ? Color.LighterGrey : Color.DarkGrey;
-  context.fillRect(590, 490, 240, 65);
-
-  context.fillStyle = selection === MenuCombatMode.escape ? Color.LighterGrey : Color.DarkGrey;
-  context.fillRect(590, 560, 240, 65);
-
-  context.fillStyle = Color.Black;
-  context.fillText('Attaque', 360, 530);
-  context.fillText('Pokemons', 360, 600);
-  context.fillText('Objets', 610, 530);
-  context.fillText('Fuite', 610, 600);
 }
 
 export default MenuCombat;
