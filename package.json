@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "license": "UNLICENSED",
   "scripts": {
+    "flowtyped_install": "flow-typed install",
     "start": "yarn build && webpack-dev-server --open",
     "test": "jest",
     "copy_index": "cp src/index.html dist/index.html",

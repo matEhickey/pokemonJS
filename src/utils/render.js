@@ -3,9 +3,22 @@
 import render from '../gameloop/main';
 import PlayerController from '../gameloop/PlayerController';
 
+
+function createCanvas() {
+  const canvas = document.createElement('canvas');
+  canvas.id = 'ecran';
+  canvas.width = 900;
+  canvas.height = 680;
+
+  if (document.body) {
+    document.body.append(canvas);
+  }
+  return (canvas);
+}
+
 function getCanvas(): HTMLElement {
-  const context = document.getElementById('ecran');
-  return context || document.createElement('canvas');
+  const canvas = document.getElementById('ecran');
+  return canvas || createCanvas();
 }
 
 function getContext(): CanvasRenderingContext2D {

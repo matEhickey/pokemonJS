@@ -1,4 +1,4 @@
-import ImageLoader from '../../utils/ImageLoader';
+import ImageLoader from '../../src/utils/ImageLoader';
 
 test('ImageLoader create a HTMLImageElement with same source', () => {
   const imgSource = 'img_mock_source';

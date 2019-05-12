@@ -1,4 +1,4 @@
-import { _DevMode } from '../../utils/DevMode';
+import { _DevMode } from '../../src/utils/DevMode';
 
 test('DevMode default creation', () => {
   const devMode = new _DevMode();
