@@ -100,4 +100,6 @@ function hideAllFromClass(className) {
 }
 
 const DevMode = new _DevMode();
+
+export { _DevMode };
 export default DevMode;
