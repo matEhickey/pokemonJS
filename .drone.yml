@@ -4,24 +4,25 @@ pipeline:
     commands:
       - yarn install --ignore-optional
       - yarn test
+      
   build:
     image: node:8.16.0-alpine
     commands:
       - yarn install --ignore-optional
       - yarn buildProd
 
-  # frontend:
-  #   image: node:6
-  #   commands:
-  #     - npm install
-  #     - npm test
-  # 
   publish:
     image: plugins/docker
     settings:
       registry: http://registry:5000
       repo: pokemonjs
       tags: latest
+  # frontend:
+  #   image: node:6
+  #   commands:
+  #     - npm install
+  #     - npm test
+  # 
   # 
   # notify:
   #   image: plugins/slack
