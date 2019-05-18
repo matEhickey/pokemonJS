@@ -19,7 +19,6 @@ pipeline:
     when:
       branch:
         - master
-        - feature/*
     
   # frontend:
   #   image: node:6
