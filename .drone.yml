@@ -1,23 +1,21 @@
-kind: pipeline
+pipeline:
+  test:
+    image: node:8.16.0-alpine
+    commands:
+      - yarn install --ignore-optional
+      - yarn test
+      
+  build:
+    image: node:8.16.0-alpine
+    commands:
+      - yarn install --ignore-optional
+      - yarn buildProd
     
-steps:
-  - name: test
-  image: node:8.16.0-alpine
-  commands:
-    - yarn install --ignore-optional
-    - yarn test
-    
-  - name: build
-  image: node:8.16.0-alpine
-  commands:
-    - yarn install --ignore-optional
-    - yarn buildProd
-    
-  - name: publish
-  image: plugins/docker
-  registry: registry:5000
-  repo: pokemonjs
-  auto_tag: true
+  publish:
+    image: plugins/docker
+    registry: registry:5000
+    repo: pokemonjs
+    auto_tag: true
     
   # frontend:
   #   image: node:6
