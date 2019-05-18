@@ -11,7 +11,10 @@ pipeline:
       - yarn install --ignore-optional
       - yarn buildProd
 
-
+  trigger:
+    branch:
+      - devtools/droneCI
+    
   publish:
     image: plugins/docker
     registry: registry:5000
