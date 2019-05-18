@@ -1,9 +1,14 @@
 pipeline:
-  backend:
+  test:
     image: node:8.16.0-alpine
     commands:
       - yarn install --ignore-optional
       - yarn test
+  build:
+    image: node:8.16.0-alpine
+    commands:
+      - yarn install --ignore-optional
+      - yarn buildProd
 
   # frontend:
   #   image: node:6
@@ -11,11 +16,12 @@ pipeline:
   #     - npm install
   #     - npm test
   # 
-  # publish:
-  #   image: plugins/docker
-  #   repo: octocat/hello-world
-  #   tags: [ 1, 1.1, latest ]
-  #   registry: index.docker.io
+  publish:
+    image: plugins/docker
+    settings:
+      registry: http://registry:5000
+      repo: pokemonjs
+      tags: latest
   # 
   # notify:
   #   image: plugins/slack
