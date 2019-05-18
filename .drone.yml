@@ -14,10 +14,9 @@ pipeline:
 
   publish:
     image: plugins/docker
-    settings:
-      registry: registry:5000
-      repo: pokemonjs
-      auto_tag: true
+    registry: registry:5000
+    repo: pokemonjs
+    auto_tag: true
   # frontend:
   #   image: node:6
   #   commands:
