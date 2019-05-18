@@ -16,6 +16,10 @@ pipeline:
     registry: registry:5000
     repo: pokemonjs
     auto_tag: true
+    when:
+      branch:
+        - master
+        - feature/*
     
   # frontend:
   #   image: node:6
