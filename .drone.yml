@@ -9,7 +9,8 @@ pipeline:
     image: plugins/docker
     registry: registryUI
     repo: pokemonjs
-    auto_tag: true
+    tags: ['droneCI']
+    # auto_tag: true
     when:
       branch:
         - devtools/droneCI
