@@ -4,13 +4,12 @@ pipeline:
     commands:
       - yarn install --ignore-optional
       - yarn test
-      
+
   build:
-    image: node:8.16.0-alpine
+    image: docker
     commands:
-      - yarn install --ignore-optional
-      - yarn buildProd
-    
+      - docker build . -t pokemonjs
+
   publish:
     image: plugins/docker
     registry: registry:5000
@@ -19,14 +18,14 @@ pipeline:
     when:
       branch:
         - master
-    
+
   # frontend:
   #   image: node:6
   #   commands:
   #     - npm install
   #     - npm test
-  # 
-  # 
+  #
+  #
   # notify:
   #   image: plugins/slack
   #   channel: developers
