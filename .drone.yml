@@ -17,12 +17,13 @@ pipeline:
   #   when:
   #     branch:
   #       - devtools/droneCI
-  image: docker
-  commands:
+  deploy:
+    image: build
+    commands:
       - docker login --username=mathias --password=abcde registryui
       - docker build -t registryui/pokemonjs:droneCI .
       - docker push registryui/pokemonjs:droneCI
-  volumes:
+    volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
   # frontend:
