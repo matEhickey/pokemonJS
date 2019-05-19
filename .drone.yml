@@ -9,6 +9,7 @@ pipeline:
     image: plugins/docker
     registry: http://registyui
     password: pa55word
+    debug: true
     repo: matehickey/pokemonjs
     username: matehickey
     password: abcde
