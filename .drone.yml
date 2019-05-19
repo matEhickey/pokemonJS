@@ -7,7 +7,7 @@ pipeline:
 
   publish:
     image: plugins/docker
-    registry: http://registyui
+    registry: http://registryui
     password: pa55word
     debug: true
     repo: matehickey/pokemonjs
