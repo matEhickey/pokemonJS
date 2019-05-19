@@ -5,26 +5,18 @@ pipeline:
   #     - yarn install --ignore-optional
   #     - yarn test
 
-  # publish:
-  #   image: plugins/docker
-  #   registry: http://registyui
-  #   password: pa55word
-  #   repo: matehickey/pokemonjs
-  #   username: matehickey
-  #   password: abcde
-  #   tags: droneCI
-  #   # auto_tag: true
-  #   when:
-  #     branch:
-  #       - devtools/droneCI
-  deploy:
-    image: build
-    commands:
-      - docker login --username=mathias --password=abcde registryui
-      - docker build -t registryui/pokemonjs:droneCI .
-      - docker push registryui/pokemonjs:droneCI
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+  publish:
+    image: plugins/docker
+    registry: http://registyui
+    password: pa55word
+    repo: matehickey/pokemonjs
+    username: matehickey
+    password: abcde
+    tags: droneCI
+    # auto_tag: true
+    when:
+      branch:
+        - devtools/droneCI
 
   # frontend:
   #   image: node:6
