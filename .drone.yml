@@ -12,7 +12,7 @@ pipeline:
     auto_tag: true
     when:
       branch:
-        - droneCI
+        - devtools/droneCI
 
   # frontend:
   #   image: node:6
