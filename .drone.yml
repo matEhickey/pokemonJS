@@ -7,8 +7,8 @@ pipeline:
 
   publish:
     image: plugins/docker
-    registry: registryUI
-    repo: pokemonjs
+    registry: http://registryUI:5000
+    repo: http://registryUI:5000/pokemonjs
     tags: ['droneCI']
     # auto_tag: true
     when:
