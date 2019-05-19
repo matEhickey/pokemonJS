@@ -5,11 +5,6 @@ pipeline:
       - yarn install --ignore-optional
       - yarn test
 
-  build:
-    image: docker
-    commands:
-      - docker build .
-
   publish:
     image: plugins/docker
     registry: registryUI
@@ -17,7 +12,7 @@ pipeline:
     auto_tag: true
     when:
       branch:
-        - master
+        - droneCI
 
   # frontend:
   #   image: node:6
