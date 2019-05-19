@@ -1,9 +1,9 @@
 pipeline:
-  test:
-    image: node:8.16.0-alpine
-    commands:
-      - yarn install --ignore-optional
-      - yarn test
+  # test:
+  #   image: node:8.16.0-alpine
+  #   commands:
+  #     - yarn install --ignore-optional
+  #     - yarn test
 
   publish:
     image: plugins/docker
