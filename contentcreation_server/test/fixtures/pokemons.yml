@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  numero: 1
+  name: MyString
+  description: MyString
+  evolution_level: 1
+
+two:
+  numero: 1
+  name: MyString
+  description: MyString
+  evolution_level: 1

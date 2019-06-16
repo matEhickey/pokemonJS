@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @grille.name %>
+</p>
+
+<p>
+  <strong>Image:</strong>
+  <%= @grille.image %>
+</p>
+
+<%= link_to 'Edit', edit_grille_path(@grille) %> |
+<%= link_to 'Back', grilles_path %>

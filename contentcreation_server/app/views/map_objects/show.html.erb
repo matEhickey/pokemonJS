@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @map_object.name %>
+</p>
+
+<p>
+  <strong>Image:</strong>
+  <%= @map_object.image %>
+</p>
+
+<p>
+  <strong>Transparent:</strong>
+  <%= @map_object.transparent %>
+</p>
+
+<%= link_to 'Edit', edit_map_object_path(@map_object) %> |
+<%= link_to 'Back', map_objects_path %>
