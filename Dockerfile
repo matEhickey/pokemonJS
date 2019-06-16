@@ -2,7 +2,7 @@ FROM node:6.17.1-alpine
 # RUN apk --no-cache --update add
 
 COPY . .
-RUN yarn install
+RUN yarn install --ignore-optional
 RUN yarn buildProd
 
 FROM httpd:2.4

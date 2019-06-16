@@ -3,6 +3,7 @@ dist/
 docs/
 node_modules/
 tests/
+flow-typed/
 
 .dockerignore
 .gitignore

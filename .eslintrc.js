@@ -1,11 +1,13 @@
 module.exports = {
 		"parser": "babel-eslint",
 		"plugins": [
-			"flowtype"
+			"flowtype",
+      "jest"
 		],
     "env": {
         "browser": true,
-        "es6": true
+        "es6": true,
+        "jest": true,
     },
     "extends": "airbnb",
     "globals": {

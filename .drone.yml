@@ -1,0 +1,20 @@
+pipeline:
+  test:
+    image: node:8.16.0-alpine
+    commands:
+      - yarn install --ignore-optional
+      - yarn test
+
+  # publish:
+  #   image: plugins/docker
+  #   registry: http://registryui
+  #   password: pa55word
+  #   debug: true
+  #   repo: matehickey/pokemonjs
+  #   username: matehickey
+  #   password: abcde
+  #   tags: droneCI
+  #   # auto_tag: true
+  #   when:
+  #     branch:
+  #       - devtools/droneCI

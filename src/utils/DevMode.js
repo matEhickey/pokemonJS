@@ -1,42 +1,42 @@
 // @flow
 
 class _DevMode {
-dev: bool;
-framed: bool;
-mode: Symbol;
+  dev: bool;
+  framed: bool;
+  mode: Symbol;
 
-constructor() {
-  this.dev = false;
-  this.framed = false;
-}
-
-getOption(optionName: string) {
-  const formElement = document.getElementById(`input_dev_${optionName}`);
-  return (formElement instanceof HTMLInputElement) ? formElement.checked : false;
-}
-
-init() {
-  if (location.search === '?dev') {
-    this.dev = true;
-    hideIfDevMode();
-  }
-  else {
-    hideIfNotDevMode();
+  constructor() {
+    this.dev = false;
+    this.framed = false;
   }
 
-  if (location.search === '?framed') {
-    this.framed = true;
-    hideUnframed();
+  getOption(optionName: string) {
+    const formElement = document.getElementById(`input_dev_${optionName}`);
+    return (formElement instanceof HTMLInputElement) ? formElement.checked : false;
   }
-}
 
-addCollisionDev(x: number, y: number) {
-  addCollisionDev(x, y);
-}
+  init() {
+    if (location.search === '?dev') {
+      this.dev = true;
+      hideIfDevMode();
+    }
+    else {
+      hideIfNotDevMode();
+    }
 
-addHerbeDev(x: number, y: number) {
-  addHerbeDev(x, y);
-}
+    if (location.search === '?framed') {
+      this.framed = true;
+      hideUnframed();
+    }
+  }
+
+  addCollisionDev(x: number, y: number) {
+    addCollisionDev(x, y);
+  }
+
+  addHerbeDev(x: number, y: number) {
+    addHerbeDev(x, y);
+  }
 }
 
 let boolPressC = false; // memoire touche appuye, genere au 2nd appui
@@ -100,4 +100,6 @@ function hideAllFromClass(className) {
 }
 
 const DevMode = new _DevMode();
+
+export { _DevMode };
 export default DevMode;

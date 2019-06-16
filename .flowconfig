@@ -3,6 +3,8 @@
   ./.eslintrc.js
   ./babel.config.js
   ./webpack.config.js
+  ./src/__tests__/
+  ./flow-typed
 
 [include]
   ./assets
