@@ -1,7 +1,7 @@
 // @flow
 
-import PlayerHudMode from '../types/PlayerHudMode';
-import PlayerMode from '../types/PlayerMode';
+import PlayerHudMode from '../modes/PlayerHudMode';
+import PlayerMode from '../modes/PlayerMode';
 import Combat from '../combat/Combat';
 import BUTTON from '../gameloop/touches';
 import PlayerController from '../gameloop/PlayerController';

@@ -2,7 +2,7 @@
 
 import { clearCanvas } from '../utils/render';
 import DevMode from '../utils/DevMode';
-import PlayerMode from '../types/PlayerMode';
+import PlayerMode from '../modes/PlayerMode';
 import PlayerController from './PlayerController';
 
 export default function render(player: PlayerController) { // Moteur d affichage

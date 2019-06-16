@@ -2,7 +2,7 @@
 
 import Discussion from '../UI/Discussion';
 import PlayerController from '../gameloop/PlayerController';
-import Font from '../types/Font';
+import Font from '../utils/Font';
 import { getContext } from '../utils/render';
 
 class DiscussionRenderer {

@@ -1,6 +1,6 @@
 // @flow
 
-import Orientation from '../types/Orientation';
+import Orientation from '../modes/Orientation';
 import Person from './Person';
 import PlayerController from '../gameloop/PlayerController';
 import devRenderer from '../renderers/DevModeRenderer';

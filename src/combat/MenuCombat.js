@@ -3,12 +3,12 @@
 import BUTTON from '../gameloop/touches';
 import PlayerController from '../gameloop/PlayerController';
 
-import CombatMode from '../types/CombatMode';
+import CombatMode from '../modes/CombatMode';
 import Combat from './Combat';
 import DevMode from '../utils/DevMode';
-import PlayerHudMode from '../types/PlayerHudMode';
-import PlayerMode from '../types/PlayerMode';
-import MenuCombatMode from '../types/MenuCombatMode';
+import PlayerHudMode from '../modes/PlayerHudMode';
+import PlayerMode from '../modes/PlayerMode';
+import MenuCombatMode from '../modes/MenuCombatMode';
 import MenuCombatRenderer from '../renderers/MenuCombatRenderer';
 
 class MenuCombat {

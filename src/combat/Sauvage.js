@@ -2,7 +2,7 @@
 
 import type { Adversaire } from './Adversaire';
 import Combat from './Combat';
-import PlayerMode from '../types/PlayerMode';
+import PlayerMode from '../modes/PlayerMode';
 import PlayerController from '../gameloop/PlayerController';
 import Pokemon, { GenereUnPokemon } from './Pokemon';
 

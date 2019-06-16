@@ -4,7 +4,7 @@ import pokeworldmap from 'assets/imgs/pokeworldmap.png';
 import Menu from '../UI/Menu';
 import SousMenu from '../UI/SousMenu';
 import { getContext } from '../utils/render';
-import Font from '../types/Font';
+import Font from '../utils/Font';
 import Pokemon from '../combat/Pokemon';
 import ImageLoader from '../utils/ImageLoader';
 import EndroitCarte from '../UI/EndroitCarte';

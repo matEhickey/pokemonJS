@@ -6,9 +6,9 @@ import PlayerController from '../gameloop/PlayerController';
 import type { Adversaire } from './Adversaire';
 
 import DevMode from '../utils/DevMode';
-import CombatMode from '../types/CombatMode';
-import PlayerMode from '../types/PlayerMode';
-import PlayerHudMode from '../types/PlayerHudMode';
+import CombatMode from '../modes/CombatMode';
+import PlayerMode from '../modes/PlayerMode';
+import PlayerHudMode from '../modes/PlayerHudMode';
 import CombatRenderer from '../renderers/CombatRenderer';
 
 const WaitLimit = {};

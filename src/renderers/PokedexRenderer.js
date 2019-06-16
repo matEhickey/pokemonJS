@@ -5,7 +5,7 @@ import backSprites from 'assets/imgs/back_sprites.png';
 
 import { PokedexPokemon } from '../UI/Pokedex';
 import ImageLoader from '../utils/ImageLoader';
-import Font from '../types/Font';
+import Font from '../utils/Font';
 import { getContext } from '../utils/render';
 
 

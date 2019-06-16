@@ -2,10 +2,10 @@
 
 import hero from 'assets/imgs/BackSpritesHero.png';
 import Combat from '../combat/Combat';
-import CombatMode from '../types/CombatMode';
+import CombatMode from '../modes/CombatMode';
 import { getContext } from '../utils/render';
 import ImageLoader from '../utils/ImageLoader';
-import Font from '../types/Font';
+import Font from '../utils/Font';
 
 
 class CombatRenderer {

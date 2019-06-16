@@ -13,11 +13,11 @@ import sacha from 'assets/imgs/sacha.png';
 import { chargeObjetsDansGrille0, chargeObjetsDansGrille1, chargeObjetsDansGrille2, chargeObjetsDansGrille3, chargeObjetsDansGrille4, chargeObjetsDansGrille5, chargeObjetsDansGrille6 } from '../gamecontent/Loader';
 import Grille from '../map/Grille';
 
-import PlayerMode from '../types/PlayerMode';
+import PlayerMode from '../modes/PlayerMode';
 import ImageLoader from '../utils/ImageLoader';
-import PlayerHudMode from '../types/PlayerHudMode';
+import PlayerHudMode from '../modes/PlayerHudMode';
 import BUTTON from './touches';
-import Orientation from '../types/Orientation';
+import Orientation from '../modes/Orientation';
 import Discussion from '../UI/Discussion';
 import Combat from '../combat/Combat';
 import Carte, { ChargeCarte } from '../UI/Carte';

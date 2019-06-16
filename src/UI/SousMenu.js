@@ -1,6 +1,6 @@
 // @flow
 
-import MenuMode from '../types/MenuMode';
+import MenuMode from '../modes/MenuMode';
 import Menu from './Menu';
 
 class SousMenu {

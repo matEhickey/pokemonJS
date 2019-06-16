@@ -1,7 +1,7 @@
 // @flow
 
 import HUD from '../UI/HUD';
-import Font from '../types/Font';
+import Font from '../utils/Font';
 import PlayerController from '../gameloop/PlayerController';
 
 import { getContext, getWidthHeight } from '../utils/render';

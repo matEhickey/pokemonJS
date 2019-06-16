@@ -1,7 +1,7 @@
 // @flow
 
 import MenuCombat from '../combat/MenuCombat';
-import MenuCombatMode from '../types/MenuCombatMode';
+import MenuCombatMode from '../modes/MenuCombatMode';
 import Color from '../utils/Color';
 import PlayerController from '../gameloop/PlayerController';
 import { getContext } from '../utils/render';

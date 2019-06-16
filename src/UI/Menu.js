@@ -3,8 +3,8 @@
 import pokedex from './Pokedex';
 import BUTTON from '../gameloop/touches';
 import PlayerController from '../gameloop/PlayerController';
-import PlayerMode from '../types/PlayerMode';
-import MenuMode from '../types/MenuMode';
+import PlayerMode from '../modes/PlayerMode';
+import MenuMode from '../modes/MenuMode';
 import SousMenu from './SousMenu';
 import MenuRenderer from '../renderers/MenuRenderer';
 
