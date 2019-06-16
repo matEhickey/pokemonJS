@@ -18,15 +18,3 @@ pipeline:
   #   when:
   #     branch:
   #       - devtools/droneCI
-
-  # frontend:
-  #   image: node:6
-  #   commands:
-  #     - npm install
-  #     - npm test
-  #
-  #
-  # notify:
-  #   image: plugins/slack
-  #   channel: developers
-  #   username: drone
