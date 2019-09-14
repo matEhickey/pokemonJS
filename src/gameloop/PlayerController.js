@@ -1,16 +1,7 @@
 // @flow
-
-import terrain from 'assets/imgs/terrrainTest2.png';
-import ville2 from 'assets/imgs/ville2.png';
-import centrePinterieur from 'assets/imgs/centrePinterieur.png';
-import argenta from 'assets/imgs/argenta.png';
-import pokeshopInside from 'assets/imgs/pokeshopInside.png';
-import areneArgenta from 'assets/imgs/areneArgenta.png';
 import dresseurs from 'assets/imgs/dresseurs.png';
 import sacha from 'assets/imgs/sacha.png';
 
-
-import { chargeObjetsDansGrille0, chargeObjetsDansGrille1, chargeObjetsDansGrille2, chargeObjetsDansGrille3, chargeObjetsDansGrille4, chargeObjetsDansGrille5, chargeObjetsDansGrille6 } from '../gamecontent/Loader';
 import Grille from '../map/Grille';
 
 import PlayerMode from '../modes/PlayerMode';
@@ -31,8 +22,6 @@ import DevMode from '../utils/DevMode';
 
 class PlayerController {
   dresseur: Person;
-
-  grilles: Array<Grille>;
   grille: Grille;
 
   mode: Symbol;
@@ -53,10 +42,7 @@ class PlayerController {
 
   constructor() {
     this.fps = DevMode.dev ? 15 : 40;
-
     this.mode = PlayerMode.MAP;
-    this.grilles = [];
-
     this.couleurPrefere = '#bbbbbb';
 
     this.initDresseur();
@@ -64,11 +50,6 @@ class PlayerController {
     this.hud = new HUD(this);
     this.carte = new Carte(this);
     ChargeCarte(this);
-
-    this.loadGrilles();
-    this.setGrille(0);
-
-    this.loadObjects();
   }
 
   initDresseur() {
@@ -87,36 +68,8 @@ class PlayerController {
     this.dresseur.addPokemon(new Pokemon(25, 5, 0, 100, 20, 15, 15));
   }
 
-  loadGrilles() {
-    const terrainImg = ImageLoader.load(terrain);
-    const ville2Img = ImageLoader.load(ville2);
-    const centrePinterieurImg = ImageLoader.load(centrePinterieur);
-    const argentaImg = ImageLoader.load(argenta);
-    const pokeshopInsideImg = ImageLoader.load(pokeshopInside);
-    const areneArgentaImg = ImageLoader.load(areneArgenta);
-
-
-    this.grilles.push(new Grille(this, terrainImg));
-    this.grilles.push(new Grille(this, ville2Img));
-    this.grilles.push(new Grille(this, centrePinterieurImg));
-    this.grilles.push(new Grille(this, centrePinterieurImg));
-    this.grilles.push(new Grille(this, argentaImg));
-    this.grilles.push(new Grille(this, pokeshopInsideImg));
-    this.grilles.push(new Grille(this, areneArgentaImg));
-  }
-
   setGrille(num: number): void {
-    this.grille = this.grilles[num];
-  }
-
-  loadObjects() {
-    chargeObjetsDansGrille0(this.grilles[0]); // collisions, dresseur, pnj porte etc
-    chargeObjetsDansGrille1(this.grilles[1]);
-    chargeObjetsDansGrille2(this.grilles[2]);
-    chargeObjetsDansGrille3(this.grilles[3]);
-    chargeObjetsDansGrille4(this.grilles[4]);
-    chargeObjetsDansGrille5(this.grilles[5]);
-    chargeObjetsDansGrille6(this.grilles[6]);
+    this.grille = Grille.grilles[num];
   }
 
   setPokemonCapture(pokemon: Pokemon) {

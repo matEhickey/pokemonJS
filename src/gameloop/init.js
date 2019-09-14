@@ -4,6 +4,7 @@ import PlayerController from './PlayerController';
 
 import DevMode from '../utils/DevMode';
 import initInput from './inputs';
+import Grille from '../map/Grille';
 
 import { animate, getContext } from '../utils/render';
 import initMusique from '../UI/music';
@@ -19,12 +20,15 @@ function loadingScreen() {
 
 export default function init() {
   loadingScreen();
+  initMusique();
 
   DevMode.init();
 
   const player = new PlayerController();
+  Grille.loadGrilles(player);
+  player.setGrille(0);
+  Grille.loadObjects();
 
-  initMusique();
   initInput(player);
   animate(player);
 }

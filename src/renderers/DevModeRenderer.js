@@ -6,6 +6,7 @@ import PlayerController from '../gameloop/PlayerController';
 import Porte from '../map/Porte';
 import Objet from '../map/Objet';
 import Herbe from '../map/Herbes';
+import Spawn from '../map/Spawn';
 import Batiment from '../map/Batiment';
 import ZonePerson from '../map/ZonePerson';
 
@@ -79,6 +80,19 @@ class DevModeRenderer {
       (zoneCoords.y - playerCoords.y) * 3 + 260,
       zoneCoords.tailleX * 3,
       zoneCoords.tailleY * 3,
+    );
+  }
+
+  renderSpawn(spawn: Spawn, player: PlayerController) {
+    const context = getContext();
+    const { posX, posY } = player.dresseur;
+
+    context.fillStyle = 'rgba(0, 255, 0, 0.5)';
+    context.fillRect(
+      spawn.posX * 3 - (posX * 3) + 340,
+      spawn.posY * 3 - (posY * 3) + 280,
+      spawn.tailleX * 3,
+      spawn.tailleY * 3,
     );
   }
 }

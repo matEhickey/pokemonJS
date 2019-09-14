@@ -1,6 +1,25 @@
 // @flow
 
+// import blank from 'assets/imgs/blank.png';
+import terrainImage from 'assets/imgs/terrrainTest2.png';
+import ville2 from 'assets/imgs/ville2.png';
+import centrePinterieur from 'assets/imgs/centrePinterieur.png';
+import argenta from 'assets/imgs/argenta.png';
+import pokeshopInside from 'assets/imgs/pokeshopInside.png';
+import areneArgenta from 'assets/imgs/areneArgenta.png';
+
+import {
+  chargeObjetsDansGrille0,
+  chargeObjetsDansGrille1,
+  chargeObjetsDansGrille2,
+  chargeObjetsDansGrille3,
+  chargeObjetsDansGrille4,
+  chargeObjetsDansGrille5,
+  chargeObjetsDansGrille6,
+} from '../gamecontent/Loader';
+
 import { getContext, getCanvas } from '../utils/render';
+import ImageLoader from '../utils/ImageLoader';
 import { CombatContreSauvage } from '../combat/Sauvage';
 import DevMode from '../utils/DevMode';
 import Objet from './Objet';
@@ -8,6 +27,7 @@ import Person from './Person';
 import Batiment from './Batiment';
 import Porte from './Porte';
 import Herbe from './Herbes';
+import Spawn from './Spawn';
 import type { Collision } from './Collision';
 
 import PlayerController from '../gameloop/PlayerController';
@@ -15,10 +35,14 @@ import PlayerController from '../gameloop/PlayerController';
 class Grille {
   player: PlayerController;
   static nbG: number;
+  static grilles: Array<Grille>;
+  static loadGrilles: (PlayerController) => void;
+  static loadObjects: () => void;
 
   num: number;
   terrain: HTMLImageElement;
   objets: Array<Collision> = [];
+  spawns: Array<Spawn> = [];
   dresseurs: Array<Person> = [];
   batiments: Array<Batiment> = [];
   portes: Array<Porte> = [];
@@ -73,6 +97,11 @@ class Grille {
   ajouteBatiment(bati: Batiment) {
     this.batiments.push(bati);
     this.objets.push(bati);
+  }
+
+  ajouteSpawn(spawn: Spawn) {
+    this.spawns.push(spawn);
+    this.objets.push(spawn);
   }
 
   afficheBatiments(player: PlayerController) {
@@ -196,6 +225,12 @@ class Grille {
         batiment.showDebug(this.player);
       });
     }
+
+    if (DevMode.getOption('showSpawn')) {
+      this.spawns.forEach((spawn) => {
+        spawn.showDebug(this.player);
+      });
+    }
   }
 
   checkZonesDresseurs(player: PlayerController) {
@@ -235,5 +270,36 @@ class Grille {
 }
 
 Grille.nbG = 0;
+Grille.grilles = [];
+
+Grille.loadGrilles = (player: PlayerController) => {
+  // const blankImg = ImageLoader.load(blank);
+  const terrainImg = ImageLoader.load(terrainImage);
+  const ville2Img = ImageLoader.load(ville2);
+  const centrePinterieurImg = ImageLoader.load(centrePinterieur);
+  const argentaImg = ImageLoader.load(argenta);
+  const pokeshopInsideImg = ImageLoader.load(pokeshopInside);
+  const areneArgentaImg = ImageLoader.load(areneArgenta);
+
+
+  // Grille.grilles.push(new Grille(player, blankImg));
+  Grille.grilles.push(new Grille(player, terrainImg));
+  Grille.grilles.push(new Grille(player, ville2Img));
+  Grille.grilles.push(new Grille(player, centrePinterieurImg));
+  Grille.grilles.push(new Grille(player, centrePinterieurImg));
+  Grille.grilles.push(new Grille(player, argentaImg));
+  Grille.grilles.push(new Grille(player, pokeshopInsideImg));
+  Grille.grilles.push(new Grille(player, areneArgentaImg));
+};
+
+Grille.loadObjects = () => {
+  chargeObjetsDansGrille0(Grille.grilles[0]); // collisions, dresseur, pnj porte etc
+  chargeObjetsDansGrille1(Grille.grilles[1]);
+  chargeObjetsDansGrille2(Grille.grilles[2]);
+  chargeObjetsDansGrille3(Grille.grilles[3]);
+  chargeObjetsDansGrille4(Grille.grilles[4]);
+  chargeObjetsDansGrille5(Grille.grilles[5]);
+  chargeObjetsDansGrille6(Grille.grilles[6]);
+};
 
 export default Grille;
