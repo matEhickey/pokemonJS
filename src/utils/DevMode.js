@@ -48,16 +48,21 @@ let Cx1 = 0; let Cx2 = 0; let Cy1 = 0; let Cy2 = 0;
 let Hx1 = 0; let Hx2 = 0; let Hy1 = 0; let Hy2 = 0;
 
 function addCollisionDev(x, y) {
+  const coef = {
+    x: 10,
+    y: 10,
+  };
+
   if (!boolPressC) {
-    Cx1 = x;
-    Cy1 = y;
+    Cx1 = x + coef.x;
+    Cy1 = y + coef.y;
   }
   else {
     // x2,y2 representent la taille de l objet et non sa coordonnee
-    Cx2 = x - Cx1;
-    Cy2 = y - Cy1;
+    Cx2 = (x + coef.x) - Cx1;
+    Cy2 = (y + coef.y) - Cy1;
 
-    const chaine = `grille.ajouteObjet(new Objet("Collision",${Cx1}, ${Cy1}, ${Cx2},${Cy2}));<br>`;
+    const chaine = `grille.ajouteObjet(new Objet('Collision', ${Cx1}, ${Cy1}, ${Cx2}, ${Cy2}));<br>`;
     const loaderOuput = document.getElementById('loaderOutput');
     if (loaderOuput) loaderOuput.innerHTML += chaine;
   }
@@ -65,15 +70,20 @@ function addCollisionDev(x, y) {
 }
 
 function addHerbeDev(x, y) {
+  const coef = {
+    x: 10,
+    y: 10,
+  };
+
   if (!boolPressH) {
-    Hx1 = x;
-    Hy1 = y;
+    Hx1 = x + coef.x;
+    Hy1 = y + coef.y;
   }
   else {
     // x2,y2 representent la taille de l objet et non sa coordonnee
-    Hx2 = x - Hx1;
-    Hy2 = x - Hy1;
-    const chaine = `this.grille.ajouteHerbe(new Herbe(${Hx1}, ${Hy1}, ${Hx2}, ${Hy2}, 5));<br>`;
+    Hx2 = (x + coef.x) - Hx1;
+    Hy2 = (y + coef.y) - Hy1;
+    const chaine = `grille.ajouteHerbe(new Herbe(${Hx1}, ${Hy1}, ${Hx2}, ${Hy2}, 5));<br>`;
     const loaderOuput = document.getElementById('loaderOutput');
     if (loaderOuput) loaderOuput.innerHTML += chaine;
   }

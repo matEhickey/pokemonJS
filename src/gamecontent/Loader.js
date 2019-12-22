@@ -192,13 +192,6 @@ function loadDataColisisonsScene1(grille: Grille) {
 // and copy-pasted here as it
 // (this tool define where objects are based on the player pos)
 
-  grille.ajouteObjet(new Objet('Collision', 1230, -106, 14, 356));
-  grille.ajouteObjet(new Objet('Collision', 1070, 218, 168, 18));
-  grille.ajouteObjet(new Objet('Collision', -120, -100, 18, 342));
-  grille.ajouteObjet(new Objet('Collision', 464, 186, 34, 30));
-  grille.ajouteObjet(new Objet('Collision', 560, 182, 34, 34));
-  grille.ajouteObjet(new Objet('Collision', 468, 182, 26, 4));
-
   grille.ajouteObjet(new Objet('Collision', -50, 4, 68, 46));
   grille.ajouteObjet(new Objet('Collision', -112, -92, 350, 28));
   grille.ajouteObjet(new Objet('Collision', -30, -44, 12, 14));
@@ -341,6 +334,13 @@ function loadDataColisisonsScene1(grille: Grille) {
   grille.ajouteObjet(new Objet('Collision', 912, 96, 18, 14));
 
   grille.ajouteObjet(new Objet('Collision', 224, -96, 50, 28));
+
+  grille.ajouteObjet(new Objet('Collision', 1230, -106, 14, 356));
+  grille.ajouteObjet(new Objet('Collision', 1070, 218, 168, 18));
+  grille.ajouteObjet(new Objet('Collision', -120, -100, 18, 342));
+  grille.ajouteObjet(new Objet('Collision', 464, 186, 34, 30));
+  grille.ajouteObjet(new Objet('Collision', 560, 182, 34, 34));
+  grille.ajouteObjet(new Objet('Collision', 468, 182, 26, 4));
 }
 
 const chargeObjetsDansGrille0 = (grille: Grille) => {
