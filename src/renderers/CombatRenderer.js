@@ -1,6 +1,8 @@
 // @flow
 
 import hero from 'assets/imgs/BackSpritesHero.png';
+import backgroundPV1 from 'assets/imgs/UI/Battle/BackgroundPV_1.png';
+import backgroundPV2 from 'assets/imgs/UI/Battle/BackgroundPV_2.png';
 import Combat from '../combat/Combat';
 import CombatMode from '../modes/CombatMode';
 import { getContext } from '../utils/render';
@@ -73,37 +75,36 @@ class CombatRenderer {
     context.fillText('Combat!!', 365, 300);
   }
 
-  drawPokemonsMode(context: CanvasRenderingContext2D) {
+  drawPokemonsPV(context: CanvasRenderingContext2D) {
+    const backgoundPV1Img = ImageLoader.load(backgroundPV1);
+    context.drawImage(backgoundPV1Img, 0, 0, backgoundPV1Img.width, backgoundPV1Img.height,
+      45, 50, 400, 150);
+
     context.font = Font.little;
     context.fillStyle = '#000000';
-    context.fillText(this.combat.joueurs[1].getPokemon(0).getName(), 65, 140);
-    context.fillText(`Niveau :${this.combat.joueurs[1].getPokemon(0).lvl}`, 90, 170);
-    context.fillText(`Pdv :${this.combat.joueurs[1].getPokemon(0).pdv}/${this.combat.joueurs[1].getPokemon(0).pdvMax}`, 90, 190, 200);
+    context.fillText(this.combat.joueurs[1].getPokemon(0).getName(), 85, 105);
+    context.fillText(`Niveau :${this.combat.joueurs[1].getPokemon(0).lvl}`, 110, 135);
+    context.fillText(`Pdv :${this.combat.joueurs[1].getPokemon(0).pdv}/${this.combat.joueurs[1].getPokemon(0).pdvMax}`, 110, 155, 200);
     this.combat.joueurs[1].getPokemon(0).afficheToiCombat();
 
+    const backgoundPV2Img = ImageLoader.load(backgroundPV2);
+    context.drawImage(backgoundPV2Img, 0, 0, backgoundPV2Img.width, backgoundPV2Img.height,
+      455, 335, 400, 150);
 
     context.font = Font.little;
     context.fillStyle = '#000000';
-    context.fillText(this.combat.player.dresseur.getPokemon(0).getName(), 450, 400);
-    context.fillText(`Niveau :${this.combat.player.dresseur.getPokemon(0).lvl}`, 500, 430);
-    context.fillText(`Pdv :${this.combat.player.dresseur.getPokemon(0).pdv}/${this.combat.player.dresseur.getPokemon(0).pdvMax}`, 500, 450, 200);
+    context.fillText(this.combat.player.dresseur.getPokemon(0).getName(), 550, 390);
+    context.fillText(`Niveau :${this.combat.player.dresseur.getPokemon(0).lvl}`, 575, 420);
+    context.fillText(`Pdv :${this.combat.player.dresseur.getPokemon(0).pdv}/${this.combat.player.dresseur.getPokemon(0).pdvMax}`, 575, 440, 200);
     this.combat.player.dresseur.getPokemon(0).drawBackSprite();
   }
 
-  drawDiscussionMode(context: CanvasRenderingContext2D) {
-    context.font = Font.little;
-    context.fillStyle = '#000000';
-    context.fillText(this.combat.joueurs[1].getPokemon(0).getName(), 65, 140);
-    context.fillText(`Niveau :${this.combat.joueurs[1].getPokemon(0).lvl}`, 90, 170);
-    context.fillText(`Pdv :${this.combat.joueurs[1].getPokemon(0).pdv}/${this.combat.joueurs[1].getPokemon(0).pdvMax}`, 90, 190, 200);
-    this.combat.joueurs[1].getPokemon(0).afficheToiCombat();
+  drawPokemonsMode(context: CanvasRenderingContext2D) {
+    this.drawPokemonsPV(context);
+  }
 
-    context.font = Font.little;
-    context.fillStyle = '#000000';
-    context.fillText(this.combat.player.dresseur.getPokemon(0).getName(), 450, 400);
-    context.fillText(`Niveau :${this.combat.player.dresseur.getPokemon(0).lvl}`, 500, 430);
-    context.fillText(`Pdv :${this.combat.player.dresseur.getPokemon(0).pdv}/${this.combat.player.dresseur.getPokemon(0).pdvMax}`, 500, 450, 200);
-    this.combat.player.dresseur.getPokemon(0).drawBackSprite();
+  drawDiscussionMode(context: CanvasRenderingContext2D) {
+    this.drawPokemonsPV(context);
 
     context.font = Font.little;
     context.fillStyle = '#aaaaaa';
@@ -117,38 +118,13 @@ class CombatRenderer {
   }
 
   drawMenuSelect(context: CanvasRenderingContext2D) {
-    context.font = Font.little;
-    context.fillStyle = '#000000';
-    context.fillText(this.combat.joueurs[1].getPokemon(0).getName(), 65, 140);
-    context.fillText(`Niveau :${this.combat.joueurs[1].getPokemon(0).lvl}`, 90, 170);
-    context.fillText(`Pdv :${this.combat.joueurs[1].getPokemon(0).pdv}/${this.combat.joueurs[1].getPokemon(0).pdvMax}`, 90, 190, 200);
-    this.combat.joueurs[1].getPokemon(0).afficheToiCombat();
-
-    context.font = Font.little;
-    context.fillStyle = '#000000';
-    context.fillText(this.combat.player.dresseur.getPokemon(0).getName(), 450, 400);
-    context.fillText(`Niveau :${this.combat.player.dresseur.getPokemon(0).lvl}`, 500, 430);
-    context.fillText(`Pdv :${this.combat.player.dresseur.getPokemon(0).pdv}/${this.combat.player.dresseur.getPokemon(0).pdvMax}`, 500, 450, 200);
-    this.combat.player.dresseur.getPokemon(0).drawBackSprite();
+    this.drawPokemonsPV(context);
 
     this.combat.menu.display();
   }
 
   drawDiscussionEnd(context: CanvasRenderingContext2D) {
-    context.font = Font.little;
-    context.fillStyle = '#000000';
-    context.fillText(this.combat.joueurs[1].getPokemon(0).getName(), 65, 140);
-    context.fillText(`Niveau :${this.combat.joueurs[1].getPokemon(0).lvl}`, 90, 170);
-    context.fillText(`Pdv :${this.combat.joueurs[1].getPokemon(0).pdv}/${this.combat.joueurs[1].getPokemon(0).pdvMax}`, 90, 190, 200);
-    // this.joueurs[1].getPokemon(0).afficheToiCombat();
-
-
-    context.font = Font.little;
-    context.fillStyle = '#000000';
-    context.fillText(this.combat.player.dresseur.getPokemon(0).getName(), 450, 400);
-    context.fillText(`Niveau :${this.combat.player.dresseur.getPokemon(0).lvl}`, 500, 430);
-    context.fillText(`Pdv :${this.combat.player.dresseur.getPokemon(0).pdv}/${this.combat.player.dresseur.getPokemon(0).pdvMax}`, 500, 450, 200);
-    this.combat.player.dresseur.getPokemon(0).drawBackSprite();
+    this.drawPokemonsPV(context);
 
     context.fillStyle = '#aaaaaa';
     context.fillRect(50, 450, 800, 30 + (this.combat.infos.length * 25));
