@@ -61,7 +61,9 @@ class HUDRenderer {
 
       pokemonCapture.afficheToiAt(550, 400);
     }
-    throw new Error('HUDRenderer.pokemonCapture: no player.getPokemonCapture');
+    else {
+      throw new Error('HUDRenderer.pokemonCapture: no player.getPokemonCapture');
+    }
   }
 }
 

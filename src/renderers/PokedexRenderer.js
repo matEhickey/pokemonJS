@@ -50,7 +50,6 @@ class PokedexRenderer {
 
   renderAt(x: number, y: number, pokedexpokemon: PokedexPokemon) {
     const context = getContext();
-    console.log('PokedexRenderer: renderAt');
 
     context.drawImage(
       this.allPokemonImg,
