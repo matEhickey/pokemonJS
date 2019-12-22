@@ -24,21 +24,21 @@ class ZonePerson {
     };
 
     switch (this.dresseur.orientation) {
+      case Orientation.North:
+        addTailleCoords.y -= this.taille + 10;
+        addTailleCoords.tailleY += this.taille;
+        break;
       case Orientation.South:
-        addTailleCoords.y += this.taille - 5;
+        addTailleCoords.y += this.taille - 10;
         addTailleCoords.tailleY += this.taille;
         break;
       case Orientation.West:
-        addTailleCoords.x -= this.taille;
+        addTailleCoords.x -= this.taille + 10;
         addTailleCoords.tailleX += this.taille;
         break;
       case Orientation.East:
-        addTailleCoords.x += this.taille - 5;
+        addTailleCoords.x += this.taille - 10;
         addTailleCoords.tailleX += this.taille;
-        break;
-      case Orientation.North:
-        addTailleCoords.y -= this.taille;
-        addTailleCoords.tailleY += this.taille;
         break;
       default:
         console.warn('ZonePerson.showDebug: no orientation option');
