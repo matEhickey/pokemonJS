@@ -76,6 +76,18 @@ class CombatRenderer {
   }
 
   drawPokemonsPV(context: CanvasRenderingContext2D) {
+    const calculateLifeSize = (pokemon, fullLifeSize) => {
+      const ratio = pokemon.pdv
+        / pokemon.pdvMax;
+      const pdvSize = Math.round(ratio * fullLifeSize);
+      return (pdvSize);
+    };
+
+    const fullLifeSize = 180;
+    const ennemyPDVSize = calculateLifeSize(this.combat.joueurs[1].getPokemon(0), fullLifeSize);
+    const ownPDVSize = calculateLifeSize(this.combat.joueurs[0].getPokemon(0), fullLifeSize);
+
+
     const backgoundPV1Img = ImageLoader.load(backgroundPV1);
     context.drawImage(backgoundPV1Img, 0, 0, backgoundPV1Img.width, backgoundPV1Img.height,
       45, 50, 400, 150);
@@ -84,7 +96,13 @@ class CombatRenderer {
     context.fillStyle = '#000000';
     context.fillText(this.combat.joueurs[1].getPokemon(0).getName(), 85, 105);
     context.fillText(`Niveau :${this.combat.joueurs[1].getPokemon(0).lvl}`, 110, 135);
-    context.fillText(`Pdv :${this.combat.joueurs[1].getPokemon(0).pdv}/${this.combat.joueurs[1].getPokemon(0).pdvMax}`, 110, 155, 200);
+    context.fillText('HP', 110, 155, 200);
+
+    context.fillStyle = '#ff3030';
+    context.fillRect(155, 140, fullLifeSize, 15);
+    context.fillStyle = '#2bff00';
+    context.fillRect(155, 140, ennemyPDVSize, 15);
+
     this.combat.joueurs[1].getPokemon(0).afficheToiCombat();
 
     const backgoundPV2Img = ImageLoader.load(backgroundPV2);
@@ -95,7 +113,14 @@ class CombatRenderer {
     context.fillStyle = '#000000';
     context.fillText(this.combat.player.dresseur.getPokemon(0).getName(), 550, 390);
     context.fillText(`Niveau :${this.combat.player.dresseur.getPokemon(0).lvl}`, 575, 420);
-    context.fillText(`Pdv :${this.combat.player.dresseur.getPokemon(0).pdv}/${this.combat.player.dresseur.getPokemon(0).pdvMax}`, 575, 440, 200);
+
+    context.fillStyle = '#ff3030';
+    context.fillRect(625, 430, fullLifeSize, 15);
+    context.fillStyle = '#2bff00';
+    context.fillRect(625, 430, ownPDVSize, 15);
+
+    context.fillStyle = '#000000';
+    context.fillText('HP', 575, 440, 200);
     this.combat.player.dresseur.getPokemon(0).drawBackSprite();
   }
 

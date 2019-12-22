@@ -1,4 +1,5 @@
 // @flow
+import { getCanvas } from './render';
 
 class _DevMode {
   dev: bool;
@@ -19,6 +20,7 @@ class _DevMode {
     if (location.search === '?dev') {
       this.dev = true;
       hideIfDevMode();
+      mouseListener();
     }
     else {
       hideIfNotDevMode();
@@ -97,6 +99,25 @@ function hideAllFromClass(className) {
   Array.from(hideElements).forEach((elem: HTMLElement) => {
     elem.style.display = 'none';
   });
+}
+
+
+function mouseListener() {
+  const canvas = getCanvas();
+  const history = [];
+  canvas.addEventListener('click', (e:MouseEvent) => {
+    console.log(e);
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    console.log(`x: ${x} y: ${y}`);
+
+    // const { clientX: x, clientY: y } = e;
+    // console.log(`x:${x - canvas.offsetLeft} y:${y - canvas.offsetTop}`);
+
+    history.push({ x, y });
+    console.log(history);
+  }, false);
 }
 
 const DevMode = new _DevMode();
